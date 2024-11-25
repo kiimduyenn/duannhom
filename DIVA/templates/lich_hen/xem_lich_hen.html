@@ -1,0 +1,22 @@
+<h1>Danh sách lịch hẹn</h1>
+<table>
+    <tr>
+        <th>Mã LH</th>
+        <th>Dịch vụ</th>
+        <th>Trạng thái</th>
+        <th>Ngày hẹn</th>
+        <th>Hành động</th>
+    </tr>
+    {% for lh in lich_hen_list %}
+    <tr>
+        <td>{{ lh.MaLH }}</td>
+        <td>{{ lh.MaDV.ten }}</td>
+        <td>{{ lh.get_TrangThai_display }}</td>
+        <td>{{ lh.thoigiandangki }}</td>
+        <td>
+            <a href="{% url 'cap_nhat_lich_hen' lh.pk %}">Cập nhật</a>
+            <a href="{% url 'xoa_lich_hen' lh.pk %}">Xóa</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
