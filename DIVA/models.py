@@ -47,3 +47,214 @@ class LichHen(models.Model):
 
     def is_canceled(self):
         return self.TrangThai == 'canceled'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class NguoiDung(models.Model):
+    VaiTro_CHOICES = [
+        ('Nhân viên', 'Nhân viên'),
+        ('Khách hàng', 'Khách hàng'),
+    ]
+    MaUser = models.CharField(max_length=10, primary_key=True, editable=False)
+    Username = models.CharField(max_length=100)
+    Password = models.CharField(max_length=30)
+    Email = models.EmailField(max_length=100)
+    VaiTro = models.CharField(max_length=20, choices=VaiTro_CHOICES, default='Khách hàng')
+    def __str__(self):
+        return self.Username
+
+class YeuCauTuVan(models.Model):
+    TrangThai_CHOICES = [
+        ('Chưa xử lý', 'Chưa xử lý'),
+        ('Đang xử lý', 'Đang xử lý'),
+        ('Tư vấn lại', 'Tư vấn lại'),
+    ]
+    MaYCTV = models.CharField(max_length=10, primary_key=True, editable=False)
+    MaDV = models.ForeignKey(DichVu, on_delete=models.CASCADE)
+    TenKH = models.CharField(max_length=100)
+    SDT = models.CharField(max_length=10)
+    MaNV = models.ForeignKey(User, on_delete=models.CASCADE, related_name='NV_YCTV')
+    TrangThai = models.CharField(max_length=20, choices=TrangThai_CHOICES, default='Chưa xử lý')
+
+    def save(self, *args, **kwargs):
+        if not self.MaYCTV:
+            last_yctv = YeuCauTuVan.objects.order_by('MaYCTV').last()
+            if last_yctv:
+                last_id = int(last_yctv.MaLH[2:])  # Lấy số từ "LH001"
+                self.MaYCTV = f"LH{last_id + 1:03d}"  # Tạo mã mới
+            else:
+                self.MaYCTV = "LH001"  # Mã đầu tiên
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.MaYCTV} - {self.TrangThai}"
+
+class KhieuNaiLichHen(models.Model):
+    TrangThai_CHOICES = [
+        ('Chưa xử lý', 'Chưa xử lý'),
+        ('Đang xử lý', 'Đang xử lý'),
+        ('Đã hoàn thành', 'Đã hoàn thành'),
+    ]
+    MaKN = models.CharField(max_length=10, primary_key=True, editable=False)
+    MaKH = models.ForeignKey(User, on_delete=models.CASCADE, related_name='KH_KNLH')
+    MaLH = models.ForeignKey(LichHen, on_delete=models.CASCADE)
+    MaNV = models.ForeignKey(User, on_delete=models.CASCADE, related_name='NV_KNLH')
+    NoiDung = models.TextField()
+    TrangThai = models.CharField(max_length=20, choices=TrangThai_CHOICES, default='Chưa xử lý')
+
+    def save(self, *args, **kwargs):
+        if not self.MaKN:
+            last_knlh = KhieuNaiLichHen.objects.order_by('MaKN').last()
+            if last_knlh:
+                last_id = int(last_knlh.MaLH[2:])  # Lấy số từ "LH001"
+                self.MaKN = f"LH{last_id + 1:03d}"  # Tạo mã mới
+            else:
+                self.MaKN = "LH001"  # Mã đầu tiên
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.MaKN} - {self.TrangThai}"
+    def is_completed(self):
+        return self.TrangThai == 'Đã hoàn thành'
+
+class LichHenDichVu(models.Model):
+    MaLH = models.ForeignKey(LichHen, on_delete=models.CASCADE)
+    MaDV = models.ForeignKey(DichVu, on_delete=models.CASCADE)
