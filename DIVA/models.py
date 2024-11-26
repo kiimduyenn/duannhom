@@ -11,6 +11,7 @@ class Profile(models.Model):
     def __str__(self):
         return self.hoten
 
+
 class KhieuNai_DichVu(models.Model):
     MaKN=models.CharField(max_length=10,primary_key=True)
     noidung=models.TextField()
@@ -71,10 +72,15 @@ class DichVuDaDung(models.Model):
     MaDV=models.ForeignKey(DichVu,on_delete=models.CASCADE)
     MaKN=models.ForeignKey(KhieuNai_DichVu,on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.MaUser} - {self.DichVu.ten}'
+
 class YeuCau_DichVu(models.Model):
     MaYCTV=models.ForeignKey(YeuCauTuVan,on_delete=models.CASCADE)
     MaDV=models.ForeignKey(DichVu,on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.YeuCauTuVan.TenKH} - {self.DichVu.ten}'
 class NguoiDung(models.Model):
     VaiTro_CHOICES = [
         ('Nhân viên', 'Nhân viên'),
@@ -145,3 +151,6 @@ class KhieuNaiLichHen(models.Model):
 class LichHenDichVu(models.Model):
     MaLH = models.ForeignKey(LichHen, on_delete=models.CASCADE)
     MaDV = models.ForeignKey(DichVu, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.DichVu.ten} - {self.LichHen.thoigiandangki}'
