@@ -16,7 +16,7 @@ def them_dich_vu(request):
             return redirect('danh_sach_dich_vu')
     else:
         form = DichVuForm()
-    return render(request, 'dich_vu/them.html', {'form': form})
+    return render(request, 'dich_vu/them_dich_vu.html', {'form': form})
 
 def cap_nhat_dich_vu(request, MaDV):
     dich_vu = get_object_or_404(DichVu, MaDV=MaDV)
@@ -27,14 +27,14 @@ def cap_nhat_dich_vu(request, MaDV):
             return redirect('danh_sach_dich_vu')
     else:
         form = DichVuForm(instance=dich_vu)
-    return render(request, 'dich_vu/capnhat.html', {'form': form, 'dich_vu': dich_vu})
+    return render(request, 'dich_vu/cap_nhat_dich_vu.html', {'form': form, 'dich_vu': dich_vu})
 
 def xoa_dich_vu(request, MaDV):
     dich_vu = get_object_or_404(DichVu, MaDV=MaDV)
     if request.method == 'POST':
         dich_vu.delete()
         return redirect('danh_sach_dich_vu')
-    return render(request, 'dich_vu/xoa.html', {'dich_vu': dich_vu})
+    return render(request, 'dich_vu/xoa_dich_vu.html', {'dich_vu': dich_vu})
 #hehehe
 
 # Create your views here.
