@@ -1,0 +1,48 @@
+:root {
+    --white: #ffffff;
+    --black: #000;
+    --yellow: #BD8712;
+}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: inherit;
+    outline: 0;
+}
+
+html {
+    font-size: 62.5%;
+    line-height: 5.5;
+    font-family: "Mulish", sans-serif;
+    box-sizing: border-box;
+}
+
+footer {
+    background-color: #f2f2f2;
+    padding: 50px 0;
+}
+
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.col-md-4 {
+    flex: 1;
+}
+
+.social-icons a {
+    margin-right: 10px;
+    color: #333;
+    font-size: 24px;
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 20px;
+}
