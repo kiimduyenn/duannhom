@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANH SÁCH DỊCH VỤ</title>
+</head>
+<body>
+    <h1>DANH SÁCH DỊCH VỤ</h1>
+    <a href="{% url 'them_dich_vu' %}">Thêm Dịch Vụ</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Mã Dịch Vụ</th>
+                <th>Tên</th>
+                <th>Giá tiền</th>
+                <th>Mô tả</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dichvu in dich_vu_list %}
+            <tr>
+                <td>{{ dichvu.MaDV }}</td>
+                <td>{{ dichvu.ten }}</td>
+                <td>{{ dichvu.giatien }}</td>
+                <td>{{ dichvu.mota }}</td>
+                <td>
+                    <a href="{% url 'cap_nhat_dich_vu' dichvu.MaDV %}">Sửa</a>
+                    <a href="{% url 'xoa_dich_vu' dichvu.MaDV %}">Xóa</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

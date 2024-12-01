@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XÓA DỊCH VỤ</title>
+</head>
+<body>
+    <h1>Xóa Dịch Vụ</h1>
+    <p>Bạn có chắc chắn muốn xóa dịch vụ "{{ dich_vu.ten }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Xóa</button>
+        <a href="{% url 'danh_sach_dich_vu' %}">Hủy</a>
+    </form>
+</body>
+</html>
