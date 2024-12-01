@@ -35,6 +35,6 @@ def xoa_dich_vu(request, MaDV):
         dich_vu.delete()
         return redirect('danh_sach_dich_vu')
     return render(request, 'dich_vu/xoa.html', {'dich_vu': dich_vu})
-#hehe
+#hehehe
 
 # Create your views here.
