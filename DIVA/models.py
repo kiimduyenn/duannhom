@@ -1,29 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class NguoiDung(models.Model):
+
+class Profile(models.Model):
     VaiTro_CHOICES = [
         ('Nhân viên', 'Nhân viên'),
         ('Khách hàng', 'Khách hàng'),
     ]
-    MaUser = models.CharField(max_length=10, primary_key=True, editable=False)
-    Username = models.CharField(max_length=100)
-    Password = models.CharField(max_length=30)
-    Email = models.EmailField(max_length=100)
-    VaiTro = models.CharField(max_length=20, choices=VaiTro_CHOICES, default='Khách hàng')
-    def __str__(self):
-        return self.Username
-
-class Profile(models.Model):
-    MaUser=models.OneToOneField(NguoiDung,on_delete=models.CASCADE,primary_key=True)
+    MaUser = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     hoten=models.CharField(max_length=50)
     ngaysinh=models.DateField()
-    sodienthoai=models.IntegerField()
+    sodienthoai=models.CharField(max_length=10)
     diachi=models.CharField(max_length=120)
-    is_Enable=models.BooleanField(defaut=True)
+    is_Enable=models.BooleanField(default=True)
+    vaitro = models.CharField(max_length=20, choices=VaiTro_CHOICES, default='Khách hàng')
 
     def __str__(self):
-        return self.hoten
+        return f"{self.hoten} - {self.vaitro}"
 
 class DichVu(models.Model):
     MaDV = models.CharField(max_length=10, primary_key=True)
@@ -80,7 +73,7 @@ class YeuCauTuVan(models.Model):
     MaDV = models.ForeignKey(DichVu, on_delete=models.CASCADE)
     TenKH = models.CharField(max_length=100)
     SDT = models.CharField(max_length=10)
-    MaNV = models.ForeignKey(NguoiDung, on_delete=models.CASCADE, related_name='NV_YCTV')
+    MaNV = models.ForeignKey(User, on_delete=models.CASCADE, related_name='NV_YCTV')
     TrangThai = models.CharField(max_length=20, choices=TrangThai_CHOICES, default='Chưa xử lý')
 
     def save(self, *args, **kwargs):
@@ -111,9 +104,9 @@ class KhieuNai_LichHen(models.Model):
         ('Đã hoàn thành', 'Đã hoàn thành'),
     ]
     MaKN = models.CharField(max_length=10, primary_key=True, editable=False)
-    MaKH = models.ForeignKey(NguoiDung, on_delete=models.CASCADE, related_name='KH_KNLH')
+    MaKH = models.ForeignKey(User, on_delete=models.CASCADE, related_name='KH_KNLH')
     MaLH = models.ForeignKey(LichHen, on_delete=models.CASCADE)
-    MaNV = models.ForeignKey(NguoiDung, on_delete=models.CASCADE, related_name='NV_KNLH')
+    MaNV = models.ForeignKey(User, on_delete=models.CASCADE, related_name='NV_KNLH')
     NoiDung = models.TextField()
     TrangThai = models.CharField(max_length=20, choices=TrangThai_CHOICES, default='Chưa xử lý')
 
@@ -133,7 +126,7 @@ class KhieuNai_LichHen(models.Model):
         return self.TrangThai == 'Đã hoàn thành'
 
 class DichVuDaDung(models.Model):
-    MaUser=models.ForeignKey(NguoiDung,on_delete=models.CASCADE)
+    MaUser=models.ForeignKey(User,on_delete=models.CASCADE)
     MaDV=models.ForeignKey(DichVu,on_delete=models.CASCADE)
     MaKN=models.ForeignKey(KhieuNai_DichVu,on_delete=models.CASCADE)
 
