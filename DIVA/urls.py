@@ -17,8 +17,7 @@ urlpatterns = [
     path('cus/',viewsnhi.customer, name="customer"),
     path('ad/',viewsnhi.admin, name="ad"),
     path('emp/',viewsnhi.employee, name="emp"),
-
-
+    path('ds-khach-hang/', viewshuyen.dskhachhang, name='ds_khach_hang'),
     path('thong-tin-khach-hang/<str:username>/', viewshuyen.xemthongtinkhachhang, name='thong_tin_khach_hang'),
     path('khach-hang/', viewshuyen.sua_themthongtinkhachhang, name='them_khach_hang'),
     path('khach-hang/<str:username>/', viewshuyen.sua_themthongtinkhachhang, name='sua_khach_hang'),
