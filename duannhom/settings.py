@@ -124,4 +124,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/dang-nhap/'
 LOGIN_REDIRECT_URL = '/DIVA/lich-hen/'  # Chuyển hướng sau khi đăng nhập thành công
-LOGOUT_REDIRECT_URL = '/'              # Chuyển hướng sau khi đăng xuất
+LOGOUT_REDIRECT_URL = '/'
+# Chuyển hướng sau khi đăng xuất
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
