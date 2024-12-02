@@ -4,34 +4,7 @@
   margin: 0;
   box-sizing: border-box;
   outline: 0;
-  font-size: 16px; /* Giảm cỡ font chữ mặc định */
-}
-
-/* Grid container */
-.grid {
-    width: 1200px;
-    max-width: 100%;
-    margin: 0 auto;
-}
-
-/* Full-width grid */
-.grid__full-width {
-   width: 100%;
-}
-
-/* Grid row */
-.grid_row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: -5px;
-    margin-right: -5px;
-}
-
-/* Grid column */
-.grid_column {
-    padding-left: 5px;
-    padding-right: 5px;
-    width: 33.34%; /* Sửa dấu ',' thành '.' để chia tỷ lệ đúng */
+  font-size: 15px; /* Giảm cỡ font chữ mặc định */
 }
 
 /* Header */
@@ -278,7 +251,7 @@ nav {
 
 .footer-section ul li a {
     text-decoration: none;
-    color: #555;
+    color: #000;
     font-size: 15px; /* Giảm kích thước font chữ trong liên kết */
     font-weight: 600;
 }
@@ -329,23 +302,5 @@ nav {
 .btn-appointment:hover {
     background: linear-gradient(45deg, #ff6a00, #ff9e00);
     box-shadow: 0 4px 8px rgba(255, 10
+}
 
-/* Container của footer-bottom */
-.footer-bottom {
-  display: flex; /* Sử dụng flexbox để căn giữa */
-  justify-content: center; /* Căn giữa theo chiều ngang */
-  align-items: center; /* Căn giữa theo chiều dọc */
-  text-align: center;
-  margin-top: 30px;
-  font-size: 12px;
-  color: #666;
-  width: 100%; /* Đảm bảo chiếm đủ chiều rộng */
-}
-p{
-    text-align: center; /* Căn giữa văn bản */
-    margin-top: 30px;
-    font-size: 12px;
-    color: #666;
-    width: 100%; /* Chiếm toàn bộ chiều rộng */
-    padding: 20px 0;
-}
