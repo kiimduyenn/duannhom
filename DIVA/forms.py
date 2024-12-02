@@ -37,6 +37,10 @@ class CapNhatLichHenForm(forms.ModelForm):
             'TrangThai': 'Trạng thái',
         }
 
+
+
+
+
 class KhachHangForm(forms.ModelForm):
     class Meta:
         model = Profile

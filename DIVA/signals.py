@@ -22,6 +22,6 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     """
-    Lưu Profile khi User được cập nhật.
+    Lưu Profile khi User cập nhật.
     """
     instance.profile.save()
