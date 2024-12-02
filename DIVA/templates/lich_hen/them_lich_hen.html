@@ -1,6 +1,102 @@
-<h1>Thêm lịch hẹn</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Thêm lịch hẹn</button>
-</form>
+{% extends 'layout/admin.html' %}
+
+{% block content %}
+<div class="appointment-container">
+    <div class="appointment-card">
+        <h1 class="appointment-title">Thêm lịch hẹn</h1>
+        <form method="post" class="appointment-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="MaKH">{{ form.MaKH.label }}</label>
+                {{ form.MaKH }}
+            </div>
+            <div class="form-group">
+                <label for="MaNV">{{ form.MaNV.label }}</label>
+                {{ form.MaNV }}
+            </div>
+            <div class="form-group">
+                <label for="MaDV">{{ form.MaDV.label }}</label>
+                {{ form.MaDV }}
+            </div>
+            <div class="form-group">
+                <label for="thoigiandangki">{{ form.thoigiandangki.label }}</label>
+                {{ form.thoigiandangki }}
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-submit">Thêm lịch hẹn</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f3f4f6;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .appointment-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 20px;
+    }
+
+    .appointment-card {
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .appointment-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #BD8712;
+        margin-bottom: 20px;
+    }
+
+    .appointment-form .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .appointment-form label {
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .appointment-form select,
+    .appointment-form input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        color: white;
+        background-color: #BD8712;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: #a87f10;
+    }
+</style>
+{% endblock %}

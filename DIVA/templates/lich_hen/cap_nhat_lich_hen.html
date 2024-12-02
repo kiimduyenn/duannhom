@@ -1,6 +1,160 @@
-<h1>Cập nhật trạng thái</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Cập nhật</button>
-</form>
+<!--<h1>Cập nhật trạng thái</h1>-->
+<!--<form method="post">-->
+<!--    {% csrf_token %}-->
+<!--    {{ form.as_p }}-->
+<!--    <button type="submit">Cập nhật</button>-->
+<!--</form>-->
+<!DOCTYPE html>
+{% load static %}
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Viện thẩm mỹ DIVA">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"/>
+    <meta name="theme-color" content="#BD8712">
+    <title>Cập nhật trạng thái lịch hẹn - Viện thẩm mỹ DIVA</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome-free-6.7.1/css/all.min.css' %}">
+    <style>
+        .update-status-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 40px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .update-status-container h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #BD8712;
+        }
+        .update-form .form-group {
+            margin-bottom: 20px;
+        }
+        .update-form select, .update-form button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .update-form button {
+            background-color: #BD8712;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        .update-form button:hover {
+            background-color: #a87f10;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <div class="container">
+                <nav>
+                    <a href="" id="logo">
+                        <img src="{% static 'img/logo.png' %}" alt="Viện thẩm mỹ Diva">
+                    </a>
+                    <ul id="main-menu" style="margin-left:80px;">
+                        <li><a href="">Dịch vụ</a></li>
+                        <li><a href="">Khách hàng</a></li>
+                        <li><a href="">Nhân viên</a></li>
+                        <li><a href="ds-yctv/">YCTV</a></li>
+                        <li><a href="ds-yctv/">Khiếu nại</a></li>
+                    </ul>
+
+                    <!-- Thẻ ul riêng cho phần login trong header -->
+                    <ul id="login-menu">
+                        <li class="login-btn-container" style="margin-left:128px;">
+                            <a href="#" class="login-btn login-ud" >
+                                <i class="fa-solid fa-user"></i>
+                            </a>
+                            <ul class="sub-menu">
+                                <li><a href="#">Quản lý tài khoản</a></li>
+                                <li><a href="#">Lịch hẹn</a></li>
+                                <li><a href="#">Đăng xuất</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div id="content">
+            <!-- Phần cập nhật trạng thái lịch hẹn -->
+            <div class="update-status-container">
+                <h1>Cập nhật trạng thái lịch hẹn</h1>
+                <form method="post" class="update-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="status">Trạng thái:</label>
+                        <select name="status" id="status">
+                            <option value="dang_xu_ly" {% if lich_hen.status == 'dang_xu_ly' %}selected{% endif %}>Đang xử lý</option>
+                            <option value="hoan_tat" {% if lich_hen.status == 'hoan_tat' %}selected{% endif %}>Hoàn tất</option>
+                            <option value="huy" {% if lich_hen.status == 'huy' %}selected{% endif %}>Hủy</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Cập nhật</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-section logo-section">
+                    <h3>VIỆN THẨM MỸ DIVA</h3>
+                    <p class="footer-description">Viện thẩm mỹ DIVA luôn nỗ lực không ngừng nhằm mang đến dịch vụ hoàn hảo nhất cho khách hàng.</p>
+                    <img src="{% static 'img/banner.jpg' %}" alt="DIVA Banner" class="footer-banner" />
+                </div>
+                <div class="footer-section">
+                    <h3>Thông tin liên hệ</h3>
+                    <ul>
+                        <li><i class="icon-contact fa-solid fa-phone" style="color: #BD8712;"></i><strong> Hotline:</strong> <a href="tel:19002222">1900 2222</a></li>
+                        <li><i class="icon-contact fa-solid fa-map" style="color: #BD8712;"></i><a href="https://vienthammydiva.vn/chuoi-co-so/"> Địa chỉ chi nhánh</a></li>
+                        <li><i class="icon-contact fa-solid fa-envelope" style="color: #BD8712;"></i><strong> Email:</strong> <a href="mailto:info@vienthammydiva.vn">info@vienthammydiva.vn</a></li>
+                    </ul><br><br>
+                    <h3>Theo dõi chúng tôi</h3>
+                    <div class="social-icons">
+                        <a href="#">
+                            <i class="fa-brands fa-facebook"></i>
+                        </a>
+                        <a href="#">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                        <a href="#">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section policy-section">
+                    <h3>Chính sách</h3>
+                    <ul>
+                        <li><a href="#">Khuyến mãi</a></li>
+                        <li><a href="#">Chính sách bảo mật thông tin</a></li>
+                        <li><a href="#">Hướng dẫn mua hàng</a></li>
+                        <li><a href="#">Xem bản đồ đường đi</a></li>
+                    </ul>
+                    <br>
+                    <a href="#" class="btn-appointment">Đặt lịch hẹn ngay</a>
+                </div>
+            </div>
+            <br><br> <hr style="border-top: 2px solid #BD8712; margin: 0px 0;">
+            <br>
+            <div class="footer-bottom" style="text-align: center;">
+                <p>Mọi thông tin trên website Vienthammydiva.vn chỉ mang tính chất tham khảo và gợi ý, không nên tự ý áp dụng.</p>
+                <p>Viện thẩm mỹ DIVA từ chối chịu trách nhiệm trong trường hợp khách hàng tự tiện thực hiện các phương pháp làm đẹp mà không tuân theo hướng dẫn và chỉ định của bác sĩ, chuyên gia.</p>
+                <p style="margin-top: 5px;"><strong>Viện thẩm mỹ DIVA</strong></p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
