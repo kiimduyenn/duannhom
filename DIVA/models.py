@@ -20,7 +20,8 @@ class Profile(models.Model):
     ngaysinh=models.DateField()
     sodienthoai=models.IntegerField()
     diachi=models.CharField(max_length=120)
-    is_Enable=models.BooleanField(defaut=True)
+    is_Enable = models.BooleanField(default=True)
+
 
     def __str__(self):
         return self.hoten

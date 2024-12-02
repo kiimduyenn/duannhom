@@ -36,3 +36,9 @@ class CapNhatLichHenForm(forms.ModelForm):
         labels = {
             'TrangThai': 'Trạng thái',
         }
+from .models import DichVu
+
+class DichVuForm(forms.ModelForm):
+    class Meta:
+        model = DichVu
+        fields = ['MaDV', 'ten', 'giatien', 'mota']
