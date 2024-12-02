@@ -7,7 +7,7 @@ class NguoiDung(models.Model):
         ('Khách hàng', 'Khách hàng'),
     ]
     MaUser = models.CharField(max_length=10, primary_key=True, editable=False)
-    Username = models.ForeignKey(User, on_delete=models.CASCADE)
+    Username = models.CharField(max_length=100)
     Password = models.CharField(max_length=30)
     Email = models.EmailField(max_length=100)
     VaiTro = models.CharField(max_length=20, choices=VaiTro_CHOICES, default='Khách hàng')
@@ -20,7 +20,7 @@ class Profile(models.Model):
     ngaysinh=models.DateField()
     sodienthoai=models.IntegerField()
     diachi=models.CharField(max_length=120)
-    is_Enable=models.BooleanField(default=True)
+    is_Enable=models.BooleanField(defaut=True)
 
     def __str__(self):
         return self.hoten
@@ -80,17 +80,17 @@ class YeuCauTuVan(models.Model):
     MaDV = models.ForeignKey(DichVu, on_delete=models.CASCADE)
     TenKH = models.CharField(max_length=100)
     SDT = models.CharField(max_length=10)
-    MaNV = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='NV_YCTV')
+    MaNV = models.ForeignKey(NguoiDung, on_delete=models.CASCADE, related_name='NV_YCTV')
     TrangThai = models.CharField(max_length=20, choices=TrangThai_CHOICES, default='Chưa xử lý')
 
     def save(self, *args, **kwargs):
         if not self.MaYCTV:
             last_yctv = YeuCauTuVan.objects.order_by('MaYCTV').last()
             if last_yctv:
-                last_id = int(last_yctv.MaYCTV[2:])  # Lấy số từ "LH001"
-                self.MaYCTV = f"YC{last_id + 1:03d}"  # Tạo mã mới
+                last_id = int(last_yctv.MaLH[2:])  # Lấy số từ "LH001"
+                self.MaYCTV = f"LH{last_id + 1:03d}"  # Tạo mã mới
             else:
-                self.MaYCTV = "YC001"  # Mã đầu tiên
+                self.MaYCTV = "LH001"  # Mã đầu tiên
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -154,4 +154,4 @@ class LichHen_DichVu(models.Model):
     def __str__(self):
         return f'{self.DichVu.ten} - {self.LichHen.thoigiandangki}'
 
-#kd update lại
+#Khanhhuyen moi sua lai thu tu models

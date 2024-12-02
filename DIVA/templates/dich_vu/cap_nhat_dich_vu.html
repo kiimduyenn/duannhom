@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CẬP NHẬT DỊCH VỤ</title>
+</head>
+<body>
+    <h1>Cập nhật Dịch Vụ: {{ dich_vu.ten }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Cập nhật</button>
+    </form>
+    <a href="{% url 'danh_sach_dich_vu' %}">Quay lại</a>
+</body>
+</html>

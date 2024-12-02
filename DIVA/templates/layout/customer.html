@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Viện thẩm mỹ DIVA">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"/>
+    <meta name="theme-color" content="#BD8712">
+    <title>Viện thẩm mỹ DIVA</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome-free-6.7.1/css/all.min.css' %}">
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <div class="container">
+                <nav>
+                    <a href="" id="logo">
+                        <img src="{% static 'img/logo.png' %}" alt="Viện thẩm mỹ Diva">
+                    </a>
+                    <ul id="main-menu">
+                        <li><a href="">Về chúng tôi</a></li>
+                        <li><a href="">Dịch vụ</a>
+                            <ul class="sub-menu">
+                                <li><a href="#">Phun mày</a></li>
+                                <li><a href="#">Điều trị nang lông</a></li>
+                                <li><a href="#">Điều trị mụn</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="">Đăng ký tư vấn</a></li>
+                        <li><a href="">Đặt lịch</a></li>
+                    </ul>
+
+                    <!-- Thẻ ul riêng cho phần login trong header -->
+                    <ul id="login-menu">
+                        <li class="login-btn-container">
+                            <a href="#" class="login-btn login-ud">
+                                <i class="fa-solid fa-user"></i>
+                            </a>
+                            <ul class="sub-menu">
+                                <li><a href="#">Quản lý tài khoản</a></li>
+                                <li><a href="#">Lịch hẹn</a></li>
+                                <li><a href="#">Đăng xuất</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div id="wp-content">
+            <div class="background" >
+                <img src="{% static 'img/background.jpg' %}" alt="DIVA Banner" class="bg" style="width:100%; height:auto;" />
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-section logo-section">
+                    <h3>VIỆN THẨM MỸ DIVA</h3>
+                    <p class="footer-description">Viện thẩm mỹ DIVA luôn nỗ lực không ngừng nhằm mang đến dịch vụ hoàn hảo nhất cho khách hàng.</p>
+                    <img src="{% static 'img/banner.jpg' %}" alt="DIVA Banner" class="footer-banner" />
+                </div>
+            <div class="footer-section" >
+                <h3>Thông tin liên hệ</h3>
+                    <ul>
+                        <li><i class="icon-contact fa-solid fa-phone" style="color: #BD8712;"></i><strong> Hotline:</strong> <a href="tel:19002222">1900 2222</a></li>
+                        <li><i class="icon-contact fa-solid fa-map" style="color: #BD8712;"></i></i><a href="https://vienthammydiva.vn/chuoi-co-so/">   Địa chỉ chi nhánh</a></li>
+                        <li><i class="icon-contact fa-solid fa-envelope" style="color: #BD8712;"></i><strong> Email:</strong> <a href="mailto:info@vienthammydiva.vn">info@vienthammydiva.vn</a></li>
+                    </ul><br><br>
+                <h3>Theo dõi chúng tôi</h3>
+                <div class="social-icons">
+                    <a href="#">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+                    <a href="#">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="#">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                    <a href="#">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-section policy-section">
+                <h3>Chính sách</h3>
+                <ul>
+                <li><a href="#">Khuyến mãi</a></li>
+                <li><a href="#">Chính sách bảo mật thông tin</a></li>
+                <li><a href="#">Hướng dẫn mua hàng</a></li>
+                <li><a href="#">Xem bản đồ đường đi</a></li>
+                </ul>
+            <br>
+            <a href="#" class="btn-appointment">Đặt lịch hẹn ngay</a>
+            </div>
+            </div><br><br> <hr style="border-top: 2px solid #BD8712; margin: 0px 0;">
+            <br>
+            <div class="footer-bottom" style="text-align: center;">
+                <p >Mọi thông tin trên website Vienthammydiva.vn chỉ mang tính chất tham khảo và gợi ý, không nên tự ý áp dụng.</p>
+                <p >Viện thẩm mỹ DIVA từ chối chịu trách nhiệm trong trường hợp khách hàng tự tiện thực hiện các phương pháp làm đẹp mà không tuân theo hướng dẫn và chỉ định của bác sĩ, chuyên gia.</p>
+                <p style="margin-top: 5px;"><strong>Viện thẩm mỹ DIVA</strong></p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
