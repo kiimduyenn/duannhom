@@ -22,6 +22,8 @@
                         <li><a href="">Dịch vụ</a></li>
                         <li><a href="">Khách hàng</a></li>
                         <li><a href="">Nhân viên</a></li>
+                        <li><a href="ds-yctv/">YCTV</a></li>
+                        <li><a href="ds-yctv/">Khiếu nại</a></li>
                     </ul>
 
                     <!-- Thẻ ul riêng cho phần login trong header -->
@@ -40,12 +42,9 @@
                 </nav>
             </div>
         </div>
-
-        <div id="wp-content">
-            <div class="background" >
-                <img src="{% static 'img/background.jpg' %}" alt="DIVA Banner" class="bg" style="width:100%; height:auto;" />
-            </div>
-        </div>
+        {% block content%}
+        <h1>Welcome to Bookr!</h1>
+        {% endblock %}
         <footer class="footer">
             <div class="footer-container">
                 <div class="footer-section logo-section">

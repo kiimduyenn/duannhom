@@ -1,0 +1,308 @@
+{% extends 'layout/admin.html' %}
+{% block content %}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        body{
+            padding:0;
+            margin:0;
+            font-family: "Mulish", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: <weight>;
+            font-style: normal;
+        }
+        .slideshow-container {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .slides-wrapper {
+            display: flex;
+            transition: transform 1s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .service{
+            display:flex;
+            flex-direction: column;
+            gap:20px;
+            width:80%;
+            margin:auto;
+            padding:50px 50px;
+        }
+        .title{
+            text-align: center;
+            font-size:40px;
+            font-weight: 600;
+            color: #b37917;
+            letter-spacing: 0.03em;
+        }
+        .list-service{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:15px;
+        }
+
+        .item{
+            display:flex;
+            flex-direction: column;
+            gap:5px;
+            border-radius:12px;
+            cursor:pointer;
+        }
+        .item:hover{
+            background-color:#ffeed9;
+        }
+        .image{
+            width:388px;
+            height:225px;
+
+        }
+        .image img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius:12px;
+        }
+        .name{
+            font-size: 25px;
+            padding: 20px;
+            line-height: 30px;
+            color: #b37917;
+            font-weight:600;
+            margin-bottom:10px;
+        }
+        .reason{
+            display:flex;
+            flex-direction: column;
+            gap:20px;
+            width:80%;
+            margin:auto;
+            padding:50px 50px;
+
+        }
+        .reason .title{
+            text-align: center;
+            font-size:40px;
+            font-weight: 600;
+            color: #b37917;
+            letter-spacing: 0.03em;
+        }
+        .reason_main_content{
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            gap:30px;
+        }
+        .reason_main_image{
+            width:40%;
+            border-radius:12px;
+        }
+        .reason_main_image img{
+            width:100%;
+            height:100%;
+            object-fit: contain;
+            border-radius:12px;
+        }
+        .reason_main_content .list-item{
+            width:60%;
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:15px;
+        }
+        .reason_item{
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            border-radius:12px;
+            cursor:pointer;
+        }
+        .reason_item:hover{
+            background-color:#ffeed9;
+        }
+        .reason_item .reason_image{
+
+        }
+        .reason_main{
+            font-size: 18px;
+            line-height: 2.344rem;
+            font-weight:600;
+            color:#372f24
+        }
+        .reason_description{
+            font-size:15px;
+            color:#372f24
+            line-height: 20px;
+            text-align: justify;
+            margin-bottom:20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slideshow-container">
+        <div class="slides-wrapper">
+            <div class="slide">
+                <img src="https://vienthammydiva.vn/wp-content/uploads/2024/10/tang-vang-iphone-pc.webp" alt="Slide 1">
+            </div>
+
+            <div class="slide">
+                <img src="https://vienthammydiva.vn/wp-content/uploads/2024/11/chien-dich-mua-dong-pc.webp" alt="Slide 2">
+            </div>
+
+            <div class="slide">
+                <img src="https://vienthammydiva.vn/wp-content/uploads/2023/07/BANNER-3_1920X500-1.webp" alt="Slide 3">
+            </div>
+        </div>
+
+    </div>
+    <div class="service">
+        <div class="title">Dịch vụ nổi bật</div>
+        <div class="list-service">
+            <div class="item">
+                <div class="image">
+                    <img src="https://vienthammydiva.vn/wp-content/uploads/2024/08/phun-moi.jpg"/>
+                </div>
+                <div class="name">
+                    Dịch vụ phun môi
+                </div>
+            </div>
+            <div class="item">
+                <div class="image">
+                    <img src="https://vienthammydiva.vn/wp-content/uploads/2024/08/phun-may.webp"/>
+                </div>
+                <div class="name">
+                    Dịch vụ phun môi
+                </div>
+            </div>
+            <div class="item">
+                <div class="image">
+                    <img src="https://vienthammydiva.vn/wp-content/uploads/2024/10/cham-soc-da-comodex-12.jpg"/>
+                </div>
+                <div class="name">
+                    Chăm sóc da kim cương
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="reason">
+        <div class="title">Lý do Khách hàng chọn Viện thẩm mỹ K48 DUE</div>
+        <div class="reason_main_content">
+            <div class="list-item">
+                <div class="reason_item">
+                    <div class="reason_image">
+                        <img src="https://vienthammydiva.vn/wp-content/uploads/2023/04/quy-mo-1.svg"/>
+                    </div>
+                    <div class="reason_main">
+                        Quy mô rộng khắp
+                    </div>
+                    <div class="reason_description">
+                        Chuỗi hệ thống thẩm mỹ viện uy tín với nhiều chi nhánh trên toàn quốc.
+                    </div>
+                </div>
+                <div class="reason_item">
+                    <div class="reason_image">
+                        <img src="https://vienthammydiva.vn/wp-content/uploads/2023/04/chung-nhan-1.svg"/>
+                    </div>
+                    <div class="reason_main">
+                        Chứng nhận uy tín
+                    </div>
+                    <div class="reason_description">
+                        Tạo dựng sự uy tín từ đội ngũ chuyên gia và bác sỹ giỏi, giàu kinh nghiệm.
+                    </div>
+                </div>
+                <div class="reason_item">
+                    <div class="reason_image">
+                        <img src="https://vienthammydiva.vn/wp-content/uploads/2023/04/cong-nghe-1.svg"/>
+                    </div>
+                    <div class="reason_main">
+                        Công nghệ hiện đại
+                    </div>
+                    <div class="reason_description">
+                        Luôn cập nhật các công nghệ hiện đại cùng mỹ phẩm cao cấp trong điều trị.
+                    </div>
+                </div>
+                <div class="reason_item">
+                    <div class="reason_image">
+                        <img src="https://vienthammydiva.vn/wp-content/uploads/2023/04/phong-cach-1.svg"/>
+                    </div>
+                    <div class="reason_main">
+                        Phong cách chuyên nghiệp
+                    </div>
+                    <div class="reason_description">
+                        Với sứ mệnh “phục vụ từ trái tim”, luôn lấy sự hài lòng của khách hàng làm mục tiêu phát triển.
+                    </div>
+                </div>
+                <div class="reason_item">
+                    <div class="reason_image">
+                        <img src="https://vienthammydiva.vn/wp-content/uploads/2023/04/thoi-gian-1.svg"/>
+                    </div>
+                    <div class="reason_main">
+                        Thời gian linh hoạt
+                    </div>
+                    <div class="reason_description">
+                        Hoạt động xuyên suốt từ thứ 2 đến chủ nhật; từ 8h00 sáng – 7h00 tối.
+                    </div>
+                </div>
+                <div class="reason_item">
+                    <div class="reason_image">
+                        <img src="https://vienthammydiva.vn/wp-content/uploads/2023/04/nhan-su-1.svg"/>
+                    </div>
+                    <div class="reason_main">
+                        Đội ngũ chuyên gia
+                    </div>
+                    <div class="reason_description">
+                        Đội ngũ nhân sự là các bác sĩ, chuyên gia thẩm mỹ đầu ngành cùng hàng trăm KTV được đào tạo chuyên nghiệp.
+                    </div>
+                </div>
+
+            </div>
+            <div class="reason_main_image">
+                <img src="https://vienthammydiva.vn/wp-content/uploads/2023/07/BANNER-3_400X524-1.webp"/>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+        let slideIndex = 0;
+        const slidesWrapper = document.querySelector('.slides-wrapper');
+        const slides = document.querySelectorAll('.slide');
+        const numSlides = slides.length;
+
+        function showSlides() {
+            slideIndex++;
+            if (slideIndex >= numSlides) {
+                slideIndex = 0;
+            }
+
+            slidesWrapper.style.transform = translateX(-${slideIndex * 100}%);
+        }
+
+        setInterval(showSlides, 3000);
+    </script>
+
+</body>
+</html>
+{% endblock %}

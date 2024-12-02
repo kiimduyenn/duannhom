@@ -27,7 +27,7 @@
                                 <li><a href="#">Điều trị mụn</a></li>
                             </ul>
                         </li>
-                        <li><a href="">Đăng ký tư vấn</a></li>
+                        <li><a href="yeu-cau-tu-van/">Đăng ký tư vấn</a></li>
                         <li><a href="">Đặt lịch</a></li>
                     </ul>
 
@@ -48,11 +48,9 @@
             </div>
         </div>
 
-        <div id="wp-content">
-            <div class="background" >
-                <img src="{% static 'img/background.jpg' %}" alt="DIVA Banner" class="bg" style="width:100%; height:auto;" />
-            </div>
-        </div>
+        {% block content%}
+        <h1>Welcome to Bookr!</h1>
+        {% endblock %}
         <footer class="footer">
             <div class="footer-container">
                 <div class="footer-section logo-section">
