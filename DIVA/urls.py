@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import viewsdien
-from .views import viewsngoc
+from .views import viewsngoc, viewsnhi
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -15,5 +15,7 @@ urlpatterns = [
     path('them/', viewsngoc.them_dich_vu, name='them_dich_vu'),
     path('capnhat/<str:MaDV>/', viewsngoc.cap_nhat_dich_vu, name='cap_nhat_dich_vu'),
     path('xoa/<str:MaDV>/', viewsngoc.xoa_dich_vu, name='xoa_dich_vu'),
+    path('cus/',viewsnhi.customer, name="customer"),
+    path('ad/',viewsnhi.admin, name="ad")
 ]
 
