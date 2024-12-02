@@ -1,37 +1,150 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DANH SÁCH DỊCH VỤ</title>
-</head>
-<body>
-    <h1>DANH SÁCH DỊCH VỤ</h1>
-    <a href="{% url 'them_dich_vu' %}">Thêm Dịch Vụ</a>
-    <table border="1">
+{% extends 'layout/admin.html' %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #ffeed9;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        color: #c08c19;
+        margin-bottom: 30px;
+        font-size: 5rem;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 20px;
+        text-align: center;
+        font-size: 1.2rem;
+        border-bottom: 2px solid #ddd;
+    }
+
+    th {
+        background-color: #c08c19;
+        color: #ffffff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        padding: 30px;
+    }
+
+    tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    button {
+        padding: 10px 15px;
+        background-color: #c08c19;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+
+    .action-btn {
+        display: flex;
+        gap: 10px;
+    }
+
+    @media screen and (max-width: 768px) {
+        th, td {
+            padding: 10px;
+        }
+
+        button {
+            font-size: 12px;
+            width: 100%;
+        }
+    }
+    .action-buttons {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn {
+        background-color: #c08c19;
+        color: #ffffff;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+        background-color: #f39c12;
+    }
+
+    .search-bar {
+        padding: 10px;
+        font-size: 1.2rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: 30%;
+    }
+</style>
+
+<h1>Danh Sách Dịch Vụ</h1>
+    <div class="action-buttons">
+    <a href="{% url 'them_dich_vu' %}" class="btn">Thêm Dịch Vụ</a>
+    <input type="search" placeholder="Tìm kiếm" class="search-bar">
+    </div>
+    {% csrf_token %}
+    <table>
         <thead>
             <tr>
+                <th>STT</th>
                 <th>Mã Dịch Vụ</th>
-                <th>Tên</th>
-                <th>Giá tiền</th>
-                <th>Mô tả</th>
+                <th>Tên Dịch Vụ</th>
+                <th>Giá Tiền</th>
+                <th>Ghi chú</th>
                 <th>Hành động</th>
             </tr>
         </thead>
         <tbody>
             {% for dichvu in dich_vu_list %}
             <tr>
+                <td>{{ forloop.counter }}</td>
                 <td>{{ dichvu.MaDV }}</td>
                 <td>{{ dichvu.ten }}</td>
                 <td>{{ dichvu.giatien }}</td>
                 <td>{{ dichvu.mota }}</td>
                 <td>
-                    <a href="{% url 'cap_nhat_dich_vu' dichvu.MaDV %}">Sửa</a>
-                    <a href="{% url 'xoa_dich_vu' dichvu.MaDV %}">Xóa</a>
+                    <div class="action-btn">
+                        <form method="POST" action="{% url 'cap_nhat_dich_vu' dichvu.MaDV %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="MaDV" value="{{ dichvu.MaDV }}">
+                            <button type="submit">Sửa</button>
+                        </form>
+                        <form method="POST" action="{% url 'xoa_dich_vu' dichvu.MaDV %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="MaDV" value="{{ dichvu.MaDV }}">
+                            <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa dịch vụ này?');">Xóa</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+</form>
+{% endblock %}

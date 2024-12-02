@@ -103,6 +103,15 @@
         .btn-edit:hover {
             background-color: #DDA952;
         }
+        .btn-delete {
+        padding: 5px 10px;
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        }
 
         .btn-delete:hover {
             background-color: #c0392b;
@@ -147,7 +156,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for kh in khachhang %}
+                {% for kh in profile %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ kh.MaUser }}</td>
@@ -157,7 +166,12 @@
                     <td><a href="/thong-tin-khach-hang/{{ kh.MaUser }}">Xem chi tiết</a></td>
                     <td>
                         <a href="/khach-hang/{{ kh.MaUser }}" class="btn-edit">Sửa</a>
-                        <a href="/xoa-khach-hang/" class="btn-delete">Xóa</a>
+                        <form method="POST" action="{% url 'xoa_khach_hang' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="MaUser" value="{{ kh.MaUser }}">
+                            <input type="hidden" name="action" value="delete">
+                            <button type="submit" class="btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng này không?');">Xóa</button>
+                        </form>
                     </td>
                 </tr>
                 {% empty %}

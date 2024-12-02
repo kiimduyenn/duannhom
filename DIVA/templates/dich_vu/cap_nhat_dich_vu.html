@@ -1,17 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CẬP NHẬT DỊCH VỤ</title>
-</head>
-<body>
-    <h1>Cập nhật Dịch Vụ: {{ dich_vu.ten }}</h1>
+{% extends 'layout/admin.html' %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #ffeed9;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        color: #c08c19;
+        margin-bottom: 30px;
+        font-size: 4rem;
+    }
+
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container input,
+    .form-container select,
+    .form-container textarea,
+    .form-container button {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1.1rem;
+    }
+
+    .form-container button {
+        background-color: #c08c19;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .form-container button:hover {
+        background-color: #2980b9;
+    }
+
+    .form-container a {
+        display: inline-block;
+        margin-top: 20px;
+        text-align: center;
+        font-size: 1.2rem;
+        color: #c08c19;
+        text-decoration: none;
+        border: 1px solid #c08c19;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+
+    .form-container a:hover {
+        background-color: #c08c19;
+        color: white;
+    }
+
+    @media screen and (max-width: 768px) {
+        h1 {
+            font-size: 3rem;
+        }
+
+        .form-container {
+            padding: 20px;
+        }
+
+        .form-container button {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<h1>Cập nhật Dịch Vụ: {{ dich_vu.ten }}</h1>
+
+<div class="form-container">
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+
+        <div>
+            <label for="MaDV">Mã Dịch Vụ</label>
+            {{ form.MaDV }}
+        </div>
+
+        <div>
+            <label for="ten">Tên Dịch Vụ</label>
+            {{ form.ten }}
+        </div>
+
+        <div>
+            <label for="giatien">Giá Tiền</label>
+            {{ form.giatien }}
+        </div>
+
+        <div>
+            <label for="mota">Mô Tả</label>
+            {{ form.mota }}
+        </div>
+
         <button type="submit">Cập nhật</button>
     </form>
+
     <a href="{% url 'danh_sach_dich_vu' %}">Quay lại</a>
-</body>
-</html>
+</div>
+
+{% endblock %}
