@@ -1,5 +1,5 @@
 from django import forms
-from .models import LichHen
+from .models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -36,3 +36,26 @@ class CapNhatLichHenForm(forms.ModelForm):
         labels = {
             'TrangThai': 'Trạng thái',
         }
+class DichVuForm(forms.ModelForm):
+    class Meta:
+        model = DichVu
+        fields = ['MaDV', 'ten', 'giatien', 'mota']
+class KhachHangForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['MaUser','hoten', 'ngaysinh', 'sodienthoai', 'diachi']
+        widgets = {
+            'MaUser': forms.Select(attrs={'class': 'form-control'}),
+            'hoten': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập họ tên'}),
+            'ngaysinh': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'sodienthoai': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập số điện thoại'}),
+            'diachi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập địa chỉ'}),
+        }
+        labels = {
+            'MaUser': 'Username',
+            'hoten': 'Họ tên',
+            'ngaysinh': 'Ngày sinh',
+            'sodienthoai': 'Số điện thoại',
+            'diachi': 'Địa chỉ',
+        }
+
