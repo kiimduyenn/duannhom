@@ -1,7 +1,84 @@
-<h1>Xóa lịch hẹn</h1>
-<p>Bạn có chắc muốn xóa lịch hẹn {{ lich_hen.MaLH }} không?</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Xóa</button>
-    <a href="{% url 'xem_lich_hen' %}">Hủy</a>
-</form>
+{% extends 'layout/admin.html' %}
+
+{% block content %}
+<h1 class="delete-title">Xóa lịch hẹn</h1>
+<div class="delete-container">
+    <p class="delete-message">Bạn có chắc muốn xóa lịch hẹn <strong>{{ lich_hen.MaLH }}</strong> không?</p>
+    <form method="post" class="delete-form">
+        {% csrf_token %}
+        <button type="submit" class="delete-button confirm-button">Xóa</button>
+        <a href="{% url 'xem_lich_hen' %}" class="delete-button cancel-button">Hủy</a>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .delete-title {
+        font-size: 24px;
+        color: #BD8712;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .delete-container {
+        width: 90%;
+        max-width: 600px;
+        margin: 30px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .delete-message {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .delete-form {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .delete-button {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+    .confirm-button {
+        color: white;
+        background-color: #f44336;
+    }
+
+    .confirm-button:hover {
+        background-color: #e53935;
+    }
+
+    .cancel-button {
+        color: white;
+        background-color: #4CAF50;
+        text-decoration: none;
+        display: inline-block;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .cancel-button:hover {
+        background-color: #45a049;
+    }
+</style>
+{% endblock %}
