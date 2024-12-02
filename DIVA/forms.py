@@ -1,5 +1,5 @@
 from django import forms
-from .models import LichHen
+from .models import LichHen, YeuCauTuVan
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -36,3 +36,28 @@ class CapNhatLichHenForm(forms.ModelForm):
         labels = {
             'TrangThai': 'Trạng thái',
         }
+
+
+
+
+
+
+class YCTVForm(forms.ModelForm):
+    class Meta:
+        model= YeuCauTuVan
+        exclude=['MaYCTV','TrangThai', 'MaNV']
+        labels = {
+            'TenKH': 'Họ tên',
+            'SDT': 'Số điện thoại',
+            'MaDV': 'Dịch vụ tư vấn'
+        }
+
+class SuaYCTVForm(forms.ModelForm):
+    class Meta:
+        model= YeuCauTuVan
+        exclude=['MaYCTV','TenKH', 'SDT','MaDV']
+        labels = {
+            'TrangThai': 'Trạng Thái',
+            'MaNV': 'Nhân viên phụ trách',
+        }
+

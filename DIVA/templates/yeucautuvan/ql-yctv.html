@@ -1,0 +1,97 @@
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+    th {
+        background-color: #f4f4f4;
+        text-align: center;
+    }
+</style>
+
+<h1>Danh sách yêu cầu</h1>
+<form id="yctv-form" method="POST" action="{% url 'update_yctv' %}">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <th>Mã YCTV</th>
+            <th>Dịch vụ</th>
+            <th>Trạng thái</th>
+            <th>Tên KH</th>
+            <th>SĐT</th>
+            <th>NV tư vấn</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+        {% for yc in yctv_list %}
+        <tr>
+            <td>{{ yc.MaYCTV }}</td>
+            <td>{{ yc.MaDV.ten }}</td>
+            <td>{{ yc.TrangThai }}</td>
+            <td>{{ yc.TenKH }}</td>
+            <td>{{ yc.SDT }}</td>
+            <td>
+                <select name="nv_phu_trach_{{ yc.MaYCTV }}" onchange="updateYCTV('{{ yc.MaYCTV }}')">
+                    <option value="">--Chọn NV--</option>
+                    {% for user in user_list %}
+                    <option value="{{ user.id }}" {% if yc.MaNV and yc.MaNV.id == user.id %}selected{% endif %}>
+                        {{ user.username }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <select name="trang_thai_{{ yc.MaYCTV }}" onchange="updateYCTV('{{ yc.MaYCTV }}')">
+                    <option value="Chưa xử lý" {% if yc.TrangThai == "Chưa xử lý" %}selected{% endif %}>Chưa xử lý</option>
+                    <option value="Đang xử lý" {% if yc.TrangThai == "Đang xử lý" %}selected{% endif %}>Đang xử lý</option>
+                    <option value="Hoàn thành" {% if yc.TrangThai == "Hoàn thành" %}selected{% endif %}>Hoàn thành</option>
+                </select>
+            </td>
+            <td>
+                <input type="hidden" name="MaYCTV_{{ yc.MaYCTV }}" value="{{ yc.MaYCTV }}">
+                <button type="submit">Lưu</button>
+                <form method="POST" action="{% url 'delete_yctv' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="MaYCTV" value="{{ yc.MaYCTV }}">
+                    <input type="hidden" name="action" value="delete">
+                    <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa yêu cầu này?');">Xóa</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>
+
+<script>
+    function updateYCTV(maYCTV) {
+        // Lấy giá trị từ cả 2 select
+        var nvPhuTrachValue = document.querySelector(`select[name="nv_phu_trach_${maYCTV}"]`).value;
+        var trangThaiValue = document.querySelector(`select[name="trang_thai_${maYCTV}"]`).value;
+
+        // Tạo form dữ liệu ẩn để gửi dữ liệu AJAX
+        var formData = new FormData();
+        formData.append("MaYCTV", maYCTV);
+        formData.append("nv_phu_trach", nvPhuTrachValue);
+        formData.append("trang_thai", trangThaiValue);
+
+        // Gửi dữ liệu đến server bằng phương thức POST (AJAX)
+        fetch("{% url 'update_yctv' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}' // Gửi token CSRF trong header
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Bạn có thể xử lý kết quả trả về từ server ở đây, ví dụ như cập nhật giao diện
+            console.log(data);
+        })
+        .catch(error => console.error('Lỗi khi gửi dữ liệu:', error));
+    }
+</script>
