@@ -6,3 +6,4 @@ class DivaConfig(AppConfig):
 
     def ready(self):
         import DIVA.signals
+
