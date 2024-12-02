@@ -163,7 +163,7 @@ nav {
 #login-menu ul.sub-menu {
     position: absolute;
     background-color: #BD8712;
-    border-top: 18px solid #fcfaf5;
+    border-top: 16px solid #fcfaf5;
     padding: 5px 15px;
     list-style: none;
     width: 200px;
@@ -330,7 +330,6 @@ nav {
     background: linear-gradient(45deg, #ff6a00, #ff9e00);
     box-shadow: 0 4px 8px rgba(255, 10
 
-/* Container của footer-bottom */
 /* Container của footer-bottom */
 .footer-bottom {
   display: flex; /* Sử dụng flexbox để căn giữa */
