@@ -14,7 +14,7 @@ def is_staff_or_admin(user):
 def dskhachhang(request):
     # Lấy thông tin từ Profile liên kết với NguoiDung có VaiTro là "Khách hàng"
     profile = Profile.objects.filter(vaitro='Khách hàng', is_Enable=True)
-    return render(request, 'dskhachhang.html', {'profile': profile})
+    return render(request, 'quanlykhachhang/dskhachhang.html', {'profile': profile})
 
 
 # @user_passes_test(is_staff_or_admin)
@@ -25,7 +25,7 @@ def xemthongtinkhachhang(request, username):
         profile = Profile.objects.get(MaUser=user)
 
         # Trả về thông tin khách hàng cho template
-        return render(request, 'thongtinkhachhang.html', {'user': user, 'profile': profile})
+        return render(request, 'quanlykhachhang/thongtinkhachhang.html', {'user': user, 'profile': profile})
     except User.DoesNotExist:
         # Nếu không tìm thấy người dùng
         messages.error(request, "User không tồn tại")
@@ -59,7 +59,7 @@ def sua_themthongtinkhachhang(request, username=None):
                 messages.success(request, f'{action} thông tin khách hàng thành công.')
             return redirect('ds_khach_hang')  # Điều hướng về danh sách khách hàng
 
-    return render(request, 'themkhachhang.html', {'form': form, 'action': action})
+    return render(request, 'quanlykhachhang/themkhachhang.html', {'form': form, 'action': action})
 
 # @user_passes_test(is_staff_or_admin)
 def xoakhachhang(request):
