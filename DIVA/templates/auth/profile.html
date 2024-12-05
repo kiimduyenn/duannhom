@@ -1,12 +1,19 @@
-{% extends 'layout/admin.html' %}
-{% block content %}
+{% extends 'layout/customer.html' %}
 
+{% block content %}
 <body>
     <div class="profile-container">
         <div class="profile-header">
-            <h1>Chi Tiết Thông Tin Khách Hàng</h1>
+            <h1>Thông Tin Tài Khoản Cá Nhân</h1>
         </div>
-
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <p class="message">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </br>
         <div class="profile-content">
             <div class="sidebar">
                 <button class="tab-button active">Thông tin cá nhân</button>
@@ -30,7 +37,14 @@
                     <label>Địa Chỉ:</label>
                     <input type="text" value="{{ profile.diachi }}" readonly>
                 </div>
-                <button class="save-button"><a href="/khach-hang/{{profile.MaUser}}" style="color: white; text-decoration: none;">Sửa thông tin</a></button>
+                <div class="form-group">
+                    <label>Vai Trò:</label>
+                    <input type="text" value="{{ profile.vaitro }}" readonly>
+                </div>
+
+                <button class="save-button">
+                    <a href="{% url 'sua_profile' %}" style="color: white; text-decoration: none;">Sửa thông tin</a>
+                </button>
             </div>
         </div>
     </div>
@@ -116,19 +130,10 @@
         color: #333;
     }
 
-    .edit-icon {
-        display: inline-block;
-        margin-left: 10px;
-        width: 16px;
-        height: 16px;
-        background: url('/path/to/edit-icon.png') no-repeat center center;
-        background-size: contain;
-    }
-
     .save-button {
         display: block;
         background-color: #BD8712;
-        color: white; /* Đổi màu chữ thành trắng */
+        color: white;
         padding: 10px 20px;
         font-size: 18px;
         border: none;
@@ -143,5 +148,15 @@
         background-color: #a5740f;
         color: white;
     }
+    .messages .message {
+        background-color: #A2CA71;
+        color: white;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        font-size: 18px;
+        text-align: center;
+    }
 </style>
+
 {% endblock %}

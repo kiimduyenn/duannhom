@@ -105,25 +105,17 @@
     }
 
     .messages .message {
-        background-color: #597E52;
+        background-color: #A2CA71;
         color: white;
         padding: 10px;
         margin: 10px 0;
         border-radius: 5px;
-        font-size: 20px;
+        font-size: 18px;
         text-align: center;
     }
 </style>
 
 <div class="content">
-    {% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-        <p class="message">{{ message }}</p>
-        {% endfor %}
-    </div>
-    {% endif %}
-
     <h1>Danh Sách Khách Hàng</h1>
     <div class="search-bar">
         <input type="text" placeholder="Tìm kiếm khách hàng...">
@@ -131,6 +123,14 @@
     </div>
     <button class="btn-edit"><a href="/khach-hang" style="color: white; text-decoration: none;">Thêm Khách Hàng</a></button><br>
     <br>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <p class="message">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    </br>
     <table>
         <thead>
             <tr>
