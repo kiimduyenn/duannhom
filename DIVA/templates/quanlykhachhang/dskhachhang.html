@@ -1,187 +1,172 @@
-<!DOCTYPE html>
-<html lang="vi">
+{% extends 'layout/admin.html' %}
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #ffeed9;
+        margin: 0;
+        padding: 0;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh Sách Khách Hàng</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .header {
-            background-color: #F0C350; /* Màu vàng cho thanh tiêu đề */
-            padding: 15px 0;
-            text-align: center;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .content {
-            width: 80%;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    h1 {
+        text-align: center;
+        color: #c08c19;
+        margin-bottom: 30px;
+        font-size: 4rem;
+        margin-top: 40px;
+    }
 
-        .add-btn {
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+    .search-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
 
-        .add-btn a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    .search-bar input {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 400px;
+        margin-right: 15px;
+    }
 
-        .add-btn:hover {
-            background-color: #45a049;
-        }
-
-        .customer-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .customer-table th,
-        .customer-table td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        .customer-table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            color: #000000;
-        }
-
-        .customer-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .customer-table tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        .customer-table td a {
-            text-decoration: none;
-            color: #000000;
-        }
-
-        .customer-table td a:hover {
-            color: #000000;
-        }
-        .btn-edit, .btn-delete {
-            padding: 5px 10px;
-            border-radius: 5px;
-            text-decoration: none;
-            color: white;
-        }
-
-        .btn-edit {
-            background-color: #FFEED9;
-        }
-
-        .btn-delete {
-            background-color: #e74c3c;
-        }
-
-        .btn-edit:hover {
-            background-color: #DDA952;
-        }
-        .btn-delete {
-        padding: 5px 10px;
-        background-color: #f44336;
+    .search-bar button {
+        padding: 10px 20px;
+        background-color: #c08c19;
         color: white;
         border: none;
         border-radius: 4px;
-        font-size: 14px;
         cursor: pointer;
-        }
+        transition: background-color 0.3s ease;
+    }
 
-        .btn-delete:hover {
-            background-color: #c0392b;
-        }
-        .messages .message {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            font-size: 16px;
-            text-align: center;
-        }
-    </style>
-</head>
+    .search-bar button:hover {
+        background-color: #C6A969;
+    }
 
-<body>
-    <div class="content">
+    .content {
+        width: 80%;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: center;
+        font-size: 1.2rem;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #c08c19;
+        color: white;
+    }
+
+    tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    .btn-edit, .btn-delete {
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+        font-size: 16px;
+    }
+
+    .btn-edit {
+        background-color: #c08c19;
+    }
+
+    .btn-edit:hover {
+        background-color: #C6A969;
+    }
+
+    .btn-delete {
+        background-color: #c08c19;
+    }
+
+    .btn-delete:hover {
+        background-color: #c0392b;
+    }
+
+    .messages .message {
+        background-color: #597E52;
+        color: white;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        font-size: 20px;
+        text-align: center;
+    }
+</style>
+
+<div class="content">
     {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-                <p class="message">{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
-        <button class="add-btn"><a href="/khach-hang">Thêm Khách Hàng</a></button>
-        {% for mess in messages %}
-        {{ mess }}
+    <div class="messages">
+        {% for message in messages %}
+        <p class="message">{{ message }}</p>
         {% endfor %}
-
-        <!-- Bảng danh sách khách hàng -->
-        <table class="customer-table">
-            <thead>
-                <tr>
-                    <th>STT</th>
-                    <th>Username</th>
-                    <th>Tên khách hàng</th>
-                    <th>Số điện thoại</th>
-                    <th>Địa chỉ</th>
-                    <th>Xem thêm</th>
-                    <th>Tùy chọn</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for kh in profile %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ kh.MaUser }}</td>
-                    <td>{{ kh.hoten }}</td>
-                    <td>{{ kh.sodienthoai }}</td>
-                    <td>{{ kh.diachi }}</td>
-                    <td><a href="/thong-tin-khach-hang/{{ kh.MaUser }}">Xem chi tiết</a></td>
-                    <td>
-                        <a href="/khach-hang/{{ kh.MaUser }}" class="btn-edit">Sửa</a>
-                        <form method="POST" action="{% url 'xoa_khach_hang' %}" style="display:inline;">
-                            {% csrf_token %}
-                            <input type="hidden" name="MaUser" value="{{ kh.MaUser }}">
-                            <input type="hidden" name="action" value="delete">
-                            <button type="submit" class="btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng này không?');">Xóa</button>
-                        </form>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5">Không có dữ liệu khách hàng</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
-</body>
+    {% endif %}
 
-</html>
+    <h1>Danh Sách Khách Hàng</h1>
+    <div class="search-bar">
+        <input type="text" placeholder="Tìm kiếm khách hàng...">
+        <button type="button">Tìm kiếm</button>
+    </div>
+    <button class="btn-edit"><a href="/khach-hang" style="color: white; text-decoration: none;">Thêm Khách Hàng</a></button><br>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Username</th>
+                <th>Tên khách hàng</th>
+                <th>Số điện thoại</th>
+                <th>Địa chỉ</th>
+                <th>Xem thêm</th>
+                <th>Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for kh in profile %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ kh.MaUser }}</td>
+                <td>{{ kh.hoten }}</td>
+                <td>{{ kh.sodienthoai }}</td>
+                <td>{{ kh.diachi }}</td>
+                <td><a href="/thong-tin-khach-hang/{{ kh.MaUser }}" style="color: #c08c19;">Xem chi tiết</a></td>
+                <td>
+                    <a href="/khach-hang/{{ kh.MaUser }}" class="btn-edit">Sửa</a>
+                    <form method="POST" action="{% url 'xoa_khach_hang' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="MaUser" value="{{ kh.MaUser }}">
+                        <button type="submit" class="btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng này không?');">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">Không có dữ liệu khách hàng</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
