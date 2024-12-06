@@ -2,6 +2,7 @@ from django import forms
 from .models import LichHen, Profile, YeuCauTuVan
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 
 class DangKyForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -80,3 +81,36 @@ class SuaYCTVForm(forms.ModelForm):
             'TrangThai': 'Trạng Thái',
             'MaNV': 'Nhân viên phụ trách',
         }
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['hoten', 'ngaysinh', 'sodienthoai', 'diachi','vaitro']
+        widgets = {
+            'hoten': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập họ tên'}),
+            'ngaysinh': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'sodienthoai': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập số điện thoại'}),
+            'diachi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập địa chỉ'}),
+            'vaitro': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+        }
+        labels = {
+            'hoten': 'Họ tên',
+            'ngaysinh': 'Ngày sinh',
+            'sodienthoai': 'Số điện thoại',
+            'diachi': 'Địa chỉ',
+            'vaitro': 'Vai trò'
+        }
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    def confirm_login_allowed(self, user):
+        if not user.is_active:
+            raise forms.ValidationError(
+                "Tài khoản của bạn đã bị vô hiệu hóa. Vui lòng liên hệ quản trị viên.",
+                code='inactive',
+            )
+        if hasattr(user, 'is_locked') and user.is_locked:
+            raise forms.ValidationError(
+                f"Tài khoản của bạn đã bị khóa: {user.lock_reason}",
+                code='locked',
+            )

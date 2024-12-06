@@ -28,6 +28,8 @@ urlpatterns = [
     path('delete-yctv/', viewsduyen.delete_yctv, name='delete_yctv'),
     path('', views.trangchukh, name='trang_chu_kh'),
     path('ad/', views.trangchuad, name='trang_chu_ad'),
-
+    path('profile/', viewshuyen.xem_profile, name='profile'),
+    path('sua-profile/', viewshuyen.sua_profile, name='sua_profile'),
+    path('khoa-taikhoan/', viewshuyen.lock_account, name='khoa_taikhoan'),
 ]
 

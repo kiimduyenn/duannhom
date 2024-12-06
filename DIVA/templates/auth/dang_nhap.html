@@ -1,4 +1,4 @@
-{% extends 'layout/admin.html' %}
+{% extends 'layout/customer.html' %}
 
 {% block content %}
 <h1 class="login-title">Đăng nhập</h1>
@@ -22,6 +22,13 @@
             <button type="submit" class="login-button">Đăng nhập</button>
         </div>
     </form>
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 </div>
 
 <style>

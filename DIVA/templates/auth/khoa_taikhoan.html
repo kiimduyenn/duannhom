@@ -1,0 +1,46 @@
+{% extends "layout/customer.html" %}
+
+{% block content %}
+<div class="lock-account-container">
+    <h1>Khóa tài khoản</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="lock_reason">Lý do khóa tài khoản:</label><br>
+        <textarea id="lock_reason" name="lock_reason" rows="4" cols="50"></textarea><br><br>
+        <button type="submit" class="save-button">Khóa tài khoản</button>
+    </form>
+</div>
+
+<style>
+    .lock-account-container {
+        max-width: 600px;
+        margin: 50px auto;
+        text-align: center;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    textarea {
+        width: calc(100% - 20px);
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .save-button {
+        background-color: #BD8712;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .save-button:hover {
+        background-color: #a5740f;
+    }
+</style>
+{% endblock %}

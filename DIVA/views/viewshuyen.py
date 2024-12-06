@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from DIVA.models import *
 from DIVA.forms import KhachHangForm, ProfileForm
 from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth import login, logout
+
 # Hàm kiểm tra vai trò nhân viên hoặc admin
 def is_staff_or_admin(user):
     return user.is_staff or user.is_superuser
@@ -73,16 +75,6 @@ def xoakhachhang(request):
             messages.error(request, "Dữ liệu không hợp lệ. Vui lòng thử lại.")
         return redirect('ds_khach_hang')
 
-#Khóa tài khoản - mở khóa tài khoản
-def lock_user(request, user_id):
-    user = UserProfile.objects.get(id=user_id)
-    user.deactivate_user(reason="Vi phạm chính sách sử dụng")
-    return redirect('user_list')
-def unlock_user(request, user_id):
-    user = UserProfile.objects.get(id=user_id)
-    user.activate_user()
-    return redirect('user_list')
-
 @login_required
 def xem_profile(request):
     # Lấy thông tin profile của user đã đăng nhập
@@ -106,3 +98,52 @@ def sua_profile(request):
         form = ProfileForm(instance=profile)
 
     return render(request, 'auth/sua_profile.html', {'form': form})
+
+
+@login_required
+def lock_account(request):
+    try:
+        # Sử dụng MaUser thay cho user
+        user_profile = Profile.objects.get(MaUser=request.user)
+    except Profile.DoesNotExist:
+        messages.error(request, "Không tìm thấy thông tin tài khoản của bạn.")
+        return redirect("dang-nhap")
+
+    if request.method == "POST":
+        lock_reason = request.POST.get("lock_reason", "").strip()
+
+        if not lock_reason:
+            messages.error(request, "Vui lòng nhập lý do khóa tài khoản.")
+            return redirect("khoa_taikhoan")
+
+        # Cập nhật thông tin tài khoản
+        user_profile.is_locked = True
+        user_profile.lock_reason = lock_reason
+        user_profile.save()
+
+        # Đăng xuất người dùng
+        logout(request)
+
+        # Thông báo thành công và chuyển hướng về trang đăng nhập
+        messages.success(request, "Tài khoản của bạn đã bị khóa thành công.")
+        return redirect("auth/dang-nhap")
+
+    return render(request, "auth/khoa_taikhoan.html", {"user_profile": user_profile})
+
+# Đăng nhập tùy chỉnh
+def custom_login(request, user):
+    try:
+        # Sử dụng MaUser thay cho user
+        user_profile = Profile.objects.get(MaUser=user)
+    except Profile.DoesNotExist:
+        messages.error(request, "Không tìm thấy thông tin tài khoản của bạn.")
+        return redirect("dang-nhap")  # Quay về trang đăng nhập nếu không tìm thấy tài khoản
+
+    # Kiểm tra xem tài khoản có bị khóa hay không
+    if user_profile.is_locked:
+        messages.error(request, "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên để mở khóa.")
+        return redirect("dang-nhap")  # Chuyển về trang đăng nhập nếu tài khoản bị khóa
+
+    # Tiến hành đăng nhập nếu tài khoản không bị khóa hoặc bị xóa
+    login(request, user)
+    return redirect("trang_chu")

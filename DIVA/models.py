@@ -13,6 +13,8 @@ class Profile(models.Model):
     diachi=models.CharField(max_length=120)
     is_Enable=models.BooleanField(default=True)
     vaitro = models.CharField(max_length=20, choices=VaiTro_CHOICES, default='Khách hàng')
+    is_locked = models.BooleanField(null=True, blank=True,default=False)  # Thêm tính năng khóa tài khoản
+    lock_reason = models.TextField(null=True, blank=True)  # Thêm lý do khóa tài khoản
 
     def __str__(self):
         return f"{self.hoten} - {self.vaitro}"
@@ -145,5 +147,3 @@ class LichHen_DichVu(models.Model):
 
     def __str__(self):
         return f'{self.DichVu.ten} - {self.LichHen.thoigiandangki}'
-
-#Khanhhuyen sua lại het models

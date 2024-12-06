@@ -2,6 +2,7 @@ from django.contrib import admin
 from DIVA.models import (DichVu, Profile, LichHen, KhieuNai_LichHen,
                          KhieuNai_DichVu, YeuCauTuVan, DichVuDaDung, YeuCau_DichVu, LichHen_DichVu)
 
+
 # Register your models here.
 admin.site.register(DichVu)
 admin.site.register(Profile)

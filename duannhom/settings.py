@@ -128,3 +128,4 @@ LOGOUT_REDIRECT_URL = '/'
 # Chuyển hướng sau khi đăng xuất
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+AUTHENTICATION_FORM = 'DIVA.forms.CustomAuthenticationForm'
