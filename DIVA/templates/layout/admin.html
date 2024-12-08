@@ -33,9 +33,12 @@
                                 <i class="fa-solid fa-user"></i>
                             </a>
                             <ul class="sub-menu">
-                                <li><a href="#">Quản lý tài khoản</a></li>
-                                <li><a href="#">Lịch hẹn</a></li>
-                                <li><a href="#">Đăng xuất</a></li>
+                                <li><a href="{% url 'profile' %}">Quản lý tài khoản</a></li>
+                                <li><a href="{% url 'lich_su_sd' %}">Lịch hẹn</a></li>
+                                <li><<form method="POST" action="{% url 'dang_xuat' %}" class="logout-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="logout-button">Đăng xuất</button>
+                                </form></li>
                             </ul>
                         </li>
                     </ul>
