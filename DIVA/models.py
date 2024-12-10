@@ -11,7 +11,6 @@ class Profile(models.Model):
     ngaysinh=models.DateField()
     sodienthoai=models.CharField(max_length=10)
     diachi=models.CharField(max_length=120)
-    is_Enable=models.BooleanField(default=True)
     vaitro = models.CharField(max_length=20, choices=VaiTro_CHOICES, default='Khách hàng')
     is_locked = models.BooleanField(null=True, blank=True,default=False)  # Thêm tính năng khóa tài khoản
     lock_reason = models.TextField(null=True, blank=True)  # Thêm lý do khóa tài khoản
