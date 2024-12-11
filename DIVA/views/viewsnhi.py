@@ -109,7 +109,6 @@ def chi_tiet_khieu_nai(request, pk):
     return render(request, 'khieunai/chi_tiet_khieu_nai.html', context)
 
 
-@user_passes_test(is_staff_or_admin)
 def diem_tich_luy(request):
     customers = Profile.objects.all()
 
@@ -123,7 +122,7 @@ def diem_tich_luy(request):
         if not diem:
             dich_vu = DichVu.objects.first()
             diem = DiemTichLuy(MaUser=customer.MaUser, DiemTichLuy=0,
-                               NgayTichDiem=timezone.now(), MaDV=dich_vu)
+                               NgayTichDiem=timezone.now())
             diem.save()
 
         customer_data.append({

@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.db import models
 from django.db.models import Q, Count
+import random
 
 # Create your views here.
 def is_staff_or_admin(user):
@@ -35,16 +36,22 @@ def themyctv(request):
             if request.user.is_superuser or request.user.is_staff:
                 return redirect('ql_yctv')
             else:
-                return redirect('trang_chu_kh')
+                return redirect('yctv_cua_toi')
     return render(request, 'yeucautuvan/yctv-form.html', {'form': form, 'yctv': yctv, 'layout':layout,'h1':h1})
 
 @user_passes_test(is_staff_or_admin)
 def ql_yctv(request):
+    yctv_list = YeuCauTuVan.objects.order_by('MaYCTV')
     search_query = request.GET.get('search', '')
+    dich_vu = request.GET.get('dich_vu')
+    trang_thai = request.GET.get('trang_thai')
+    if dich_vu:
+        yctv_list = yctv_list.filter(MaDV=dich_vu)
+    if trang_thai:
+        yctv_list = yctv_list.filter(TrangThai=trang_thai)
     if search_query:
         yctv_list = YeuCauTuVan.objects.filter(MaYCTV__icontains=search_query)
-    else:
-        yctv_list = YeuCauTuVan.objects.order_by('MaYCTV')  # Nếu không tìm kiếm, hiển thị tất cả
+
     user_list = User.objects.filter(is_staff=True)  # Lọc danh sách tài khoản nhân viên
 
     if request.method == 'POST':
@@ -72,6 +79,8 @@ def ql_yctv(request):
     return render(request, 'yeucautuvan/ql-yctv.html', {
         'yctv_list': yctv_list,
         'user_list': user_list,
+        'dich_vu':dich_vu,
+        'trang_thai':trang_thai,
         'search_query': search_query,
     })
 

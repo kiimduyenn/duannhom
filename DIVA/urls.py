@@ -4,7 +4,6 @@ from DIVA.views.viewshuyen import CustomLoginView
 from duannhom import settings
 from .views import viewsdien, viewsngoc, viewsnhi, viewshuyen, views, viewsduyen
 from django.contrib.auth import views as auth_views
-#ý là mấy file thư viện này nè, bạn tải về máy hả đúng
 urlpatterns = ([
     path('dang-ky/', viewsdien.dang_ky, name='dang_ky'),
     path('dang-xuat/', auth_views.LogoutView.as_view(next_page='/'), name='dang_xuat'),

@@ -36,7 +36,19 @@
         cursor: pointer;
     }
 
-
+    .filter-box {
+        margin: 10px auto;
+        width: 70%;
+        max-width: 600px;
+    }
+    .filter-box label {
+        font-size: 16px;
+    }
+    .filter-box form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     body {
         font-family: Arial, sans-serif;
         background-color: #ffeed9;
@@ -141,6 +153,31 @@
         >
         <button type="submit" class="search-button">Tìm kiếm</button>
     </form>
+<div class="filter-box">
+        <form method="GET">
+            <div>
+                <label for="dich_vu">Dịch vụ:</label>
+                <select name="dich_vu" id="dich_vu">
+                    <option value="">Tất cả</option>
+                    <option value="Chăm sóc da" {% if request.GET.dich_vu.ten == 'Chăm sóc da' %} selected {% endif %}>Chăm sóc da</option>
+                    <option value="Điêu khắc lông mày" {% if request.GET.dich_vu.ten == 'Điêu khắc lông mày' %} selected {% endif %}>Điêu khắc lông mày</option>
+                    <option value="Điều trị nám" {% if request.GET.dich_vu.ten == 'Điều trị nám' %} selected {% endif %}>Điều trị nám</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="trang_thai">Trạng Thái:</label>
+                <select name="trang_thai" id="trang_thai">
+                    <option value="">Tất cả</option>
+                    <option value="Chưa xử lý" {% if request.GET.trang_thai == 'Chưa xử lý' %} selected {% endif %}>Chưa xử lý</option>
+                    <option value="Đang xử lý" {% if request.GET.trang_thai == 'Đang xử lý' %} selected {% endif %}>Đang xử lý</option>
+                    <option value="Hoàn thành" {% if request.GET.trang_thai == 'Hoàn thành' %} selected {% endif %}>Hoàn thành</option>
+                </select>
+            </div>
+
+            <button type="submit">Lọc</button>
+        </form>
+    </div>
 <form id="yctv-form" method="POST" action="{% url 'update_yctv' %}">
     {% csrf_token %}
     <table>
