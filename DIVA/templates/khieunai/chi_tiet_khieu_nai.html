@@ -1,0 +1,191 @@
+{% extends 'layout/admin.html' %}
+
+{% block content %}
+<h1 class="table-title">Chi Tiết Khiếu Nại</h1>
+<div class="table-container">
+    <form method="POST">
+        {% csrf_token %}
+        <table class="styled-table">
+            <tr>
+                <th>Mã Khiếu Nại:</th>
+                <td>{{ MaKN }}</td>
+            </tr>
+            <tr>
+                <th>Họ tên khách hàng:</th>
+                <td>{{ hoten }}</td>
+            </tr>
+            <tr>
+                <th>Số điện thoại:</th>
+                <td><a href="https://zalo.me/{{ sodienthoai }}" target="_blank">{{ sodienthoai }}</a></td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td><a href="mailto:{{ email }}" target="_blank">{{ email }}</a></td>
+            </tr>
+            <tr>
+                <th>Loại khiếu nại:</th>
+                <td>{{ loai_khieu_nai }}</td>
+            </tr>
+            <tr>
+                <th>Nội dung khiếu nại:</th>
+                <td>{{ noi_dung }}</td>
+            </tr>
+            <tr>
+                <th>Ngày xảy ra sự cố:</th>
+                <td>{{ ngay_xay_ra|date:"d/m/Y" }}</td>
+            </tr>
+            <tr>
+                <th>Ngày tiếp nhận khiếu nại:</th>
+                <td>{{ ngay_tiep_nhan|date:"d/m/Y" }}</td>
+            </tr>
+            <tr>
+                <th>Trạng thái:</th>
+                <td>
+                    <select name="TrangThai">
+                        <option value="Chưa xử lý" {% if trang_thai == 'Chưa xử lý' %}
+                        selected{% endif %}>Chưa xử lý</option>
+                        <option value="Đang xử lý" {% if trang_thai == 'Đang xử lý' %}
+                        selected{% endif %}>Đang xử lý</option>
+                        <option value="Đã hoàn thành" {% if trang_thai == 'Đã hoàn thành' %}
+                        selected{% endif %}>Đã hoàn thành</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Người phụ trách:</th>
+                <td>{{ nguoi_phu_trach }}</td>
+            </tr>
+        </table>
+
+        <div class="action-buttons">
+            <button type="submit" class="action-link save-link">Lưu lại</button>
+            <a href="{% url 'xem_khieu_nai' %}" class="action-link return-link">Quay lại</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .table-title {
+        font-size: 24px;
+        color: #BD8712;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .table-container {
+        margin: 20px auto;
+        width: 55%;
+        max-width: 1000px;
+        overflow-x: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        padding: 20px;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .styled-table thead {
+        background-color: #BD8712;
+        color: white;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 5px 12px 18px;
+        border: 1px solid #ddd;
+    }
+.styled-table th {
+    background-color: #BD8712;
+    color: white;
+    font-weight: bold;
+    width: 45%;
+    font-size: 16px;
+    padding: 12px 5px 12px 18px;
+}
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+
+.styled-table select {
+    padding: 5px;
+    font-size: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+}
+
+
+
+.styled-table select option {
+    font-size: 15px;
+    background-color: #ffeed9;
+}
+    .styled-table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+
+    .styled-table td {
+        font-size: 15px;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        white-space: nowrap;
+        margin-top: 20px;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .action-link {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .save-link {
+        color: white;
+        background-color: #4CAF50;
+        border: none;
+    }
+
+    .return-link {
+        color: white;
+        background-color: #f44336;
+    }
+
+    .save-link:hover {
+        background-color: #45a049;
+    }
+
+    .return-link:hover {
+        background-color: #e53935;
+    }
+
+    .styled-table a {
+    color: #000;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+    .styled-table a:hover {
+    color: #BD8712;
+</style>
+{% endblock %}

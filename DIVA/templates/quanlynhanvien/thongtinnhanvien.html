@@ -1,0 +1,149 @@
+{% extends 'layout/admin.html' %}
+{% block content %}
+
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>Chi Tiết Thông Tin Nhân Viên</h1>
+        </div>
+
+        <div class="profile-content">
+            <div class="sidebar">
+                <button class="tab-button active">Thông tin cá nhân</button>
+                <button class="tab-button">
+                    <a href="{% url 'quan_ly_cv' profile.MaUser.username %}" style="color: black; text-decoration: none; font-size: 18px">Quản lý công việc</a>
+                </button>
+            </div>
+
+            <div class="profile-details">
+                <div class="form-group">
+                    <label>Họ và Tên:</label>
+                    <input type="text" value="{{ profile.hoten }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Ngày Sinh:</label>
+                    <input type="text" value="{{ profile.ngaysinh|date:'d/m/Y' }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Số Điện Thoại:</label>
+                    <input type="text" value="{{ profile.sodienthoai }}" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Địa Chỉ:</label>
+                    <input type="text" value="{{ profile.diachi }}" readonly>
+                </div>
+                <button class="save-button"><a href="/nhan-vien/{{profile.MaUser}}" style="color: white; text-decoration: none;">Sửa thông tin</a></button>
+            </div>
+        </div>
+    </div>
+</body>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #ffeed9;
+    }
+    h1 {
+        text-align: center;
+        color: #c08c19;
+        margin-bottom: 30px;
+        font-size: 4rem;
+        margin-top: 40px;
+    }
+    .profile-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .profile-header h1 {
+        text-align: center;
+        color: #BD8712;
+        font-size: 3rem;
+    }
+
+    .profile-content {
+        display: flex;
+        margin-top: 20px;
+    }
+
+    .sidebar {
+        width: 20%;
+        margin-right: 20px;
+    }
+
+    .tab-button {
+        display: block;
+        width: 100%;
+        padding: 10px 15px;
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        text-align: left;
+        font-size: 18px;
+        color: #333;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .tab-button.active {
+        background-color: #BD8712;
+        color: white;
+    }
+
+    .profile-details {
+        width: 80%;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-group input {
+        width: calc(100% - 40px);
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #F9F9F9;
+        color: #333;
+    }
+
+    .edit-icon {
+        display: inline-block;
+        margin-left: 10px;
+        width: 16px;
+        height: 16px;
+        background: url('/path/to/edit-icon.png') no-repeat center center;
+        background-size: contain;
+    }
+
+    .save-button {
+        display: block;
+        background-color: #BD8712;
+        color: white; /* Đổi màu chữ thành trắng */
+        padding: 10px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .save-button:hover {
+        background-color: #a5740f;
+        color: white;
+    }
+</style>
+{% endblock %}

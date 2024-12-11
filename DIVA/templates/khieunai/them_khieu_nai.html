@@ -1,0 +1,129 @@
+{% extends 'layout/customer.html' %}
+
+{% block content %}
+<div class="complaint-container">
+    <div class="complaint-card">
+        <h1 class="complaint-title">Thêm Khiếu Nại</h1>
+        <form method="post" class="complaint-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="LoaiKhieuNai">{{ form.LoaiKhieuNai.label }}</label>
+                {{ form.LoaiKhieuNai }}
+            </div>
+            <div class="form-group">
+                <label for="NoiDung">{{ form.NoiDung.label }}</label>
+                {{ form.NoiDung }}
+            </div>
+            <div class="form-group">
+                <label for="NgayXayRa">{{ form.NgayXayRa.label }}</label>
+                {{ form.NgayXayRa }}
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-submit">Lưu Khiếu Nại</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f3f4f6;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .complaint-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 20px;
+    }
+
+    .complaint-card {
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+    }
+
+    .complaint-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #BD8712;
+        margin-bottom: 20px;
+    }
+
+    .complaint-form .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .complaint-form label {
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .complaint-form select,
+    .complaint-form input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        color: white;
+        background-color: #BD8712;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: #a87f10;
+    }
+    .complaint-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.complaint-form textarea,
+.complaint-form select,
+.complaint-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical; /* Cho phép người dùng kéo dài hộp textarea */
+    transition: border-color 0.3s ease;
+}
+
+.complaint-form textarea:focus,
+.complaint-form select:focus,
+.complaint-form input:focus {
+    border-color: #BD8712; /* Màu sắc khi trường được chọn */
+}
+
+.complaint-form label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+</style>
+{% endblock %}

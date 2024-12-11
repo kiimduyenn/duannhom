@@ -1,0 +1,182 @@
+{% extends 'layout/admin.html' %}
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #ffeed9;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        color: #c08c19;
+        margin-bottom: 30px;
+        font-size: 4rem;
+        margin-top: 40px;
+    }
+
+    .search-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .search-bar input {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 400px;
+        margin-right: 15px;
+    }
+
+    .search-bar button {
+        padding: 10px 20px;
+        background-color: #c08c19;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .search-bar button:hover {
+        background-color: #C6A969;
+    }
+
+    .content {
+        width: 80%;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: center;
+        font-size: 1.2rem;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #c08c19;
+        color: white;
+    }
+
+    tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    .btn-edit, .btn-delete {
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+        font-size: 16px;
+    }
+
+    .btn-edit {
+        background-color: #c08c19;
+    }
+
+    .btn-edit:hover {
+        background-color: #C6A969;
+    }
+
+    .btn-delete {
+        background-color: #c08c19;
+    }
+
+    .btn-delete:hover {
+        background-color: #c0392b;
+    }
+
+    .messages .message {
+        background-color: #A2CA71;
+        color: white;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        font-size: 18px;
+        text-align: center;
+    }
+</style>
+
+<div class="content">
+    <h1>Danh Sách Khách Hàng</h1>
+    <div class="search-bar">
+        <form method="GET">
+            <input type="text" name="search" value="{{ search }}" placeholder="Tìm kiếm khách hàng...">
+            <button type="submit">Tìm kiếm</button>
+        </form>
+    </div>
+
+    <button class="btn-edit"><a href="/ad/khach-hang" style="color: white; text-decoration: none;">Thêm Khách Hàng</a></button><br>
+    <br>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <p class="message">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if no_results %}
+    <div style="text-align: center; color: red; font-size: 1.2rem;">
+        Không tìm thấy thông tin phù hợp với từ khóa "{{ search }}"
+    </div>
+    {% else %}
+    <table>
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Username</th>
+                <th>Tên khách hàng</th>
+                <th>Số điện thoại</th>
+                <th>Địa chỉ</th>
+                <th>Xem thêm</th>
+                <th>Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for kh in profile %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ kh.MaUser }}</td>
+                <td>{{ kh.hoten }}</td>
+                <td>{{ kh.sodienthoai }}</td>
+                <td>{{ kh.diachi }}</td>
+                <td><a href="{% url 'thong_tin_khach_hang' kh.MaUser.username %}" style="color: #c08c19;">Xem chi tiết</a></td>
+                <td>
+                    <a href="{% url 'sua_khach_hang' kh.MaUser.username %}" class="btn-edit">Sửa</a>
+                    <form method="POST" action="{% url 'xoa_khach_hang' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="MaUser" value="{{ kh.MaUser }}">
+                        <button type="submit" class="btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng này không?');">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">Không có dữ liệu khách hàng</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+{% endblock %}

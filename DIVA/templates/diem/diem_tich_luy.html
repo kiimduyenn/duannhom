@@ -1,0 +1,216 @@
+{% extends 'layout/admin.html' %}
+
+{% block content %}
+<div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message {{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+
+<h1 class="table-title">Điểm Tích Lũy Khách Hàng</h1>
+<div class="table-container">
+    <form method="GET" class="search-form">
+        <label for="search" style="display: none;">Tìm kiếm theo số điện thoại:</label>
+        <input type="text" name="search" id="search" placeholder="Nhập số điện thoại" value="{{ request.GET.search }}">
+        <button type="submit">Tìm kiếm</button>
+    </form>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Họ Tên</th>
+                <th>Số Điện Thoại</th>
+                <th>Điểm Tích Lũy</th>
+                <th>Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customer_data %}
+            <tr>
+                <td>{{ customer.ho_ten }}</td>
+                <td>{{ customer.so_dien_thoai }}</td>
+                <td>{{ customer.diem_tich_luy|floatformat:0 }}</td>
+                <td class="action-buttons">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="user_id" value="{{ customer.MaUser.id }}">
+                        <input type="number" name="new_points" required placeholder="Nhập số điểm">
+                        <button type="submit" name="update_points">Cập nhật</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="no-data">Không có dữ liệu khách hàng.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .table-title {
+        font-size: 24px;
+        color: #BD8712;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .table-container {
+        margin: 20px auto;
+        width: 60%;
+        max-width: 1000px;
+        overflow-x: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        padding: 20px;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .styled-table thead {
+        background-color: #BD8712;
+        color: white;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+    }
+
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .styled-table th {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .styled-table td {
+        font-size: 16px;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    .action-link {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .no-data {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        font-size: 16px;
+    }
+
+    .messages {
+        list-style: none;
+        padding: 0;
+    }
+
+    .message {
+        padding: 15px;
+        margin: 5px;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 500;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        text-align: center;
+    }
+
+    .message.success {
+        background-color: #ffeed9;
+        color: #BD8712;
+    }
+
+      /* Form tìm kiếm */
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-form input[type="text"] {
+            padding: 12px;
+            font-size: 16px;
+            width: 60%;
+            max-width: 400px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .search-form button {
+            padding: 12px 20px;
+            background-color: #c08c19;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-form button:hover {
+            background-color: #C6A969;
+        }
+
+     input[type="number"] {
+        width: 130px;  /* Điều chỉnh chiều dài của ô nhập điểm */
+        height: 30px;  /* Điều chỉnh chiều cao của ô nhập điểm */
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    button[name="update_points"] {
+            padding: 6px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+    .styled-table td:nth-child(3) {
+    font-weight: bold;}
+
+    .styled-table th:nth-child(4) {
+    width: 20%;
+}
+     .styled-table td:nth-child(4) {width: 100%;}
+</style>
+{% endblock %}

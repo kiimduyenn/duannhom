@@ -1,0 +1,269 @@
+{% extends 'layout/admin.html' %}
+
+{% block content %}
+<div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message {{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+<h1 class="table-title">Danh sách khiếu nại</h1>
+
+<!-- Form Tìm Kiếm Mã Khiếu Nại -->
+<div class="table-container">
+    <div class="search-box">
+        <form method="GET">
+            <input type="text" name="ma_kn" id="ma_kn" placeholder="Nhập mã khiếu nại" value="{{ request.GET.ma_kn }}">
+            <button type="submit">Tìm kiếm</button>
+        </form>
+    </div>
+
+    <!-- Form Lọc Loại Khiếu Nại và Trạng Thái-->
+    <div class="filter-box">
+        <form method="GET">
+            <div>
+                <label for="loai_khieu_nai">Loại Khiếu Nại:</label>
+                <select name="loai_khieu_nai" id="loai_khieu_nai">
+                    <option value="">Tất cả</option>
+                    <option value="Dịch Vụ" {% if request.GET.loai_khieu_nai == 'Dịch Vụ' %} selected {% endif %}>Dịch Vụ</option>
+                    <option value="Lịch Hẹn" {% if request.GET.loai_khieu_nai == 'Lịch Hẹn' %} selected {% endif %}>Lịch Hẹn</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="trang_thai">Trạng Thái:</label>
+                <select name="trang_thai" id="trang_thai">
+                    <option value="">Tất cả</option>
+                    <option value="Chưa xử lý" {% if request.GET.trang_thai == 'Chưa xử lý' %} selected {% endif %}>Chưa xử lý</option>
+                    <option value="Đang xử lý" {% if request.GET.trang_thai == 'Đang xử lý' %} selected {% endif %}>Đang xử lý</option>
+                    <option value="Đã hoàn thành" {% if request.GET.trang_thai == 'Đã hoàn thành' %} selected {% endif %}>Đã hoàn thành</option>
+                </select>
+            </div>
+
+            <button type="submit">Lọc</button>
+        </form>
+    </div>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Mã KN</th>
+                <th>Loại khiếu nại</th>
+                <th>Trạng thái</th>
+                <th>Ngày xảy ra</th>
+                <th>Ngày tiếp nhận</th>
+                <th>NV phụ trách</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if khieu_nai_list %}
+            {% for kn in khieu_nai_list %}
+
+            <tr>
+                <td>{{ kn.MaKN }}</td>
+                <td>{{ kn.get_LoaiKhieuNai_display }}</td>
+                <td>{{ kn.get_TrangThai_display }}</td>
+                <td>{{ kn.NgayXayRa|date:"d/m/Y" }}</td>
+                <td>{{ kn.NgayTiepNhan|date:"d/m/Y" }}</td>
+                <td>{{ kn.NguoiPhuTrach}}</td>
+                <td class="action-buttons">
+                    <a class="action-link detail-link" href="{% url 'chi_tiet_khieu_nai' kn.MaKN %}">Xem chi tiết</a>
+                    <form method="POST" action="{% url 'xoa_khieu_nai' kn.MaKN %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="action-link delete-link"
+                onclick="return confirm('Bạn có chắc chắn muốn xóa khiếu nại này không?');">Xóa</button>
+                </form>
+            </td>
+            </tr>
+             {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="7" class="no-data">Không có thông tin khiếu nại nào.</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .table-title {
+        font-size: 24px;
+        color: #BD8712;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .table-container {
+        margin: 20px auto;
+        width: 90%;
+        max-width: 1000px;
+        overflow-x: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        padding: 20px;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .styled-table thead {
+        background-color: #BD8712;
+        color: white;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+    }
+
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .styled-table th {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .styled-table td {
+        font-size: 16px;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    .action-link {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .update-link {
+        color: white;
+        background-color: #4CAF50;
+        margin-right: 6px;
+    }
+
+    .delete-link {
+        color: white;
+        background-color: #f44336;
+        border: none;
+    }
+
+    .detail-link {
+        color: white;
+        background-color: #4CAF50;
+        margin-right: 6px;
+    }
+
+    .update-link:hover {
+        background-color: #45a049;
+    }
+
+    .delete-link:hover {
+        background-color: #e53935;
+    }
+
+    .no-data {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        font-size: 14px;
+    }
+
+    .messages {
+        list-style: none;
+        padding: 0;
+    }
+
+    .message {
+        padding: 15px;
+        margin: 5px;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 500;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        text-align: center;
+    }
+
+    .message.success {
+        background-color: #ffeed9;
+        color: #BD8712;
+    }
+
+    /* Hộp tìm kiếm và lọc */
+    .search-box, .filter-box {
+        margin: 0px auto;
+        padding: 12px;
+        background-color: #fff;
+        border: none;
+        width: 70%;
+        max-width: 600px;
+    }
+    .search-box {
+        margin: -12px auto -15px;
+    }
+    .filter-box {
+        margin: 5px auto 12px;
+    }
+
+    .search-box form, .filter-box form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .search-box input, .filter-box select, .search-box button, .filter-box button {
+        font-size: 16px;
+        padding: 10px;
+        margin-right: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .filter-box select option{
+        padding: 8px;
+        background-color: #ffeed9;
+        font-size: 15px;
+    }
+
+    .search-box button, .filter-box button {
+        background-color: #c08c19;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .search-box label, .filter-box label {
+        font-size: 16px;
+    }
+</style>
+
+{% endblock %}
