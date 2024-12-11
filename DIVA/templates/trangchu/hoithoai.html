@@ -1,0 +1,123 @@
+{% extends layout %}
+{% block content %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffeed9;
+            color: #333;
+        }
+
+        h2 {
+            background-color: #c08c19;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin: 15px auto 20px;
+            font-size: 2em;
+            width: 50%;
+            border-radius: 10px;
+        }
+
+        .conversation-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .start-chat-btn {
+            display: block;
+            text-align: right;
+            margin: 10px auto 20px;
+            max-width: 800px;
+        }
+
+        .start-chat-btn a {
+            text-decoration: none;
+            background-color: #c08c19;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .conversation-card {
+            background:  #f8efdf;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .conversation-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0 0 5px;
+        }
+
+        .timestamp {
+            font-size: 0.8em;
+            color: #777;
+        }
+
+        .open-chat-btn {
+            text-decoration: none;
+            background-color: #c08c19;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <h2>Your Conversations</h2>
+
+    <!-- Nút Start New Chat căn phải -->
+    {% if user.is_customer %}
+    <div class="start-chat-btn">
+        <a href="{% url 'start_chat' %}">Đoạn chat mới</a>
+    </div>
+    {% endif %}
+
+    <!-- Container hiển thị các đoạn hội thoại -->
+    <div class="conversation-container">
+        {% if conversations %}
+            {% for conversation in conversations %}
+                <div class="conversation-card">
+                    <div class="conversation-info">
+                        <p class="conversation-name">
+                            {% if request.user != conversation.employee %}
+                                {{ conversation.employee.username }}
+                            {% else %}
+                                {{ conversation.customer.username }}
+                            {% endif %}
+                        </p>
+                        <p class="conversation-last-message">
+                            Last message: {{ conversation.messages.last.content|default:"No messages yet" }}
+                        </p>
+                        <span class="timestamp">
+                            {{ conversation.messages.last.timestamp|date:"Y-m-d H:i" }}
+                        </span>
+                    </div>
+                    <a href="{% url 'chat_view' conversation.id %}" class="open-chat-btn">Mở hội thoại</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No conversations found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endblock %}

@@ -5,6 +5,7 @@
   box-sizing: border-box;
   outline: 0;
   font-size: 14px; /* Giảm cỡ font chữ mặc định */
+
 }
 /* Header */
 #header {
@@ -18,6 +19,9 @@
     align-items: center;
 }
 
+#header li a {
+    font-family: 'Arial', sans-serif;
+}
 /* Container */
 .container {
     display: flex;
@@ -159,6 +163,28 @@ nav {
     border-bottom: 1px solid #BD8712;
     font-size: 18px;
     font-weight: 450;
+}
+/* Form logout trong sub-menu */
+#login-menu ul.sub-menu li form.logout-form {
+    margin: 0;
+    padding: 0;
+    display: block;
+    width: 100%;
+}
+
+/* Nút đăng xuất trông giống liên kết */
+#login-menu ul.sub-menu li form.logout-form button.logout-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    color: #fff; /* Màu chữ */
+    border: none;
+    padding: 8px 15px; /* Thống nhất với các liên kết khác */
+    font-size: 18px; /* Giữ cùng kích thước font chữ */
+    font-weight: 450;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 #login-menu ul.sub-menu li:last-child a {

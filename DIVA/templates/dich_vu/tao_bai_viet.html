@@ -1,0 +1,117 @@
+{% extends 'layout/admin.html' %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #ffeed9;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        text-align: center;
+        color: #c08c19;
+        margin-bottom: 30px;
+        font-size: 5rem;
+    }
+
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container input,
+    .form-container textarea,
+    .form-container button {
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .form-container input[type="file"] {
+        font-size: 1rem;
+    }
+
+    .form-container button {
+        background-color: #c08c19;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .form-container button:hover {
+        background-color: #2980b9;
+    }
+
+    .form-container label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-container div {
+        margin-bottom: 30px; /* Tăng khoảng cách giữa các trường */
+    }
+
+    .action-btn {
+        display: flex;
+        justify-content: flex-start;
+        gap: 20px;
+    }
+
+    .search-bar {
+        padding: 10px;
+        font-size: 1.2rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: 100%;
+        max-width: 300px;
+    }
+</style>
+
+<h1>Tạo Bài Viết Mới</h1>
+
+<div class="form-container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div>
+            <label for="nguoi_tao">Người Tạo:</label>
+            <input type="text" name="nguoi_tao" id="nguoi_tao" required>
+        </div>
+
+        <div>
+            <label for="tieu_de">Tiêu Đề:</label>
+            <input type="text" name="tieu_de" id="tieu_de" required>
+        </div>
+
+        <div>
+            <label for="hinh_anh">Hình Ảnh:</label>
+            <input type="file" name="hinh_anh" id="hinh_anh" accept="image/*" required>
+        </div>
+
+        <div>
+            <label for="noi_dung">Nội Dung:</label>
+            <input type="file" name="noi_dung" id="noi_dung" accept=".pdf,.docx,.txt" required>
+        </div>
+
+        <div>
+            <label for="thoi_gian_dang">Thời Gian Đăng:</label>
+            <input type="datetime-local" name="thoi_gian_dang" id="thoi_gian_dang">
+        </div>
+
+        <div class="action-btn">
+            <button type="submit">Đăng Bài Viết</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

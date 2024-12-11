@@ -12,13 +12,13 @@
     h1 {
         text-align: center;
         color: #c08c19;
-        margin-bottom: 30px;
-        font-size: 5rem;
+        margin: 20px 0;
+        font-size: 36px;
     }
 
     table {
         border-collapse: collapse;
-        width: 100%;
+        width: 60%;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         background-color: #fff;
         border-radius: 15px;
@@ -80,34 +80,50 @@
         align-items: center;
     }
 
-    .btn {
-        background-color: #c08c19;
-        color: #ffffff;
+     .btn {
         padding: 10px 20px;
-        text-decoration: none;
         font-size: 1.2rem;
+        background-color: #c08c19;
+        color: white;
+        border: none;
         border-radius: 5px;
+        cursor: pointer;
         transition: background-color 0.3s;
     }
 
     .btn:hover {
         background-color: #f39c12;
     }
-
+    .search-container {
+        margin: 20px auto;
+        text-align: center;
+    }
     .search-bar {
         padding: 10px;
         font-size: 1.2rem;
         border: 1px solid #ddd;
         border-radius: 5px;
-        width: 30%;
+        width: 50%;
+        max-width: 600px;
     }
 </style>
 
 <h1>Danh Sách Dịch Vụ</h1>
     <div class="action-buttons">
     <a href="{% url 'them_dich_vu' %}" class="btn">Thêm Dịch Vụ</a>
-    <input type="search" placeholder="Tìm kiếm" class="search-bar">
+    <a href="{% url 'tao_bai_viet' %}" class="btn">Tạo Bài Viết Dịch Vụ</a>
     </div>
+<div class="search-container">
+    <center>
+        <form method="get" action="" style="display: flex; justify-content: center; align-items: center;">
+        <input type="search" name="q" placeholder="Nhập tên dịch vụ để tìm kiếm" class="search-bar" value="{{ request.GET.q }}">
+        <button type="submit" class="btn" style="margin-left: 10px;">Tìm</button>
+    </form>
+    </center>
+</div>
+
+</div>
+
     {% csrf_token %}
     <table>
         <thead>
@@ -126,7 +142,7 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ dichvu.MaDV }}</td>
                 <td>{{ dichvu.ten }}</td>
-                <td>{{ dichvu.giatien }}</td>
+                <td>{{ dichvu.giatien|floatformat:0 }}</td>
                 <td>{{ dichvu.mota }}</td>
                 <td>
                     <div class="action-btn">

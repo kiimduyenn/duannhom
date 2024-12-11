@@ -1,0 +1,136 @@
+{% extends 'layout/customer.html' %}
+
+{% block content %}
+<div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message {{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+<h1 class="table-title">Danh sách YCTV Của Bạn</h1>
+
+<div class="table-container">
+
+    {% if danh_sach_yctv %}
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Mã YCTV</th>
+                <th>Dịch Vụ</th>
+                <th>NV tư vấn</th>
+                <th>Trạng Thái</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for yctv in danh_sach_yctv %}
+            <tr>
+                <td>{{ yctv.MaYCTV }}</td>
+                <td>{{ yctv.MaDV }}</td>
+                <td>{{ yctv.MaNV }}</td>
+                <td><strong>{{ yctv.TrangThai }}</strong></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="no-data">Bạn chưa có YCTV nào.</p>
+    {% endif %}
+</div>
+
+
+
+<style>
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Arial', sans-serif;
+
+    }
+
+    .table-title {
+        font-size: 24px;
+        color: #BD8712;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .table-container {
+        margin: 20px auto;
+        width: 80%;
+        max-width: 1000px;
+        overflow-x: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        padding: 20px;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .styled-table thead {
+        background-color: #BD8712;
+        color: white;
+    }
+
+    .styled-table th, .styled-table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+    }
+
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .styled-table th {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .styled-table td {
+        font-size: 16px;
+    }
+
+    .no-data {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        font-size: 16px;
+    }
+
+    .messages {
+        list-style: none;
+        padding: 0;
+    }
+
+    .message {
+        padding: 15px;
+        margin: 5px;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 500;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .message.success {
+        background-color: #ffeed9;
+        color: #BD8712;
+    }
+
+    strong {
+    font-size: 16px;
+    color: #BD8712;
+    }
+</style>
+{% endblock %}

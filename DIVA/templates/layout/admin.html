@@ -15,15 +15,25 @@
         <div id="header">
             <div class="container">
                 <nav>
-                    <a href="" id="logo">
+                    <a href="{% url 'trang_chu_ad' %}" id="logo">
                         <img src="{% static 'img/logo.png' %}" alt="Viện thẩm mỹ Diva">
                     </a>
                     <ul id="main-menu" style="margin-left:80px;">
-                        <li><a href="danh-sach-dich-vu/">Dịch vụ</a></li>
-                        <li><a href="">Khách hàng</a></li>
-                        <li><a href="">Nhân viên</a></li>
-                        <li><a href="ds-yctv/">YCTV</a></li>
-                        <li><a href="">Khiếu nại</a></li>
+                        <li><a href="{% url 'danh_sach_dich_vu' %}">Dịch vụ</a></li>
+                        <li><a href="{% url 'quan_ly_lich_hen' %}">Lịch hẹn</a></li>
+                        <li><a href="{% url 'ds_khach_hang' %}">Khách hàng</a></li>
+                        <li>
+                            {% if user.is_superuser %}
+                            <a href="{% url 'ds_nhan_vien' %}">Nhân viên</a>
+                            {% endif %}
+                        </li>
+                        <li><a href="{% url 'ql_yctv' %}">YCTV</a></li>
+                        <li><a href="{% url 'xem_khieu_nai' %}">Khiếu nại</a></li>
+                        <li>
+                            {% if user.is_staff %}
+                            <a href="{% url 'conversations' %}">Tin nhắn</a>
+                            {% endif %}
+                        </li>
                     </ul>
 
                     <!-- Thẻ ul riêng cho phần login trong header -->
@@ -33,9 +43,12 @@
                                 <i class="fa-solid fa-user"></i>
                             </a>
                             <ul class="sub-menu">
-                                <li><a href="#">Quản lý tài khoản</a></li>
-                                <li><a href="#">Lịch hẹn</a></li>
-                                <li><a href="#">Đăng xuất</a></li>
+                                <li><a href="{% url 'profile' %}">Quản lý tài khoản</a></li>
+                                <li><a href="{% url 'quan_ly_cv' %}">Quản lý công việc</a></li>
+                                <li><<form method="POST" action="{% url 'dang_xuat' %}" class="logout-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="logout-button">Đăng xuất</button>
+                                </form></li>
                             </ul>
                         </li>
                     </ul>
@@ -81,7 +94,7 @@
                 <li><a href="#">Khuyến mãi</a></li>
                 <li><a href="#">Chính sách bảo mật thông tin</a></li>
                 <li><a href="#">Hướng dẫn mua hàng</a></li>
-                <li><a href="#">Xem bản đồ đường đi</a></li>
+                <li><a href="https://www.google.com/maps?q=222+Phan+Châu+Trinh,+P.+Nam+Dương,+Q.+Hải+Châu,+TP.+Đà+Nẵng" target="_blank">Xem bản đồ đường đi</a></li>
                 </ul>
             <br>
             <a href="#" class="btn-appointment">Đặt lịch hẹn ngay</a>

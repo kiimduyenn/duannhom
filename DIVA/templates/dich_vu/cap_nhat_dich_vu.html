@@ -17,8 +17,8 @@
     }
 
     .form-container {
-        max-width: 600px;
-        margin: 0 auto;
+        max-width: 800px;
+        margin: 50px auto;
         background-color: #fff;
         padding: 30px;
         border-radius: 15px;
@@ -65,51 +65,35 @@
         color: white;
     }
 
-    @media screen and (max-width: 768px) {
-        h1 {
-            font-size: 3rem;
-        }
-
-        .form-container {
-            padding: 20px;
-        }
-
-        .form-container button {
-            font-size: 1rem;
-        }
+    /* In đậm các label */
+    label {
+        font-weight: bold;
     }
 </style>
 
-<h1>Cập nhật Dịch Vụ: {{ dich_vu.ten }}</h1>
+<h1>Cập nhật Dịch Vụ</h1>
 
 <div class="form-container">
-    <form method="post">
-        {% csrf_token %}
+    <!-- Form chỉnh sửa dịch vụ -->
+    <form method="post" action="{% url 'cap_nhat_dich_vu' dich_vu.MaDV %}">
+    {% csrf_token %}
+        <label for="id_MaDV">Mã Dịch Vụ:</label>
+    <input type="text" name="MaDV" id="id_MaDV" value="{{ form.MaDV.value }}" required>
 
-        <div>
-            <label for="MaDV">Mã Dịch Vụ</label>
-            {{ form.MaDV }}
-        </div>
+    <label for="id_ten">Tên Dịch Vụ:</label>
+    <input type="text" name="ten" id="id_ten" value="{{ dich_vu.ten }}" required>
 
-        <div>
-            <label for="ten">Tên Dịch Vụ</label>
-            {{ form.ten }}
-        </div>
+    <label for="id_giatien">Giá Tiền:</label>
+    <input type="number" name="giatien" id="id_giatien" value="{{ dich_vu.giatien }}" required>
 
-        <div>
-            <label for="giatien">Giá Tiền</label>
-            {{ form.giatien }}
-        </div>
+    <label for="id_mota">Mô Tả:</label>
+    <textarea name="mota" id="id_mota" rows="4" required>{{ dich_vu.mota }}</textarea>
 
-        <div>
-            <label for="mota">Mô Tả</label>
-            {{ form.mota }}
-        </div>
+    <!-- Nút Cập nhật -->
+    <button type="submit">Cập nhật</button>
 
-        <button type="submit">Cập nhật</button>
-    </form>
-
-    <a href="{% url 'danh_sach_dich_vu' %}">Quay lại</a>
+    <!-- Nút Quay lại -->
+    <a href="{% url 'danh_sach_dich_vu' %}" class="btn">Quay lại</a>
+</form>
 </div>
-
 {% endblock %}

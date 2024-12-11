@@ -1,0 +1,136 @@
+{% extends 'layout/customer.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffeed9;
+            color: #333;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: #c08c19;
+            text-align: center;
+            padding: 10px 5px;
+            margin: 10px auto 5px ;
+            width: 50%;
+        }
+
+        .chat-container {
+            max-width: 700px;
+            margin: 10px auto;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .messages {
+            padding: 20px;
+            height: 550px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #f9f9f9;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .message.sent {
+            background-color: #ffeed9;
+            align-self: flex-end;
+        }
+
+        .message.received {
+            background-color: #e9e9e9;
+            align-self: flex-start;
+        }
+
+        .message .timestamp {
+            display: block;
+            font-size: 12px;
+            margin-top: 5px;
+            color: #555;
+        }
+
+        .chat-form {
+            padding: 15px;
+            background: #fff;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #ccc;
+        }
+
+        .chat-form input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+
+        }
+
+        .chat-form button {
+            background-color: #c08c19;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .chat-form button:hover {
+            background-color: #45a049;
+        }
+
+        /* Scrollbar styles */
+        .messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <h2>Chat with {{ receiver.username }}</h2>
+    <div class="chat-container">
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {% if message.sender == user %}sent{% else %}received{% endif %}">
+                    <strong>{{ message.sender.username }}:</strong> {{ message.content }}
+                    <span class="timestamp">{{ message.timestamp|date:"Y-m-d H:i" }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        <form method="post" class="chat-form">
+            {% csrf_token %}
+            <input type="text" name="content" placeholder="Nhập tin nhắn..." required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <meta http-equiv="refresh" content="10">
+</body>
+</html>
+{% endblock %}

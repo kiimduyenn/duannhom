@@ -1,0 +1,149 @@
+{% extends 'layout/customer.html' %}
+
+{% block content %}
+<body>
+    <div class="content-container">
+    <h1>{{ bai_viet.tieu_de }}</h1>
+    <p><strong>Người tạo:</strong> {{ bai_viet.nguoi_tao }}</p>
+    <p><strong>Ngày tạo:</strong> {{ bai_viet.ngay_tao }}</p>
+
+    <div class="bai-viet-img-container">
+        <img src="{{ bai_viet.hinh_anh.url }}" alt="{{ bai_viet.tieu_de }}" class="bai-viet-img">
+    </div>
+
+    <div class="file-content">
+        {% if file_content %}
+            <div class="docx-content">
+                {{ file_content|safe }}
+            </div>
+        {% else %}
+            <p>Không có nội dung bài viết hoặc file không thể đọc được.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+<style>
+    body {
+    font-family: 'Arial', sans-serif; /* Sử dụng font Arial cho toàn bộ trang */
+    background-color: #ffeed9;
+    margin: 0;
+    padding: 0;
+}
+
+.content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #c08c19;
+    font-size: 3.5rem; /* Tăng cỡ chữ tiêu đề */
+    margin-bottom: 20px;
+}
+
+.info-container {
+    display: flex;
+    justify-content: space-between; /* Đưa Người tạo và Ngày tạo nằm cùng một hàng */
+    font-size: 16px; /* Tăng cỡ chữ lên 16px */
+    color: #c08c19; /* Màu sắc giống tiêu đề */
+    margin-bottom: 20px;
+}
+
+.info-item {
+    margin: 0; /* Xóa khoảng cách mặc định giữa các phần tử */
+}
+
+.content-box {
+    width: 100%;
+    max-width: 1000px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: 0 auto;
+    background-color: transparent; /* Thay đổi nền trắng thành trong suốt */
+}
+
+
+.image-container {
+    display: flex;
+    justify-content: center; /* Căn giữa hình ảnh */
+}
+
+.bai-viet-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+    max-width: 100%; /* Giới hạn chiều rộng hình ảnh bằng với khung */
+    max-height: 500px;
+}
+
+.file-content {
+    font-family: 'Arial', sans-serif; /* Dùng font Arial cho nội dung file */
+    font-size: 16px; /* Tăng cỡ chữ lên 16px */
+    background-color: transparent; /* Thay đổi nền trắng thành trong suốt */
+    padding: 15px;
+    border-radius: 5px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+h3 {
+    color: #c08c19;
+    font-size: 2rem; /* Tăng cỡ chữ cho tiêu đề nội dung bài viết */
+    margin-bottom: 10px;
+}
+
+pre {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    color: #333;
+}
+
+.messages .message {
+    background-color: #A2CA71;
+    color: #ffffff;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 18px;
+    text-align: center;
+}
+.docx-content p, .docx-content span {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    margin: 10px 0;
+    text-align: justify; /* Căn đều hai bên */
+}
+
+/* Heading */
+.docx-content h1, .docx-content h2, .docx-content h3 {
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    margin: 20px 0;
+    text-align: center;
+    color: #c08c19;
+}
+
+/* Hình ảnh */
+.image-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+</style>
+{% endblock %}

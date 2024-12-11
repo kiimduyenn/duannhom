@@ -1,67 +1,103 @@
-{% extends 'layout/customer.html' %}
+{% extends layout %}
+
 {% block content %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký nhận tư vấn</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f9f9f9; /* Màu nền nhạt */
-        }
-        .form-container {
-            max-width: 600px;
-            margin: 80px auto;
-            padding: 50px;
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .form-container h1 {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #d4a537; /* Màu vàng không tươi */
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .form-label {
-            font-size: 10rem; /* Tăng font size của nhãn */
-            font-weight: 500;
-        }
-        .form-control {
-            font-size: 12rem; /* Tăng font size của input, textarea */
-        }
-        .btn-primary {
-            background-color: #d4a537;
-            border-color: #d4a537;
-        }
-        .btn-primary:hover {
-            background-color: #b8912f;
-            border-color: #b8912f;
-        }
-    </style>
-</head>
-<body>
-    <div class="form-container">
-        <h1>Đăng ký nhận tư vấn</h1>
-        <form method="post">
+<div class="appointment-container">
+    <div class="appointment-card">
+        <h1 class="appointment-title">{{ h1 }}</h1>
+        <form method="post" class="appointment-form">
             {% csrf_token %}
-            {{ form.as_p }} <!-- Hiển thị form đã truyền từ backend -->
-
-            <!-- Nút hành động -->
-            <div class="d-flex justify-content-between mt-4">
-                <button type="submit" class="btn btn-primary w-48">Gửi yêu cầu</button>
-                <button type="button" class="btn btn-secondary w-48" onclick="window.location.href='/'">Hủy</button>
+            <div class="form-group">
+                <label for="TenKH">{{ form.TenKH.label }}</label>
+                {{ form.TenKH }}
             </div>
+            <div class="form-group">
+                <label for="SDT">{{ form.SDT.label }}</label>
+                {{ form.SDT }}
+            </div>
+            <div class="form-group">
+                <label for="MaDV">{{ form.MaDV.label }}</label>
+                {{ form.MaDV }}
+            </div>
+            <div class="form-group">
+                <label for="GhiChu">{{ form.GhiChu.label }}</label>
+                {{ form.GhiChu }}
+            </div>
+            <div class="form-group d-flex justify-content-end">
+                <button type="submit" class="btn-submit">Gửi yêu cầu</button>
+            </div>
+
         </form>
     </div>
+</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<style>
+    body {
+        background-color: #ffeed9;
+        font-family: 'Arial', sans-serif;
+    }
 
+    .appointment-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 35px;
+    }
+
+    .appointment-card {
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    .appointment-title {
+        font-size: 25px;
+        font-weight: bold;
+        color: #BD8712;
+        margin-bottom: 20px;
+    }
+
+    .appointment-form .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .appointment-form label {
+        font-weight: bold;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 8px;
+        display: block;
+    }
+    .appointment-form select,
+    .appointment-form input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        color: white;
+        background-color: #BD8712;
+        border: none;
+        font-weight: bold;
+        border-radius: 8px;
+
+    }
+
+    .btn-submit:hover {
+        background-color: #a87f10;
+    }
+
+</style>
 {% endblock %}

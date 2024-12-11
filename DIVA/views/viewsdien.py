@@ -1,58 +1,136 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from ..models import LichHen
-from ..forms import LichHenForm, CapNhatLichHenForm,DangKyForm
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.utils.timezone import now, timedelta
+from django.contrib import messages
+from DIVA.models import LichHen, DichVu, Profile
+from DIVA.forms import LichHenForm, DangKyForm
 
+
+def is_staff_or_admin(user):
+    return user.is_staff or user.is_superuser
+
+def is_admin(user):
+    return user.is_superuser
 
 def dang_ky(request):
     if request.method == 'POST':
         form = DangKyForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('dang_nhap')  # Sau khi đăng ký thành công, chuyển hướng đến trang đăng nhập
+            return redirect('dang_nhap')
     else:
         form = DangKyForm()
 
     return render(request, 'auth/dang_ky.html', {'form': form})
 
-def xem_lich_hen(request):
-    lich_hen_list = LichHen.objects.filter(MaKH=request.user).order_by('thoigiandangki')
-    return render(request, 'lich_hen/xem_lich_hen.html', {'lich_hen_list': lich_hen_list})
+# Kiểm tra nếu người dùng là nhân viên
+def is_admin(user):
+    return user.is_authenticated and user.profile.vaitro == 'Nhân viên'
 
-def them_lich_hen(request):
+# Quản lý lịch hẹn của khách hàng
+@login_required
+def lich_hen_khach_hang(request):
+    danh_sach_lich_hen = LichHen.objects.filter(MaKH=request.user)
+    return render(request, 'lich_hen/lich_hen_khach_hang.html', {'danh_sach_lich_hen': danh_sach_lich_hen})
+
+# Đăng ký lịch hẹn
+@login_required
+def dang_ky_lich_hen(request):
     if request.method == 'POST':
         form = LichHenForm(request.POST)
         if form.is_valid():
-            lich_hen = form.save(commit=False)  # Tạo đối tượng LichHen nhưng chưa lưu
-            lich_hen.MaKH = request.user  # Gán MaKH là khách hàng hiện tại
-            lich_hen.save()  # Lưu vào cơ sở dữ liệu
-            return redirect('xem_lich_hen')  # Chuyển hướng về trang xem lịch hẹn
+            lich_hen = form.save(commit=False)
+            lich_hen.MaKH = request.user
+            lich_hen.TrangThai = 'Chưa xử lý'
+            lich_hen.save()
+            return redirect('lich_hen_khach_hang')
     else:
-        form = LichHenForm()  # Form để khách hàng điền vào
-    return render(request, 'lich_hen/them_lich_hen.html', {'form': form})
+        form = LichHenForm()
 
+    danh_sach_dich_vu = DichVu.objects.all()
+    return render(request, 'lich_hen/dang_ky_lich_hen.html', {
+        'form': form,
+        'danh_sach_dich_vu': danh_sach_dich_vu
+    })
 
-def cap_nhat_lich_hen(request, pk):
-    # Lấy đối tượng lịch hẹn theo pk
-    lich_hen = get_object_or_404(LichHen, pk=pk)
+# Hủy lịch hẹn
+@login_required
+def huy_lich_hen(request, ma_lich_hen):
+    lich_hen = get_object_or_404(LichHen, MaLH=ma_lich_hen, MaKH=request.user)
 
+    if lich_hen.TrangThai in ['Chưa xử lý', 'Đang xử lý']:
+        # No need for .date() here as both are date objects
+        if lich_hen.thoigiandangki - now().date() > timedelta(days=1):
+            lich_hen.TrangThai = 'Đã hủy'
+            lich_hen.save()
+            messages.success(request, f"Lịch hẹn {ma_lich_hen} đã bị hủy.")
+        else:
+            messages.error(request, "Không thể hủy lịch hẹn trong vòng 24 giờ.")
+    return redirect('lich_hen_khach_hang')
+
+#Quản lý LH
+@user_passes_test(is_staff_or_admin)
+def quan_ly_lich_hen(request):
+    if request.method == "POST":
+        ma_lh = request.POST.get('ma_lh')
+        action = request.POST.get('action')
+        ma_nv = request.POST.get('MaNV')
+
+        try:
+            lich_hen = get_object_or_404(LichHen, MaLH=ma_lh)
+
+            # Xử lý hành động "xóa"
+            if action == "delete":
+                lich_hen.delete()
+                messages.success(request, f"Lịch hẹn {ma_lh} đã được xóa.")
+
+            # Gán nhân viên cho lịch hẹn
+            elif ma_nv:  # Gán nhân viên phụ trách
+                nhan_vien = get_object_or_404(Profile, MaUser__id=ma_nv)
+                lich_hen.MaNV = nhan_vien.MaUser
+                lich_hen.save()
+                messages.success(request, f"Đã gán nhân viên {nhan_vien.MaUser.username} cho lịch hẹn {ma_lh}.")
+
+            # Cập nhật trạng thái
+            elif action == "update_status":
+                trang_thai_moi = request.POST.get('TrangThai')
+                if trang_thai_moi:
+                    lich_hen.TrangThai = trang_thai_moi
+                    lich_hen.save()
+                    messages.success(request, f"Đã cập nhật trạng thái cho lịch hẹn {ma_lh}.")
+                    return redirect('quan_ly_lich_hen')
+                else:
+                    messages.error(request, "Không có trạng thái mới được chọn.")
+
+        except Exception as e:
+            messages.error(request, f"Có lỗi xảy ra: {str(e)}.")
+
+    # Lấy danh sách lịch hẹn và nhân viên
+    danh_sach_lich_hen = LichHen.objects.all()
+    danh_sach_nhan_vien = Profile.objects.filter(vaitro='Nhân viên')
+    context = {'danh_sach_lich_hen': danh_sach_lich_hen, 'danh_sach_nhan_vien': danh_sach_nhan_vien}
+    return render(request, 'lich_hen/quan_ly_lich_hen.html', context)
+
+# Thêm lịch hẹn mới
+@user_passes_test(is_staff_or_admin)
+def them_lich_hen(request):
     if request.method == 'POST':
-        # Khởi tạo form với dữ liệu POST và đối tượng lịch hẹn hiện tại
-        form = CapNhatLichHenForm(request.POST, instance=lich_hen)
+        ma_khach_hang = request.POST.get('MaKH')
+        ma_dich_vu = request.POST.get('MaDV')
+        dich_vu = get_object_or_404(DichVu, MaDV=ma_dich_vu)
+        khach_hang = get_object_or_404(Profile, MaUser__username=ma_khach_hang).MaUser
+        LichHen.objects.create(
+            MaKH=khach_hang,
+            MaNV=request.user,
+            MaDV=dich_vu,
+            thoigiandangki=now(),
+            TrangThai='Chưa xử lý'
+        )
+        return redirect('quan_ly_lich_hen')
 
-        if form.is_valid():  # Kiểm tra tính hợp lệ của form
-            form.save()  # Lưu dữ liệu đã cập nhật vào cơ sở dữ liệu
-            return redirect('xem_lich_hen')  # Chuyển hướng về trang xem lịch hẹn sau khi lưu thành công
-    else:
-        form = CapNhatLichHenForm(instance=lich_hen)  # Hiển thị form với dữ liệu lịch hẹn hiện tại
-
-    return render(request, 'lich_hen/cap_nhat_lich_hen.html', {'form': form, 'lich_hen': lich_hen})
-def xoa_lich_hen(request, pk):
-    lich_hen = get_object_or_404(LichHen, pk=pk)
-    if request.method == 'POST':
-        lich_hen.delete()
-        return redirect('xem_lich_hen')
-    return render(request, 'lich_hen/xoa_lich_hen.html', {'lich_hen': lich_hen})
-
-def xem_lich_hen(request):
-    lich_hen_list = LichHen.objects.filter(MaKH=request.user).order_by('thoigiandangki')
-    return render(request, 'lich_hen/xem_lich_hen.html', {'lich_hen_list': lich_hen_list})
+    danh_sach_khach_hang = Profile.objects.filter(vaitro='Khách hàng')
+    danh_sach_dich_vu = DichVu.objects.all()
+    return render(request, 'lich_hen/them_lich_hen.html', {
+        'danh_sach_khach_hang': danh_sach_khach_hang,
+        'danh_sach_dich_vu': danh_sach_dich_vu
+    })

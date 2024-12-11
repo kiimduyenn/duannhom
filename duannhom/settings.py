@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'DIVA'
 ]
 
@@ -69,7 +70,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'duannhom.wsgi.application'
-
+ASGI_APPLICATION = 'duannhom.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -128,3 +137,7 @@ LOGOUT_REDIRECT_URL = '/'
 # Chuyển hướng sau khi đăng xuất
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+MEDIA_URL = 'media/'
+MEDIA_ROOT =BASE_DIR/'media'
+
+AUTHENTICATION_FORM = 'DIVA.forms.CustomAuthenticationForm'

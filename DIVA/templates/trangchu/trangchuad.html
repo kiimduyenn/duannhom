@@ -1,7 +1,6 @@
 {% extends 'layout/admin.html' %}
 {% block content %}
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -155,6 +154,44 @@
             text-align: justify;
             margin-bottom:20px;
         }
+        /* Mũi tên điều hướng */
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30px;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .arrow.left {
+            left: 10px;
+        }
+
+        .arrow.right {
+            right: 10px;
+        }
+
+        .arrow:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .sub-menu {
+            position: absolute; /* Đặt vị trí cố định bên trên slide */
+            top: 100%;
+            left: 50%;
+            width: 100%;
+            background: #b37917
+            text-align: center;
+            padding: 10px 0;
+            z-index: 100;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
@@ -302,7 +339,6 @@
 
         setInterval(showSlides, 3000);
     </script>
-
 </body>
 </html>
 {% endblock %}

@@ -1,7 +1,12 @@
 {% extends 'layout/customer.html' %}
 {% block content %}
-
-
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,6 +28,7 @@
             max-width: 100%;
             margin: auto;
             overflow: hidden;
+            z-index: 1;
         }
 
         .slides-wrapper {
@@ -155,10 +161,53 @@
             text-align: justify;
             margin-bottom:20px;
         }
+        /* Mũi tên điều hướng */
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30px;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .arrow.left {
+            left: 10px;
+        }
+
+        .arrow.right {
+            right: 10px;
+        }
+
+        .arrow:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .sub-menu {
+            position: absolute; /* Đặt vị trí cố định bên trên slide */
+            top: 100%;
+            left: 50%;
+            width: 100%;
+            background: #b37917
+            text-align: center;
+            padding: 10px 0;
+            z-index: 100;
+            font-size: 18px;
+            font-weight: bold;
+        }
+            .messages .alert {
+        font-size: 20px;
+        padding: 20px;
+        border-radius: 5px;
+        background-color: #c08c19;
+        text-align: center;
+    }
     </style>
 </head>
 <body>
-
     <div class="slideshow-container">
         <div class="slides-wrapper">
             <div class="slide">
@@ -173,6 +222,37 @@
                 <img src="https://vienthammydiva.vn/wp-content/uploads/2023/07/BANNER-3_1920X500-1.webp" alt="Slide 3">
             </div>
         </div>
+        <!-- Mũi tên điều hướng -->
+        <div class="arrow left" onclick="changeSlide(-1)">&#10094;</div>
+        <div class="arrow right" onclick="changeSlide(1)">&#10095;</div>
+    </div>
+
+    <script>
+        let slideIndex = 0;
+        const slidesWrapper = document.querySelector('.slides-wrapper');
+        const slides = document.querySelectorAll('.slide');
+        const numSlides = slides.length;
+
+        // Chuyển slide tự động
+        function autoSlide() {
+            slideIndex = (slideIndex + 1) % numSlides;
+            updateSlidePosition();
+        }
+
+        // Chuyển slide theo hướng mũi tên
+        function changeSlide(direction) {
+            slideIndex = (slideIndex + direction + numSlides) % numSlides;
+            updateSlidePosition();
+        }
+
+        // Cập nhật vị trí slide
+        function updateSlidePosition() {
+            slidesWrapper.style.transform = `translateX(-${slideIndex * 100}%)`;
+        }
+
+        // Chạy auto-slide sau mỗi 3 giây
+        setInterval(autoSlide, 3000);
+    </script>
 
     </div>
     <div class="service">

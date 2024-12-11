@@ -6,22 +6,28 @@ from .models import Profile
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     """
-    Mỗi khi một User mới được tạo, tự động tạo Profile tương ứng.
+    Tự động tạo Profile khi một User mới được tạo.
     """
     if created:  # Chỉ tạo Profile khi User mới được tạo
+        # Xác định vai trò dựa trên nhóm của User
+        vaitro = "Nhân viên" if instance.is_staff or instance.is_superuser else "Khách hàng"
         Profile.objects.create(
             MaUser=instance,
             hoten=instance.username,  # Sử dụng username làm tên mặc định
             ngaysinh="2000-01-01",  # Giá trị mặc định
-            sodienthoai=0,  # Giá trị mặc định
+            sodienthoai="0000000000",  # Giá trị mặc định
             diachi="Chưa cập nhật",  # Giá trị mặc định
-            is_Enable=True,  # Giá trị mặc định
-            vaitro="Khách hàng"  # Giá trị mặc định
+            vaitro=vaitro  # Vai trò tự động phân loại
         )
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     """
-    Lưu Profile khi User cập nhật.
+    Cập nhật Profile khi User được cập nhật.
     """
-    instance.profile.save()
+    profile = instance.profile
+    # Cập nhật vai trò nếu cần
+    new_role = "Nhân viên" if instance.is_staff or instance.is_superuser else "Khách hàng"
+    if profile.vaitro != new_role:
+        profile.vaitro = new_role
+        profile.save()

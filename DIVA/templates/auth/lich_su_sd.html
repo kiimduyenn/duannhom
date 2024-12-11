@@ -1,0 +1,127 @@
+{% extends layout %}
+
+{% block content %}
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>Lịch Sử Lịch Hẹn</h1>
+        </div>
+    </br>
+        <div class="profile-content">
+            <div class="sidebar">
+                <button class="tab-button"><a href="{% url 'profile' %}" style="color: black; text-decoration: none; font-size: 18px">Thông tin cá nhân</a></button>
+                <button class="tab-button active">Lịch sử sử dụng</button>
+            </div>
+
+        <div class="profile-details">
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Ngày thực hiện</th>
+                        <th>Dịch vụ sử dụng</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in lich_su %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.thoigiandangki|date:'d/m/Y' }}</td>
+                        <td>{{ item.MaDV.ten }}</td>
+                        <td>{{ item.TrangThai }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" style="text-align: center;">Không có lịch sử sử dụng</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #ffeed9;
+    }
+    h1 {
+        text-align: center;
+        color: #c08c19;
+        margin-bottom: 30px;
+        font-size: 4rem;
+        margin-top: 40px;
+    }
+    .profile-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .profile-header h1 {
+        text-align: center;
+        color: #BD8712;
+        font-size: 3rem;
+    }
+
+    .profile-content {
+        display: flex;
+        margin-top: 20px;
+    }
+
+    .sidebar {
+        width: 20%;
+        margin-right: 20px;
+    }
+
+    .tab-button {
+        display: block;
+        width: 100%;
+        padding: 10px 15px;
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        text-align: left;
+        font-size: 18px;
+        color: #333;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .tab-button.active {
+        background-color: #BD8712;
+        color: white;
+    }
+
+    .profile-details {
+        width: 80%;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: center;
+        font-size: 1.2rem;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #c08c19;
+        color: white;
+    }
+
+</style>
+{% endblock %}

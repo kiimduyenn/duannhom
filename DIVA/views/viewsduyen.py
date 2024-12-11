@@ -1,12 +1,30 @@
+from django.contrib.auth.decorators import login_required,user_passes_test
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from DIVA.models import YeuCauTuVan
-from ..forms import YCTVForm, SuaYCTVForm
+from DIVA.models import YeuCauTuVan, TinNhan, HoiThoai
+from ..forms import YCTVForm, SuaYCTVForm, SearchForm, MessageForm
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import (login_required)
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
+from django.db import models
+from django.db.models import Q, Count
+
 # Create your views here.
+def is_staff_or_admin(user):
+    return user.is_staff or user.is_superuser
+
+def is_admin(user):
+    return user.is_superuser
+
 def themyctv(request):
+    if request.user.is_superuser or request.user.is_staff:
+        layout = 'layout/admin.html'
+        h1='Thêm yêu cầu tư vấn'
+    else:
+        layout = 'layout/customer.html'
+        h1='Đăng ký nhận tư vấn'
     yctv=None
     form = YCTVForm(instance=yctv)
     if request.method == 'POST':
@@ -14,11 +32,19 @@ def themyctv(request):
         if form.is_valid():
             yctv_moi = form.save()
             messages.success(request, f'Yêu cầu của bạn đã được gửi thành công.')
-            return redirect('ql_yctv')
-    return render(request, 'yeucautuvan/yctv-form.html', {'form': form, 'yctv': yctv})
+            if request.user.is_superuser or request.user.is_staff:
+                return redirect('ql_yctv')
+            else:
+                return redirect('trang_chu_kh')
+    return render(request, 'yeucautuvan/yctv-form.html', {'form': form, 'yctv': yctv, 'layout':layout,'h1':h1})
 
+@user_passes_test(is_staff_or_admin)
 def ql_yctv(request):
-    yctv_list = YeuCauTuVan.objects.order_by('MaYCTV')
+    search_query = request.GET.get('search', '')
+    if search_query:
+        yctv_list = YeuCauTuVan.objects.filter(MaYCTV__icontains=search_query)
+    else:
+        yctv_list = YeuCauTuVan.objects.order_by('MaYCTV')  # Nếu không tìm kiếm, hiển thị tất cả
     user_list = User.objects.filter(is_staff=True)  # Lọc danh sách tài khoản nhân viên
 
     if request.method == 'POST':
@@ -46,9 +72,11 @@ def ql_yctv(request):
     return render(request, 'yeucautuvan/ql-yctv.html', {
         'yctv_list': yctv_list,
         'user_list': user_list,
+        'search_query': search_query,
     })
 
 @csrf_exempt
+@user_passes_test(is_staff_or_admin)
 def update_yctv(request):
     if request.method == 'POST':
         ma_yctv = request.POST.get('MaYCTV')
@@ -68,7 +96,7 @@ def update_yctv(request):
         except YeuCauTuVan.DoesNotExist:
             messages.error(request, "Không tìm thấy yctv")
             return redirect('ql_yctv')
-
+@user_passes_test(is_staff_or_admin)
 def delete_yctv(request):
     if request.method == "POST":
         MaYCTV = request.POST.get('MaYCTV')
@@ -76,13 +104,92 @@ def delete_yctv(request):
         yc.delete()
         messages.success(request, f"Yêu cầu {MaYCTV} đã được xóa.")
         return redirect('ql_yctv')
-def sua_yctv(request, pk):
-    yctv=get_object_or_404(YeuCauTuVan,pk=pk)
-    form = SuaYCTVForm(instance=yctv)
-    if request.method=='POST':
-        form=SuaYCTVForm(request.POST, instance=yctv)
+@user_passes_test(is_staff_or_admin)
+def yctv_search(request):
+    form=SearchForm(request.GET or None )
+    if form.is_valid():
+        search_text = form.cleaned_data.get('search', '')
+        yctv = YeuCauTuVan.objects.filter(title__icontains=search_text)
+        context = {'form':form, 'yctv':yctv, 'search_text':search_text}
+    return render(request, 'search-results.html', context)
+
+def start_chat(request):
+    # Xác định khách hàng
+    customer = request.user
+    if not customer.is_authenticated:
+        return redirect("login")  # Chuyển hướng nếu người dùng chưa đăng nhập
+
+    # Tìm nhân viên hỗ trợ (is_staff=True) có ít cuộc trò chuyện nhất
+    employees = User.objects.filter(is_staff=True)
+    employees_with_chat_count = employees.annotate(
+        chat_count=Count('employee_conversations', filter=Q(employee_conversations__is_active=True))
+    ).order_by('chat_count')  # Sắp xếp theo số lượng cuộc trò chuyện
+
+    if not employees_with_chat_count.exists():
+        return render(request, 'trangchu/hoithoai_detail.html')  # Hiển thị thông báo nếu không có nhân viên hỗ trợ
+
+    # Chọn nhân viên rảnh nhất
+    receiver = employees_with_chat_count.first()
+
+    # Kiểm tra xem đã có cuộc trò chuyện đang hoạt động giữa khách hàng và nhân viên này chưa
+    conversation = HoiThoai.objects.filter(customer=customer, employee=receiver, is_active=True).first()
+    if not conversation:
+        # Tạo cuộc trò chuyện mới
+        conversation = HoiThoai.objects.create(customer=customer, employee=receiver)
+
+    # Chuyển hướng đến hộp chat
+    return redirect('chat_view', conversation_id=conversation.id)
+
+# View hiển thị cuộc trò chuyện
+
+def chat_view(request, conversation_id):
+    # Lấy thông tin cuộc trò chuyện
+    conversation = get_object_or_404(HoiThoai, id=conversation_id)
+
+    # Lấy tin nhắn trong cuộc trò chuyện
+    messages = TinNhan.objects.filter(conversation=conversation).order_by('timestamp')
+
+    # Xử lý gửi tin nhắn
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
         if form.is_valid():
-            sua_yctv=form.save()
-            messages.success(request, f'Thông tin chỉnh sửa bài viết {sua_yctv.MaYCTV} đã được lưu lại.')
-            return redirect('ql_yctv')
-    return render(request,'yeucautuvan/sua-yctv.html',{'form':form})
+            message = form.save(commit=False)
+            message.sender = request.user
+            message.receiver = conversation.employee
+            message.conversation = conversation
+            message.save()
+            return redirect('chat_view', conversation_id=conversation.id)
+    else:
+        form = MessageForm()
+
+    # Render giao diện
+    return render(request, 'trangchu/chat.html', {
+        'messages': messages,
+        'form': form,
+        'receiver': conversation.employee
+    })
+
+# View hiển thị danh sách các cuộc trò chuyện
+def conversations_view(request):
+    if request.user.is_superuser or request.user.is_staff:
+        layout = 'layout/admin.html'
+    else:
+        layout = 'layout/customer.html'
+    # Lấy danh sách các cuộc trò chuyện của người dùng hiện tại
+    user = request.user
+    if user.is_staff:  # Nếu là nhân viên hỗ trợ
+        conversations = HoiThoai.objects.filter(employee=user).order_by('-created_at')
+    else:  # Nếu là khách hàng
+        conversations = HoiThoai.objects.filter(customer=user).order_by('-created_at')
+
+    return render(request, 'trangchu/hoithoai.html', {
+        'conversations': conversations, 'layout':layout
+    })
+
+@login_required
+def xem_yctv_cua_toi(request):
+    danh_sach_yctv = YeuCauTuVan.objects.filter(SDT=request.user.profile.sodienthoai)
+    context = {
+        'danh_sach_yctv': danh_sach_yctv,
+    }
+    return render(request, 'yeucautuvan/xem_yctv_cua_toi.html', context)

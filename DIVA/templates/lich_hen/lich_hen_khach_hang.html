@@ -1,0 +1,170 @@
+{% extends 'layout/customer.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .table-title {
+        font-size: 24px;
+        color: #BD8712;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .table-container {
+        margin: 20px auto;
+        width: 90%;
+        max-width: 1000px;
+        overflow-x: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        padding: 20px;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .styled-table thead {
+        background-color: #BD8712;
+        color: white;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+    }
+
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .styled-table th {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .styled-table td {
+        font-size: 14px;
+    }
+
+    .action-link {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .update-link {
+        color: white;
+        background-color: #b84b00;
+        margin-right: 5px;
+    }
+
+    .delete-link {
+        color: white;
+        background-color: #c37d06;
+    }
+
+    .update-link:hover {
+        background-color: #c37d06;
+    }
+
+    .delete-link:hover {
+        background-color: #c37d06;
+    }
+
+    .no-data {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        font-size: 14px;
+    }
+
+    /* Styles for messages */
+    .message {
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 5px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .error-message {
+        background-color: rgba(234, 115, 26, 0.67);
+        color: #000000;
+        border: 1px solid rgba(234, 115, 26, 0.67);
+    }
+
+    .success-message {
+        background-color: #d4edda;
+        color: #ea731a;
+        border: 1px solid #c3e6cb;
+    }
+
+    .info-message {
+        background-color: #cce5ff;
+        color: #004085;
+        border: 1px solid #b8daff;
+    }
+
+</style>
+
+<div class="table-container">
+    <h2 class="table-title">Lịch Hẹn Của Bạn</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message {% if message.tags == 'error' %}error-message{% elif message.tags == 'success' %}success-message{% else %}info-message{% endif %}">
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Mã Lịch Hẹn</th>
+                <th>Dịch Vụ</th>
+                <th>Ngày Đăng Ký</th>
+                <th>Trạng Thái</th>
+                <th>Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if danh_sach_lich_hen %}
+                {% for lich_hen in danh_sach_lich_hen %}
+                <tr>
+                    <td>{{ lich_hen.MaLH }}</td>
+                    <td>{{ lich_hen.MaDV.ten }}</td>
+                    <td>{{ lich_hen.thoigiandangki|date:"d/m/Y" }}</td>
+                    <td>{{ lich_hen.TrangThai }}</td>
+                    <td>
+                        {% if lich_hen.TrangThai == "Chưa xử lý" or lich_hen.TrangThai == "Đang xử lý" %}
+                        <a class="action-link delete-link" href="{% url 'huy_lich_hen' lich_hen.MaLH %}">Hủy</a>
+                        {% else %}
+                        <span class="no-data">Không thể hủy</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5" class="no-data">Bạn chưa có lịch hẹn nào.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
