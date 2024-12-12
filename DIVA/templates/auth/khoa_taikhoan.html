@@ -7,7 +7,7 @@
         {% csrf_token %}
         <label for="lock_reason">Lý do khóa tài khoản:</label><br>
         <textarea id="lock_reason" name="lock_reason" rows="4" cols="50"></textarea><br><br>
-        <button type="submit" class="save-button">Khóa tài khoản</button>
+        <button type="submit" class="save-button" onclick="return confirm('Bạn có chắc chắn muốn khóa tài khoản của mình không?');">Khóa tài khoản</button>
     </form>
 </div>
 

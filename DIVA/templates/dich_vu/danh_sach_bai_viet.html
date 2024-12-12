@@ -1,35 +1,28 @@
 {% extends 'layout/customer.html' %}
 
 {% block content %}
-<body>
-    <div class="profile-container">
-        <div class="profile-header">
-            <h1>Danh Sách Các Dịch Vụ</h1>
-        </div>
 
-        {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-            <p class="message">{{ message }}</p>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-            <div class="profile-details">
-                <div class="bai-viet-list">
-                    {% for bai_viet in bai_viet_list %}
-                    <div class="bai-viet-item">
-
-                        <img src="{{ bai_viet.hinh_anh.url }}" alt="{{ bai_viet.tieu_de }}" class="bai-viet-img">
-                        <h3>{{ bai_viet.tieu_de }}</h3>
-                        <a href="{% url 'chi_tiet_bai_viet' bai_viet.id %}" class="read-more-link">Đọc thêm</a>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
+<div class="search-and-title">
+    <h1 class="table-title">Danh Sách Các Dịch Vụ</h1>
+    <div class="search-container">
+        <form method="GET" action="" class="search-box">
+            <input type="search" name="q" placeholder="Nhập tên dịch vụ để tìm kiếm" class="search-bar" value="{{ request.GET.q }}">
+            <button type="submit" class="btn">Tìm</button>
+        </form>
     </div>
-</body>
+</div>
+
+<div class="content">
+    <div class="bai-viet-list">
+        {% for bai_viet in bai_viet_list %}
+            <div class="bai-viet-item">
+                <img src="{{ bai_viet.hinh_anh.url }}" alt="{{ bai_viet.tieu_de }}" class="bai-viet-img">
+                <h3>{{ bai_viet.tieu_de }}</h3>
+                <a href="{% url 'chi_tiet_bai_viet' bai_viet.id %}" class="read-more-link">Đọc thêm</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 
 <style>
     body {
@@ -39,53 +32,76 @@
         padding: 0;
     }
 
-    h1 {
+    .search-and-title {
         text-align: center;
-        color: #c08c19;
-        margin-bottom: 30px;
-        font-size: 4rem;
-        margin-top: 40px;
+        margin: 50px 0;
     }
 
-    .profile-container {
-        max-width: 1200px;
-        margin: 0 auto;
+    .table-title {
+        color: #c08c19;
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
+
+    .search-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .search-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .search-bar {
+        font-size: 16px;
+        padding: 10px;
+        margin-right: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        width: 70%;
+        max-width: 500px;
+    }
+
+    .btn {
+        background-color: #c08c19;
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #a5740f;
+    }
+
+    .content {
         padding: 20px;
     }
 
-    .profile-header h1 {
-        text-align: center;
-        color: #BD8712;
-        font-size: 3rem;
-    }
-
-    /* Bài viết list container */
     .bai-viet-list {
-        display: flex;
-        flex-wrap: wrap; /* Cho phép các bài viết xếp hàng */
-        justify-content: space-between; /* Phân phối đều các bài viết trong hàng */
-        gap: 20px; /* Khoảng cách giữa các bài viết */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Mỗi dòng có 3 cột */
+    gap: 20px; /* Khoảng cách giữa các bài viết */
     }
 
-    /* Mỗi bài viết chiếm 24% chiều rộng của container (tương đương với 4 bài mỗi hàng) */
     .bai-viet-item {
-        width: 24%; /* Đảm bảo mỗi bài viết chiếm 1/4 chiều rộng của container */
         background-color: white;
         padding: 15px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
-        margin-bottom: 20px; /* Khoảng cách giữa các bài viết theo chiều dọc */
         text-align: center;
     }
 
-    /* Hình ảnh bài viết */
     .bai-viet-img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        border-radius: 5px;
-        max-width: 500px;
-        max-height: 250px;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    display: block;
     }
 
     .bai-viet-item h3 {
@@ -105,16 +121,22 @@
     .read-more-link:hover {
         color: #a5740f;
     }
-
-    .messages .message {
-        background-color: #A2CA71;
-        color: white;
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 5px;
-        font-size: 18px;
-        text-align: center;
+    .search-bar {
+    width: 600px;
+    height: 50px;
+    padding: 0 20px;
+    border-radius: 10px;
+    border: 2px solid #cccccc;
+    font-size: 18px;
+    color: #333333;
+    outline: none;
+    transition: all 0.3s;
     }
+    .search-bar:focus {
+        border-color: #c08c19;
+        box-shadow: 0 0 10px rgba(192, 140, 25, 0.5);
+    }
+
 </style>
 
 {% endblock %}

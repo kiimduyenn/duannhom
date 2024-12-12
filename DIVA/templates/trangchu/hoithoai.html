@@ -14,14 +14,10 @@
         }
 
         h2 {
-            background-color: #c08c19;
-            color: white;
+            color:  #c08c19;
             text-align: center;
-            padding: 15px;
             margin: 15px auto 20px;
-            font-size: 2em;
-            width: 50%;
-            border-radius: 10px;
+            font-size: 32px;
         }
 
         .conversation-container {
@@ -82,7 +78,7 @@
     </style>
 </head>
 <body>
-    <h2>Your Conversations</h2>
+    <h2>Tin nhắn</h2>
 
     <!-- Nút Start New Chat căn phải -->
     {% if user.is_customer %}
@@ -115,7 +111,7 @@
                 </div>
             {% endfor %}
         {% else %}
-            <p>No conversations found.</p>
+            <div style="text-align:center"> Chưa có cuộc hội thoại nào.</div>
         {% endif %}
     </div>
 </body>

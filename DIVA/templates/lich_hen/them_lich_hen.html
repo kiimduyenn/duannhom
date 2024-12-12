@@ -1,16 +1,43 @@
 {% extends 'layout/admin.html' %}
 
 {% block content %}
+
+<div class="form-container">
+    <h2 class="form-title">Thêm lịch hẹn mới</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="MaKH">Chọn khách hàng:</label>
+        <select name="MaKH" id="MaKH" required>
+            {% for khach_hang in danh_sach_khach_hang %}
+            <option value="{{ khach_hang.MaUser.username }}">{{ khach_hang.hoten }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="MaDV">Chọn dịch vụ:</label>
+        <select name="MaDV" id="MaDV" required>
+            {% for dich_vu in danh_sach_dich_vu %}
+            <option value="{{ dich_vu.MaDV }}">{{ dich_vu.ten }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="thoigiandangki">Chọn ngày đăng ký lịch hẹn:</label>
+        <input type="date" name="thoigiandangki" id="thoigiandangki" required>
+
+        <button type="submit">Thêm lịch hẹn</button>
+    </form>
+</div>
+
+
 <style>
     body {
-        background-color: #f9f9f9;
+        background-color: #ffeed9;
         font-family: 'Arial', sans-serif;
     }
 
     .form-container {
-        margin: 40px auto;
-        width: 90%;
-        max-width: 600px;
+        margin: 20px auto;
+        width: 100%;
+        max-width: 500px;
         border-radius: 10px;
         background-color: #fff;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -19,9 +46,31 @@
     }
 
     .form-title {
-        font-size: 24px;
+        font-size: 28px;
         color: #BD8712;
         margin-bottom: 20px;
+    }
+
+    .form-container select option {
+    font-size: 15px;
+    background-color: #ffeed9;
+}
+
+    .form-container textarea,
+    .form-container select,
+    .form-container input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
+        resize: vertical;
+    }
+
+    .form-container textarea:focus,
+    .form-container select:focus,
+    .form-container input:focus {
+        border-color: #BD8712; /* Màu sắc khi trường được chọn */
     }
 
     label {
@@ -31,7 +80,7 @@
         text-align: left;
     }
 
-    select, button {
+    select, input[type="date"], button {
         width: 100%;
         padding: 10px;
         margin: 10px 0;
@@ -52,26 +101,11 @@
     button:hover {
         background-color: #a57110;
     }
+
+    .error-message {
+        color: red;
+        margin-top: 10px;
+    }
 </style>
 
-<div class="form-container">
-    <h2 class="form-title">Thêm Lịch Hẹn Mới</h2>
-    <form method="post">
-        {% csrf_token %}
-        <label for="MaKH">Chọn Khách Hàng:</label>
-        <select name="MaKH" id="MaKH" required>
-            {% for khach_hang in danh_sach_khach_hang %}
-            <option value="{{ khach_hang.MaUser.username }}">{{ khach_hang.hoten }}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <label for="MaDV">Chọn Dịch Vụ:</label>
-        <select name="MaDV" id="MaDV" required>
-            {% for dich_vu in danh_sach_dich_vu %}
-            <option value="{{ dich_vu.MaDV }}">{{ dich_vu.ten }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Thêm</button>
-    </form>
-</div>
 {% endblock %}

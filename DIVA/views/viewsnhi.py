@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from django.utils import timezone
 from django.contrib import messages
 from django.http import Http404
+from django.db.models import Count
 
 # Create your views here.
 def is_staff_or_admin(user):
@@ -22,6 +23,7 @@ def admin(request):
 @user_passes_test(is_staff_or_admin)
 def xem_khieu_nai(request):
     # Lấy tất cả khiếu nại mà không lọc theo người dùng
+
     khieu_nai_list = KhieuNai.objects.exclude(MaKN__isnull=True).exclude(MaKN="").order_by('-NgayTiepNhan')
     loai_khieu_nai = request.GET.get('loai_khieu_nai')
     if loai_khieu_nai:
@@ -34,38 +36,31 @@ def xem_khieu_nai(request):
     ma_kn = request.GET.get('ma_kn')
     if ma_kn:
         khieu_nai_list = khieu_nai_list.filter(MaKN__icontains=ma_kn)
+    for kn in khieu_nai_list:
+        kn.MaNV_hoten = kn.MaNV.profile.hoten if kn.MaNV and hasattr(kn.MaNV, 'profile') else None
 
     return render(request, 'khieunai/xem_khieu_nai.html', {'khieu_nai_list': khieu_nai_list})
-
+@login_required
 def them_khieu_nai(request):
     if request.method == 'POST':
         form = KhieuNaiForm(request.POST)
         if form.is_valid():
             khieu_nai = form.save(commit=False)
             khieu_nai.MaKH = request.user
+            staff = User.objects.filter(is_staff=True).annotate(kn_count=Count('NV_KN')
+                                                                ).order_by('kn_count')
+            if staff.exists():
+                selected_nv = staff.first()
+                khieu_nai.MaNV = selected_nv
             khieu_nai.save()
+            messages.success(request, f'Cảm ơn bạn đã chia sẻ khiếu nại. '
+                                      f'Đội ngũ hỗ trợ của chúng tôi sẽ liên hệ với bạn sớm nhất có thể.')
             return redirect('khieu_nai_cua_toi')
     else:
         form = KhieuNaiForm()
 
     return render(request, 'khieunai/them_khieu_nai.html', {'form': form})
 
-@user_passes_test(is_staff_or_admin)
-def cap_nhat_khieu_nai(request, pk):
-
-    khieu_nai = get_object_or_404(KhieuNai, pk=pk)
-
-    if request.method == 'POST':
-
-        form = CapNhatKhieuNaiForm(request.POST, instance=khieu_nai)
-
-        if form.is_valid():
-            form.save()
-            return redirect('xem_khieu_nai')
-    else:
-        form = CapNhatKhieuNaiForm(instance=khieu_nai)
-
-    return render(request, 'khieunai/cap_nhat_khieu_nai.html', {'form': form, 'khieu_nai': khieu_nai})
 
 
 @user_passes_test(is_admin)
@@ -93,6 +88,8 @@ def chi_tiet_khieu_nai(request, pk):
 
     khach_hang = get_object_or_404(Profile, MaUser=khieunai.MaKH)
 
+    nguoi_phu_trach = khieunai.MaNV.profile.hoten if khieunai.MaNV and hasattr(khieunai.MaNV, 'profile') else "Chưa có"
+
     context = {
         'MaKN': khieunai.MaKN,
         'hoten': khach_hang.hoten,
@@ -103,14 +100,14 @@ def chi_tiet_khieu_nai(request, pk):
         'ngay_tiep_nhan': khieunai.NgayTiepNhan,
         'noi_dung': khieunai.NoiDung,
         'trang_thai': khieunai.TrangThai,
-        'nguoi_phu_trach': khieunai.NguoiPhuTrach or "Chưa có",
+        'nguoi_phu_trach': nguoi_phu_trach,
     }
 
     return render(request, 'khieunai/chi_tiet_khieu_nai.html', context)
 
 
 def diem_tich_luy(request):
-    customers = Profile.objects.all()
+    customers = Profile.objects.filter(vaitro='Khách hàng')
 
     if 'search' in request.GET:
         search_term = request.GET['search']
@@ -159,6 +156,12 @@ def diem_tich_luy(request):
 def xem_khieu_nai_cua_toi(request):
     # Lọc các khiếu nại do người dùng hiện tại gửi
     danh_sach_khieu_nai = KhieuNai.objects.filter(MaKH=request.user.profile.MaUser)
+
+    for kn in danh_sach_khieu_nai:
+        if kn.MaNV and hasattr(kn.MaNV, 'profile'):
+            kn.nguoi_phu_trach = kn.MaNV.profile.hoten
+        else:
+            kn.nguoi_phu_trach = "Chưa có"
 
     context = {
         'danh_sach_khieu_nai': danh_sach_khieu_nai,

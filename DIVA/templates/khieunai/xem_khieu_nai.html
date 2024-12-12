@@ -70,14 +70,18 @@
                 <td>{{ kn.get_TrangThai_display }}</td>
                 <td>{{ kn.NgayXayRa|date:"d/m/Y" }}</td>
                 <td>{{ kn.NgayTiepNhan|date:"d/m/Y" }}</td>
-                <td>{{ kn.NguoiPhuTrach}}</td>
+                <td>{{ kn.MaNV_hoten}}</td>
                 <td class="action-buttons">
                     <a class="action-link detail-link" href="{% url 'chi_tiet_khieu_nai' kn.MaKN %}">Xem chi tiết</a>
+                    {% if user.is_superuser %}
                     <form method="POST" action="{% url 'xoa_khieu_nai' kn.MaKN %}" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" class="action-link delete-link"
                 onclick="return confirm('Bạn có chắc chắn muốn xóa khiếu nại này không?');">Xóa</button>
-                </form>
+                    </form>
+                    {%else%}
+                        --
+                    {%endif%}
             </td>
             </tr>
              {% endfor %}
@@ -92,12 +96,12 @@
 
 <style>
     body {
-        background-color: #f9f9f9;
+        background-color: #ffeed9;
         font-family: 'Arial', sans-serif;
     }
 
     .table-title {
-        font-size: 24px;
+        font-size: 32px;
         color: #BD8712;
         text-align: center;
         margin: 20px 0;
@@ -181,7 +185,7 @@
         margin-right: 6px;
     }
 
-    .update-link:hover {
+    .detail-link:hover {
         background-color: #45a049;
     }
 
@@ -207,14 +211,14 @@
         border-radius: 8px;
         font-size: 18px;
         font-weight: 500;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgb(0 0 0 / 38%);
         transition: all 0.3s ease-in-out;
-        text-align: center;
+        text-align:center;
     }
 
     .message.success {
-        background-color: #ffeed9;
-        color: #BD8712;
+        background-color: #bd8712;
+        color: #fff;
     }
 
     /* Hộp tìm kiếm và lọc */

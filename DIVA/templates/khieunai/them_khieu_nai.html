@@ -19,15 +19,16 @@
                 {{ form.NgayXayRa }}
             </div>
             <div class="form-group">
-                <button type="submit" class="btn-submit">Lưu Khiếu Nại</button>
+                <button type="submit" class="btn-submit">Gửi Khiếu Nại</button>
             </div>
         </form>
     </div>
 </div>
 
+
 <style>
     body {
-        background-color: #f3f4f6;
+        background-color: #ffeed9;
         font-family: 'Arial', sans-serif;
     }
 
@@ -50,7 +51,7 @@
     }
 
     .complaint-title {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: bold;
         color: #BD8712;
         margin-bottom: 20px;
@@ -63,19 +64,27 @@
 
     .complaint-form label {
         font-weight: bold;
-        font-size: 14px;
-        color: #333;
+        font-size: 16px;
+        color: #000;
         margin-bottom: 5px;
         display: block;
     }
 
+    .complaint-form textarea,
     .complaint-form select,
     .complaint-form input {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         border: 1px solid #ccc;
         border-radius: 8px;
-        font-size: 14px;
+        font-size: 15px;
+        resize: vertical;
+    }
+
+    .complaint-form textarea:focus,
+    .complaint-form select:focus,
+    .complaint-form input:focus {
+        border-color: #BD8712; /* Màu sắc khi trường được chọn */
     }
 
     .btn-submit {
@@ -94,36 +103,10 @@
     .btn-submit:hover {
         background-color: #a87f10;
     }
-    .complaint-form .form-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
 
-.complaint-form textarea,
-.complaint-form select,
-.complaint-form input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-    resize: vertical; /* Cho phép người dùng kéo dài hộp textarea */
-    transition: border-color 0.3s ease;
+    .complaint-form select option {
+    font-size: 15px;
+    background-color: #ffeed9;
 }
-
-.complaint-form textarea:focus,
-.complaint-form select:focus,
-.complaint-form input:focus {
-    border-color: #BD8712; /* Màu sắc khi trường được chọn */
-}
-
-.complaint-form label {
-    font-weight: bold;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 5px;
-    display: block;
-}
-
 </style>
 {% endblock %}

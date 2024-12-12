@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from websockets.version import commit
+
 from DIVA.models import YeuCauTuVan, TinNhan, HoiThoai
 from ..forms import YCTVForm, SuaYCTVForm, SearchForm, MessageForm
 from django.contrib.auth.decorators import permission_required
@@ -31,6 +33,13 @@ def themyctv(request):
     if request.method == 'POST':
         form = YCTVForm(request.POST, instance=yctv)
         if form.is_valid():
+            yctv_moi = form.save(commit=False)
+            staff_users = User.objects.filter(is_staff=True).annotate(yctv_count=Count('NV_YCTV')
+            ).order_by('yctv_count')  # Sắp xếp nhân viên theo số lượng yêu cầu đã nhận
+
+            if staff_users.exists():
+                selected_nv = staff_users.first()
+                yctv_moi.MaNV = selected_nv
             yctv_moi = form.save()
             messages.success(request, f'Yêu cầu của bạn đã được gửi thành công.')
             if request.user.is_superuser or request.user.is_staff:
@@ -41,19 +50,19 @@ def themyctv(request):
 
 @user_passes_test(is_staff_or_admin)
 def ql_yctv(request):
-    yctv_list = YeuCauTuVan.objects.order_by('MaYCTV')
+    user = request.user
+    if user.is_superuser:
+        yctv_list = YeuCauTuVan.objects.order_by('MaYCTV')
+    else:
+        yctv_list = YeuCauTuVan.objects.filter(MaNV=user).order_by('MaYCTV')
     search_query = request.GET.get('search', '')
     dich_vu = request.GET.get('dich_vu')
     trang_thai = request.GET.get('trang_thai')
-    if dich_vu:
-        yctv_list = yctv_list.filter(MaDV=dich_vu)
     if trang_thai:
         yctv_list = yctv_list.filter(TrangThai=trang_thai)
     if search_query:
-        yctv_list = YeuCauTuVan.objects.filter(MaYCTV__icontains=search_query)
-
-    user_list = User.objects.filter(is_staff=True)  # Lọc danh sách tài khoản nhân viên
-
+        yctv_list = YeuCauTuVan.objects.filter(Q(MaYCTV__icontains=search_query) | Q(TenKH__icontains=search_query))
+    user_list = User.objects.filter(is_staff=True)
     if request.method == 'POST':
         # Lấy mã yêu cầu từ nút Lưu
         MaYCTV = request.POST.get('MaYCTV')
@@ -123,33 +132,26 @@ def yctv_search(request):
     return render(request, 'search-results.html', context)
 
 def start_chat(request):
-    # Xác định khách hàng
     customer = request.user
     if not customer.is_authenticated:
-        return redirect("login")  # Chuyển hướng nếu người dùng chưa đăng nhập
+        return redirect("login")
 
-    # Tìm nhân viên hỗ trợ (is_staff=True) có ít cuộc trò chuyện nhất
+    # Tìm nhân viên (is_staff=True) có ít cuộc trò chuyện nhất
     employees = User.objects.filter(is_staff=True)
-    employees_with_chat_count = employees.annotate(
-        chat_count=Count('employee_conversations', filter=Q(employee_conversations__is_active=True))
-    ).order_by('chat_count')  # Sắp xếp theo số lượng cuộc trò chuyện
-
-    if not employees_with_chat_count.exists():
+    employees_chat = employees.annotate(chat_count=Count('employee_conversations', filter=Q(employee_conversations__is_active=True))
+    ).order_by('chat_count')
+    if not employees_chat.exists():
         return render(request, 'trangchu/hoithoai_detail.html')  # Hiển thị thông báo nếu không có nhân viên hỗ trợ
-
     # Chọn nhân viên rảnh nhất
-    receiver = employees_with_chat_count.first()
+    receiver = employees_chat.first()
 
-    # Kiểm tra xem đã có cuộc trò chuyện đang hoạt động giữa khách hàng và nhân viên này chưa
+    # Kiểm tra xem đã có cuộc trò chuyện trước đây chưa
     conversation = HoiThoai.objects.filter(customer=customer, employee=receiver, is_active=True).first()
     if not conversation:
-        # Tạo cuộc trò chuyện mới
+        # Tạo mới
         conversation = HoiThoai.objects.create(customer=customer, employee=receiver)
 
-    # Chuyển hướng đến hộp chat
     return redirect('chat_view', conversation_id=conversation.id)
-
-# View hiển thị cuộc trò chuyện
 
 def chat_view(request, conversation_id):
     # Lấy thông tin cuộc trò chuyện

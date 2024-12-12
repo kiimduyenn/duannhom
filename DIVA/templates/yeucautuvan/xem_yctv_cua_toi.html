@@ -12,69 +12,110 @@
     {% endif %}
 </div>
 
-<h1 class="table-title">Danh sách YCTV Của Bạn</h1>
+
 
 <div class="table-container">
 
-    {% if danh_sach_yctv %}
-    <table class="styled-table">
-        <thead>
-            <tr>
-                <th>Mã YCTV</th>
-                <th>Dịch Vụ</th>
-                <th>NV tư vấn</th>
-                <th>Trạng Thái</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for yctv in danh_sach_yctv %}
-            <tr>
-                <td>{{ yctv.MaYCTV }}</td>
-                <td>{{ yctv.MaDV }}</td>
-                <td>{{ yctv.MaNV }}</td>
-                <td><strong>{{ yctv.TrangThai }}</strong></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <p class="no-data">Bạn chưa có YCTV nào.</p>
-    {% endif %}
+      <div class="sidebar">
+         <a href="{% url 'profile' %}" style="color: black; text-decoration: none; font-size: 18px"><button class="tab-button">Thông tin cá nhân</button></a>
+         <a href="{% url 'lich_hen_khach_hang' %}" style="color: black; text-decoration: none; font-size: 18px"><button class="tab-button ">Lịch hẹn</button></a>
+         <a href="{% url 'yctv_cua_toi' %}" style="color: black; text-decoration: none; font-size: 18px"><button class="tab-button active">Yêu cầu tư vấn</button></a>
+         <a href="{% url 'khieu_nai_cua_toi' %}" style="color: black; text-decoration: none; font-size: 18px"><button class="tab-button">Khiếu nại</button></a>
+    </div>
+       <div style="width:100%; height:100%;">
+            <div class="table-title">Danh sách YCTV Của Bạn</div>
+        {% if danh_sach_yctv %}
+        <table class="styled-table">
+            <thead >
+                <tr>
+                    <th>Mã YCTV</th>
+                    <th>Dịch Vụ</th>
+                    <th>NV tư vấn</th>
+                    <th>Trạng Thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for yctv in danh_sach_yctv %}
+                <tr>
+                    <td>{{ yctv.MaYCTV }}</td>
+                    <td>{{ yctv.MaDV }}</td>
+                    <td>{{ yctv.MaNV }}</td>
+                    <td><strong>{{ yctv.TrangThai }}</strong></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="no-data">Bạn chưa có YCTV nào.</p>
+        {% endif %}
+       </div>
 </div>
 
 
 
 <style>
     body {
-        background-color: #f9f9f9;
+         background-color: #ffeed9;
         font-family: 'Arial', sans-serif;
 
     }
 
     .table-title {
-        font-size: 24px;
+        font-size: 32px;
         color: #BD8712;
-        text-align: center;
-        margin: 20px 0;
+        font-weight:600;
+        margin-bottom:20px;
+        text-align:center;
     }
 
     .table-container {
-        margin: 20px auto;
-        width: 80%;
-        max-width: 1000px;
+        width: 100%;
         overflow-x: auto;
         border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        background: #fff;
+        padding: 20px;
+        display: flex;
+        max-width: 1200px;
+        margin: 20px auto;
         padding: 20px;
     }
 
-    .styled-table {
+    .sidebar {
+            width: 20%;
+            margin-right: 20px;
+            margin-top:55px;
+     }
+
+    .tab-button {
+        display: block;
         width: 100%;
-        border-collapse: collapse;
+        padding: 10px 15px;
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
         text-align: left;
+        font-size: 18px;
+        color: #333;
+        cursor: pointer;
+        margin-bottom: 10px;
     }
 
+    .tab-button.active {
+        background-color: #BD8712;
+        color: white;
+    }
+    .styled-table {
+        height: 100%;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        text-align: left;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    table{
+    border-radius: 15px;
+    }
     .styled-table thead {
         background-color: #BD8712;
         color: white;

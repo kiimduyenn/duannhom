@@ -8,17 +8,17 @@
         align-items: center;
         margin: 0 auto; /* Đảm bảo nó nằm giữa */
         max-width: 1200px; /* Giới hạn chiều rộng */
-         margin-bottom: 40px;
+         margin-bottom: 20px;
+         gap:10px;
     }
     .search-input {
-        width: 50%;
-        padding: 16px 16px;
+        width: 40%;
         font-size: 16px;
-        border: none;
+        border: 0.1px solid #ddd;
         border-radius: 4px;
         outline: none;
         background-color: #fff;
-
+        padding: 10px 5px;
     }
 
     .search-input:focus {
@@ -27,7 +27,7 @@
     }
 
     .search-button {
-        padding: 16px 24px;
+        padding: 10px 24px;
         font-size: 16px;
         color: #ffffff;
         background-color: #c08c19;
@@ -37,9 +37,11 @@
     }
 
     .filter-box {
-        margin: 10px auto;
-        width: 70%;
-        max-width: 600px;
+        display:flex;
+        gap:50px;
+        align-item:center;
+        justify-content:center;
+        margin-bottom:20px;
     }
     .filter-box label {
         font-size: 16px;
@@ -48,20 +50,28 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        gap:10px;
+    }
+    .yctv_ctn{
+        margin: 20px auto;
+        width: 80%;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        padding: 20px;
+
     }
     body {
         font-family: Arial, sans-serif;
         background-color: #ffeed9;
-        margin: 0;
-        padding: 0;
     }
 
-    h1 {
+    h2 {
         text-align: center;
         color: #c08c19;
         margin-bottom: 30px;
-        font-size: 5rem;
-        margin-top: 40px;
+        font-size:30px;
+        margin:20px 0;
     }
 
     table {
@@ -69,24 +79,22 @@
         width: 100%;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         background-color: #fff;
-        border-radius: 15px;
         overflow: hidden;
+        font-size:16px;
     }
 
     th, td {
-        padding: 20px;
         text-align: center;
-        font-size: 1.2rem;
         border-bottom: 2px solid #ddd;
+        padding:10px;
+          font-size: 16px;
     }
 
     th {
         background-color: #c08c19;
         color: #ffffff;
         text-align: center;
-        font-size: 1.5rem;
         font-weight: bold;
-        padding: 30px;
     }
 
     tr:hover {
@@ -95,9 +103,9 @@
 
     select, button {
         padding: 8px 12px;
-        border: 1px solid #vvv;
+        border: 1px solid #ddd;
         border-radius: 4px;
-        font-size: 14px;
+        font-size: 16px;
     }
 
     select:focus, button:focus {
@@ -123,14 +131,39 @@
         margin: 0;
     }
 
-    .messages .alert {
-    font-size: 20px;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: #c08c19;
-    text-align: center;
-}
+    .messages {
+        list-style: none;
+        padding: 0;
+    }
 
+    .message {
+        padding: 15px;
+        margin: 5px;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 500;
+        box-shadow: 0 4px 10px rgb(0 0 0 / 38%);
+        transition: all 0.3s ease-in-out;
+        text-align:center;
+    }
+
+    .message.success {
+        background-color: #bd8712;
+        color: #fff;
+    }
+    .save{
+        background:#4CAF50;
+    }
+    .save:hover{
+        background:#45a049;
+    }
+
+    .delete{
+        background:#f44336;
+    }
+    .delete:hover{
+        background:#e53935;
+    }
 </style>
 {% if messages %}
     <div class="messages">
@@ -139,32 +172,22 @@
         {% endfor %}
     </div>
 {% endif %}
-<h1>Danh sách yêu cầu</h1>
-    <div class="action-buttons">
-    <button> <a href="{% url 'them_yctv_nv' %}" style="text-decoration: none; color: white " >Thêm yêu cầu</a> </button>
-    </div>
-    <form method="get" action="{% url 'ql_yctv' %}" class="d-flex justify-content-center mb-4">
+<h2>Danh sách yêu cầu</h2>
+
+ <div class="yctv_ctn">
+        <form method="get" action="{% url 'ql_yctv' %}" class="d-flex justify-content-center mb-4">
         <input
             type="text"
             name="search"
             class="search-input"
-            placeholder="Nhập mã YCTV để tìm kiếm"
+            placeholder="Nhập mã YCTV/ Tên KH để tìm kiếm"
             value="{{ search_query }}"
         >
         <button type="submit" class="search-button">Tìm kiếm</button>
     </form>
 <div class="filter-box">
-        <form method="GET">
-            <div>
-                <label for="dich_vu">Dịch vụ:</label>
-                <select name="dich_vu" id="dich_vu">
-                    <option value="">Tất cả</option>
-                    <option value="Chăm sóc da" {% if request.GET.dich_vu.ten == 'Chăm sóc da' %} selected {% endif %}>Chăm sóc da</option>
-                    <option value="Điêu khắc lông mày" {% if request.GET.dich_vu.ten == 'Điêu khắc lông mày' %} selected {% endif %}>Điêu khắc lông mày</option>
-                    <option value="Điều trị nám" {% if request.GET.dich_vu.ten == 'Điều trị nám' %} selected {% endif %}>Điều trị nám</option>
-                </select>
-            </div>
 
+        <form method="GET">
             <div>
                 <label for="trang_thai">Trạng Thái:</label>
                 <select name="trang_thai" id="trang_thai">
@@ -177,6 +200,9 @@
 
             <button type="submit">Lọc</button>
         </form>
+      <div class="action-buttons">
+    <button> <a href="{% url 'them_yctv_nv' %}" style="text-decoration: none; color: white " >Thêm yêu cầu</a> </button>
+    </div>
     </div>
 <form id="yctv-form" method="POST" action="{% url 'update_yctv' %}">
     {% csrf_token %}
@@ -220,16 +246,16 @@
                 </td>
                 <td>
                     <div class="action-btn">
-                        <button type="submit">Lưu</button>
-                        {% if user.is_staff %}
+                        <button type="submit" class="save">Lưu</button>
+                        {% if user.is_superuser %}
                         <form method="POST" action="{% url 'delete_yctv' %}">
                             {% csrf_token %}
                             <input type="hidden" name="MaYCTV" value="{{ yc.MaYCTV }}">
                             <input type="hidden" name="action" value="delete">
-                            <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa yêu cầu này?');">Xóa</button>
+                            <button class="delete" type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa yêu cầu này?');">Xóa</button>
                         </form>
                         {%else%}
-                            <span>Không có quyền xóa</span>
+                            --
                         {%endif%}
                     </div>
                 </td>
@@ -238,6 +264,7 @@
         </tbody>
     </table>
 </form>
+ </div>
 
 <script>
     function updateYCTV(maYCTV) {

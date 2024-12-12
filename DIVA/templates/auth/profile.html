@@ -3,9 +3,7 @@
 {% block content %}
 <body>
     <div class="profile-container">
-        <div class="profile-header">
-            <h1>Thông Tin Tài Khoản Cá Nhân</h1>
-        </div>
+
         {% if messages %}
         <div class="messages">
             {% for message in messages %}
@@ -13,22 +11,27 @@
             {% endfor %}
         </div>
         {% endif %}
-    </br>
         <div class="profile-content">
             <div class="sidebar">
-                <button class="tab-button active">Thông tin cá nhân</button>
+                <a href="{% url 'lich_su_sd' %}" style="color: black; text-decoration: none; font-size: 18px">
+                      <button class="tab-button active">Thông tin cá nhân</button>
+                </a>
                 {% if not is_staff %}
-                <button class="tab-button">
-                    <a href="{% url 'lich_su_sd' %}" style="color: black; text-decoration: none; font-size: 18px">Lịch sử sử dụng</a>
+                <a href="{% url 'lich_hen_khach_hang' %}" style="color: black; text-decoration: none; font-size: 18px">
+                    <button class="tab-button">
+                    Lịch hẹn
                 </button>
-                {% else %}
-                <button class="tab-button">
-                    <a href="{% url 'quan_ly_cv' %}" style="color: black; text-decoration: none; font-size: 18px">Quản lý công việc</a>
-                </button>
+                </a>
+                <a href="{% url 'yctv_cua_toi' %}" style="color: black; text-decoration: none; font-size: 18px"><button class="tab-button">Yêu cầu tư vấn</button></a>
+                <a href="{% url 'khieu_nai_cua_toi' %}" style="color: black; text-decoration: none; font-size: 18px"><button class="tab-button">Khiếu nại</button></a>
                 {% endif %}
             </div>
-
+            <div style="width:100%;">
+                <div class="profile-header">
+                    <span>Thông Tin Tài Khoản Cá Nhân</span>
+            </div>
             <div class="profile-details">
+
                 <div class="form-group">
                     <label>Họ và Tên:</label>
                     <input type="text" value="{{ profile.hoten }}" readonly>
@@ -51,7 +54,7 @@
                 </div>
                 <div class="form-group">
                     <label>Điểm tích lũy:</label>
-                    <input type="text" value="{{ profile.DiemTichLuy }}" readonly>
+                    <input type="text" value="{{ profile.DiemTichLuy.DiemTichLuy }}" readonly>
                 </div>
                 <button class="save-button">
                     <a href="{% url 'conversations' %}" style="color: white; text-decoration: none;">Lịch sử chat</a>
@@ -62,6 +65,7 @@
                 <button class="save-button">
                     <a href="{% url 'khoa_taikhoan' %}" style="color: white; text-decoration: none;">Khóa tài khoản</a>
                 </button>
+            </div>
             </div>
         </div>
     </div>
@@ -84,11 +88,15 @@
         margin: 0 auto;
         padding: 20px;
     }
+    .profile-header{
+     text-align: center;
+      margin-bottom:20px;
+    }
+    .profile-header span {
 
-    .profile-header h1 {
-        text-align: center;
         color: #BD8712;
-        font-size: 3rem;
+        font-size:32px;
+        font-weight:600;
     }
 
     .profile-content {
@@ -99,6 +107,7 @@
     .sidebar {
         width: 20%;
         margin-right: 20px;
+        margin-top:55px;
     }
 
     .tab-button {
@@ -120,7 +129,7 @@
     }
 
     .profile-details {
-        width: 80%;
+        width: 100%;
         background-color: white;
         padding: 20px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);

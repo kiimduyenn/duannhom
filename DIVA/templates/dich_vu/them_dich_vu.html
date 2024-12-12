@@ -3,113 +3,133 @@
 {% block content %}
 <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #ffeed9;
-        margin: 0;
-        padding: 0;
+        background-color: #f3f4f6;
+        font-family: 'Arial', sans-serif;
     }
 
-    h1 {
-        text-align: center;
-        color: #c08c19;
-        margin-bottom: 30px;
-        font-size: 4rem;
+    .complaint-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 20px;
     }
 
-    .form-container {
-        max-width: 600px;
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 30px;
+    .complaint-card {
+        background: #ffffff;
         border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
     }
 
-    .form-container input,
-    .form-container select,
-    .form-container textarea,
-    .form-container button {
+    .complaint-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #BD8712;
+        margin-bottom: 20px;
+    }
+
+    .complaint-form .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .complaint-form label {
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .complaint-form select,
+    .complaint-form input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .btn-submit {
         width: 100%;
         padding: 12px;
-        margin: 10px 0;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 1.1rem;
-    }
-
-    .form-container button {
-        background-color: #c08c19;
+        font-size: 16px;
         color: white;
+        background-color: #BD8712;
         border: none;
+        border-radius: 8px;
         cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
     }
 
-    .form-container button:hover {
-        background-color: #2980b9;
+    .btn-submit:hover {
+        background-color: #a87f10;
     }
 
-    .form-container a {
-        display: inline-block;
-        margin-top: 20px;
-        text-align: center;
-        font-size: 1.2rem;
-        color: #c08c19;
-        text-decoration: none;
-        border: 1px solid #c08c19;
-        padding: 10px 20px;
-        border-radius: 5px;
+    .complaint-form textarea,
+    .complaint-form select,
+    .complaint-form input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        resize: vertical;
+        transition: border-color 0.3s ease;
     }
 
-    .form-container a:hover {
-        background-color: #c08c19;
-        color: white;
+    .complaint-form textarea:focus,
+    .complaint-form select:focus,
+    .complaint-form input:focus {
+        border-color: #BD8712;
+    }
+    .btn-back {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #c08c19;
+    text-decoration: none;
+    border: 1px solid #c08c19;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
     }
 
-    @media screen and (max-width: 768px) {
-        h1 {
-            font-size: 3rem;
-        }
-
-        .form-container {
-            padding: 20px;
-        }
-
-        .form-container button {
-            font-size: 1rem;
-        }
+    .btn-back:hover {
+    background-color: #c08c19;
+    color: white;
     }
 </style>
 
-<h1>Thêm Dịch Vụ</h1>
+<div class="complaint-container">
+    <div class="complaint-card">
+        <h1 class="complaint-title">Thêm Dịch Vụ</h1>
+        <form method="post" class="complaint-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="ten">Tên Dịch Vụ</label>
+                {{ form.ten }}
+            </div>
 
-<div class="form-container">
-    <form method="post">
-        {% csrf_token %}
+            <div class="form-group">
+                <label for="giatien">Giá Tiền</label>
+                {{ form.giatien }}
+            </div>
 
-        <div>
-            <label for="MaDV">Mã Dịch Vụ</label>
-            {{ form.MaDV }}
-        </div>
+            <div class="form-group">
+                <label for="mota">Mô Tả</label>
+                {{ form.mota }}
+            </div>
 
-        <div>
-            <label for="ten">Tên Dịch Vụ</label>
-            {{ form.ten }}
-        </div>
+            <button type="submit" class="btn-submit">Lưu</button>
+        </form>
 
-        <div>
-            <label for="giatien">Giá Tiền</label>
-            {{ form.giatien }}
-        </div>
-
-        <div>
-            <label for="mota">Mô Tả</label>
-            {{ form.mota }}
-        </div>
-
-        <button type="submit">Lưu</button>
-    </form>
-
-    <a href="{% url 'danh_sach_dich_vu' %}">Quay lại</a>
+        <a href="{% url 'danh_sach_dich_vu' %}" class="btn-back">Quay lại</a>
+    </div>
 </div>
-
 {% endblock %}

@@ -11,6 +11,17 @@ class DichVu(models.Model):
     def __str__(self):
         return self.ten
 
+    def save(self, *args, **kwargs):
+        # Tạo MaDV tự động khi chưa có MaDV
+        if not self.MaDV:
+            last_dv = DichVu.objects.order_by('MaDV').last()  # Lấy bản ghi cuối cùng
+            if last_dv:
+                last_id = int(last_dv.MaDV[2:])  # Lấy số từ phần MaDV
+                self.MaDV = f"DV{last_id + 1:03d}"  # Tạo MaDV mới
+            else:
+                self.MaDV = "DV001"  # Mã đầu tiên là "DV001"
+        super().save(*args, **kwargs)
+
 class LichHen(models.Model):
     TrangThai_CHOICES = [
         ('pending', 'Chưa xử lý'),
@@ -98,7 +109,6 @@ class KhieuNai(models.Model):
     NgayXayRa = models.DateField()
     TrangThai = models.CharField(max_length=20, choices=TrangThai_CHOICES, default='Chưa xử lý')
     NgayTiepNhan = models.DateField(auto_now_add=True, null=True)
-    NguoiPhuTrach = models.CharField(max_length=100, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.MaKN:
@@ -124,7 +134,7 @@ class DiemTichLuy(models.Model):
     NgayTichDiem = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return f"User: {self.MaUser.hoten} - Điểm: {self.DiemTichLuy}"
+        return f"User: {self.MaUser} - Điểm: {self.DiemTichLuy}"
 
 
 class DichVuDaDung(models.Model):

@@ -1,166 +1,243 @@
 {% extends 'layout/admin.html' %}
 
 {% block content %}
+        {% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+        <div class="message {{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+<div>
+    <h1 class="table-title">Danh Sách Dịch Vụ</h1>
+
+    <div class="action-buttons">
+        <a href="{% url 'them_dich_vu' %}" class="btn">Thêm Dịch Vụ</a>
+    </div>
+
+    <div class="search-container">
+        <form method="get" action="" class="search-box">
+            <input type="search" name="q" placeholder="Nhập tên dịch vụ để tìm kiếm" class="search-bar" value="{{ request.GET.q }}">
+            <button type="submit" class="btn">Tìm</button>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Mã Dịch Vụ</th>
+                    <th>Tên Dịch Vụ</th>
+                    <th>Giá Tiền</th>
+                    <th>Ghi chú</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dichvu in dich_vu_list %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ dichvu.MaDV }}</td>
+                    <td>{{ dichvu.ten }}</td>
+                    <td>{{ dichvu.giatien|floatformat:0 }}</td>
+                    <td>{{ dichvu.mota }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <form method="POST" action="{% url 'cap_nhat_dich_vu' dichvu.MaDV %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="MaDV" value="{{ dichvu.MaDV }}">
+                                <button type="submit" class="btn action-link update-link">Sửa</button>
+                            </form>
+                            {% if user.is_superuser %}
+                            <form method="POST" action="{% url 'xoa_dich_vu' dichvu.MaDV %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="MaDV" value="{{ dichvu.MaDV }}">
+                                <button type="submit" class="btn action-link delete-link"
+                                    onclick="return confirm('Bạn có chắc chắn muốn xóa dịch vụ này?');">Xóa</button>
+                            </form>
+                            {%else%}
+                                --
+                            {%endif%}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #ffeed9;
-        margin: 0;
-        padding: 0;
-    }
-
-    h1 {
-        text-align: center;
-        color: #c08c19;
-        margin: 20px 0;
-        font-size: 36px;
-    }
-
-    table {
-        border-collapse: collapse;
-        width: 60%;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        background-color: #fff;
-        border-radius: 15px;
-        overflow: hidden;
-    }
-
-    th, td {
-        padding: 20px;
-        text-align: center;
-        font-size: 1.2rem;
-        border-bottom: 2px solid #ddd;
-    }
-
-    th {
-        background-color: #c08c19;
-        color: #ffffff;
-        font-size: 1.5rem;
-        font-weight: bold;
-        padding: 30px;
-    }
-
-    tr:hover {
         background-color: #f9f9f9;
+        font-family: 'Arial', sans-serif;
     }
 
-    button {
-        padding: 10px 15px;
-        background-color: #c08c19;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
+    .table-title {
+        font-size: 24px;
+        color: #BD8712;
+        text-align: center;
+        margin: 20px 0;
     }
 
-    button:hover {
-        background-color: #2980b9;
-    }
-
-    .action-btn {
-        display: flex;
-        gap: 10px;
-    }
-
-    @media screen and (max-width: 768px) {
-        th, td {
-            padding: 10px;
-        }
-
-        button {
-            font-size: 12px;
-            width: 100%;
-        }
-    }
     .action-buttons {
-        margin-bottom: 20px;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 20px;
     }
 
-     .btn {
+    .btn {
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
         padding: 10px 20px;
-        font-size: 1.2rem;
-        background-color: #c08c19;
-        color: white;
-        border: none;
         border-radius: 5px;
+        background-color: #BD8712;
+        color: #fff;
         cursor: pointer;
-        transition: background-color 0.3s;
+        transition: background-color 0.3s ease;
+        border: none;
     }
 
     .btn:hover {
-        background-color: #f39c12;
+        background-color: #b7790f;
     }
-    .search-container {
+
+    .search-box {
         margin: 20px auto;
         text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
+
     .search-bar {
         padding: 10px;
-        font-size: 1.2rem;
+        font-size: 16px;
         border: 1px solid #ddd;
         border-radius: 5px;
-        width: 50%;
-        max-width: 600px;
+        margin-right: 10px;
+        width: 60%;
+        max-width: 500px;
     }
+
+    .table-container {
+        margin: 20px auto;
+        width: 90%;
+        max-width: 1000px;
+        overflow-x: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        padding: 20px;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+    }
+
+    .styled-table thead {
+        background-color: #BD8712;
+        color: white;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+    }
+
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .styled-table th {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .styled-table td {
+        font-size: 16px;
+    }
+
+    .action-buttons form {
+        display: inline-block;
+        margin: 0;
+    }
+
+    .action-link {
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .update-link {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .delete-link {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .update-link:hover {
+        background-color: #45a049;
+    }
+
+    .delete-link:hover {
+        background-color: #e53935;
+    }
+
+.messages-container {
+    margin-top: 20px;
+    padding: 10px;
+}
+
+
+.message {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
 </style>
-
-<h1>Danh Sách Dịch Vụ</h1>
-    <div class="action-buttons">
-    <a href="{% url 'them_dich_vu' %}" class="btn">Thêm Dịch Vụ</a>
-    <a href="{% url 'tao_bai_viet' %}" class="btn">Tạo Bài Viết Dịch Vụ</a>
-    </div>
-<div class="search-container">
-    <center>
-        <form method="get" action="" style="display: flex; justify-content: center; align-items: center;">
-        <input type="search" name="q" placeholder="Nhập tên dịch vụ để tìm kiếm" class="search-bar" value="{{ request.GET.q }}">
-        <button type="submit" class="btn" style="margin-left: 10px;">Tìm</button>
-    </form>
-    </center>
-</div>
-
-</div>
-
-    {% csrf_token %}
-    <table>
-        <thead>
-            <tr>
-                <th>STT</th>
-                <th>Mã Dịch Vụ</th>
-                <th>Tên Dịch Vụ</th>
-                <th>Giá Tiền</th>
-                <th>Ghi chú</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for dichvu in dich_vu_list %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ dichvu.MaDV }}</td>
-                <td>{{ dichvu.ten }}</td>
-                <td>{{ dichvu.giatien|floatformat:0 }}</td>
-                <td>{{ dichvu.mota }}</td>
-                <td>
-                    <div class="action-btn">
-                        <form method="POST" action="{% url 'cap_nhat_dich_vu' dichvu.MaDV %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="MaDV" value="{{ dichvu.MaDV }}">
-                            <button type="submit">Sửa</button>
-                        </form>
-                        <form method="POST" action="{% url 'xoa_dich_vu' dichvu.MaDV %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="MaDV" value="{{ dichvu.MaDV }}">
-                            <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa dịch vụ này?');">Xóa</button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</form>
 {% endblock %}

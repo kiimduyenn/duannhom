@@ -41,7 +41,7 @@ class CapNhatLichHenForm(forms.ModelForm):
 class DichVuForm(forms.ModelForm):
     class Meta:
         model = DichVu
-        fields = ['MaDV', 'ten', 'giatien', 'mota']
+        fields = ['ten', 'giatien', 'mota']
 
 class YCTVForm(forms.ModelForm):
     class Meta:
@@ -83,7 +83,7 @@ class KhachHangForm(forms.ModelForm):
         model = Profile
         fields = ['MaUser','hoten', 'ngaysinh', 'sodienthoai', 'diachi', 'DiemTichLuy', 'conversation']
         widgets = {
-            'MaUser': forms.Select(attrs={'class': 'form-control'}),
+            'MaUser': forms.Select(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'hoten': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập họ tên'}),
             'ngaysinh': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'sodienthoai': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập số điện thoại'}),

@@ -18,15 +18,12 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         user = self.request.user
 
-        # Kiểm tra nếu là admin hoặc nhân viên
         if user.is_superuser or user.is_staff:
-            return reverse_lazy('trang_chu_ad')  # Trang dành cho admin/nhân viên
+            return reverse_lazy('trang_chu_ad')
         else:
-            return reverse_lazy('trang_chu_kh')  # Trang dành cho khách hàng
-        # Mặc định, chuyển hướng về trang khách hàng nếu không thuộc nhóm nào khác
-        return reverse_lazy('trang_chu_kh')
+            return reverse_lazy('profile')
+        return reverse_lazy('profile')
 
-# Hàm kiểm tra vai trò nhân viên hoặc admin
 def is_staff_or_admin(user):
     return user.is_staff or user.is_superuser
 def is_admin(user):
@@ -34,20 +31,17 @@ def is_admin(user):
 
 @user_passes_test(is_staff_or_admin)
 def dskhachhang(request):
-    query = request.GET.get('search', '')  # Lấy giá trị tìm kiếm từ thanh tìm kiếm
+    query = request.GET.get('search', '')
 
-    # Lấy danh sách Profile với VaiTro là "Khách hàng" và không bị khóa
     profiles = Profile.objects.filter(vaitro='Khách hàng', is_locked=False)
 
     if query:
-        # Thêm logic tìm kiếm nếu có từ khóa
         profiles = profiles.filter(
             Q(hoten__icontains=query) |
             Q(sodienthoai__icontains=query) |
             Q(diachi__icontains=query)
         )
 
-    # Kiểm tra nếu không có kết quả tìm kiếm
     no_results = profiles.count() == 0
 
     return render(request, 'quanlykhachhang/dskhachhang.html', {
@@ -59,31 +53,25 @@ def dskhachhang(request):
 @user_passes_test(is_staff_or_admin)
 def xemthongtinkhachhang(request, username):
     try:
-        # Lấy thông tin người dùng và profile của họ
         user = get_object_or_404(User, username=username)
         profile = Profile.objects.get(MaUser=user)
 
-        # Trả về thông tin khách hàng cho template
         return render(request, 'quanlykhachhang/thongtinkhachhang.html', {'user': user, 'profile': profile})
     except User.DoesNotExist:
-        # Nếu không tìm thấy người dùng
         messages.error(request, "User không tồn tại")
         return HttpResponse("User không tồn tại", status=404)
     except Profile.DoesNotExist:
-        # Nếu không tìm thấy profile
         messages.error(request, "Profile không tồn tại")
         return HttpResponse("Profile không tồn tại", status=404)
 
 @user_passes_test(is_staff_or_admin)
 def sua_themthongtinkhachhang(request, username=None):
-    # Nếu id được truyền, lấy thông tin khách hàng hiện có (sửa)
     if username:
         user = get_object_or_404(User, username=username, is_staff=False)
         khach_hang = get_object_or_404(Profile, MaUser=user)
         form = KhachHangForm(instance=khach_hang)
         action = "Cập Nhật"
     else:
-        # Nếu không có id, tạo mới (thêm)
         khach_hang = None
         form = KhachHangForm()
         action = "Thêm"
@@ -160,11 +148,10 @@ def lock_account(request):
     else:
         layout = 'layout/customer.html'
     try:
-        # Sử dụng MaUser thay cho user
         user_profile = Profile.objects.get(MaUser=request.user)
     except Profile.DoesNotExist:
         messages.error(request, "Không tìm thấy thông tin tài khoản của bạn.")
-        return redirect("dang-nhap")
+        return redirect("dang_nhap")
 
     if request.method == "POST":
         lock_reason = request.POST.get("lock_reason", "").strip()
@@ -173,17 +160,14 @@ def lock_account(request):
             messages.error(request, "Vui lòng nhập lý do khóa tài khoản.")
             return redirect("khoa_taikhoan")
 
-        # Cập nhật thông tin tài khoản
         user_profile.is_locked = True
         user_profile.lock_reason = lock_reason
         user_profile.save()
 
-        # Đăng xuất người dùng
         logout(request)
 
-        # Thông báo thành công và chuyển hướng về trang đăng nhập
         messages.success(request, "Tài khoản của bạn đã bị khóa thành công.")
-        return redirect("auth/dang-nhap")
+        return redirect("dang_nhap")
 
     return render(request, "auth/khoa_taikhoan.html", {"user_profile": user_profile, 'layout': layout})
 
@@ -290,21 +274,3 @@ def xoanhanvien(request):
         except ValueError:
             messages.error(request, "Dữ liệu không hợp lệ. Vui lòng thử lại.")
         return redirect('ds_nhan_vien')
-
-@login_required
-def quan_ly_cv(request, username=None):
-    if username:
-        # Admin xem lịch sử của khách hàng cụ thể
-        if request.user.is_superuser:
-            user = get_object_or_404(User, username=username)
-            layout = 'layout/admin.html'
-            lich_su = LichHen.objects.filter(MaNV=user).order_by('-thoigiandangki')
-        else:
-            messages.error(request, "Bạn không có quyền truy cập vào lịch sử này.")
-            return redirect('trang_chu_ad')  # Điều hướng về trang khách hàng
-    else:
-        # Người dùng xem lịch sử của chính mình
-        layout = 'layout/admin.html'
-        lich_su = LichHen.objects.filter(MaNV=request.user).order_by('-thoigiandangki')
-
-    return render(request, 'auth/quan_ly_cv.html', {'lich_su': lich_su, 'layout': layout})

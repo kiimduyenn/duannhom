@@ -1,16 +1,62 @@
 {% extends 'layout/customer.html' %}
-
 {% block content %}
+<div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message {{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+<div class="form-wrapper">
+    <div class="form-container">
+        <h1 class="form-title">Đăng ký lịch hẹn</h1>
+        <form method="post">
+            {% csrf_token %}
+
+            <label for="MaDV">Chọn Dịch Vụ:</label>
+            <select name="MaDV" id="MaDV" required>
+                {% for dich_vu in danh_sach_dich_vu %}
+                <option value="{{ dich_vu.MaDV }}">{{ dich_vu.ten }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="thoigiandangki">Chọn Ngày Đăng Ký:</label>
+            <input type="date" name="thoigiandangki" id="thoigiandangki" required>
+
+            <button type="submit">Đăng Ký</button>
+        </form>
+        <p class="info-text">Vui lòng chọn dịch vụ và nhấn "Đăng Ký" để đặt lịch hẹn.</p>
+    </div>
+</div>
+
 <style>
     body {
-        background-color: #f9f9f9;
+        background-color: #ffeed9;
         font-family: 'Arial', sans-serif;
     }
 
+    .form-title {
+        font-size: 28px;
+        color: #BD8712;
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .form-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px auto;
+        width: 100%;
+        max-width: 1200px;
+    }
+
     .form-container {
-        margin: 40px auto;
-        width: 90%;
-        max-width: 600px;
+        width: 100%;
+        max-width: 500px;
         border-radius: 10px;
         background-color: #fff;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -18,76 +64,58 @@
         text-align: center;
     }
 
-    .form-title {
-        font-size: 24px;
-        color: #BD8712;
-        margin-bottom: 20px;
-    }
-
-    label {
+    .form-container label {
         display: block;
         font-weight: bold;
-        margin: 10px 0 5px;
+        margin: 15px 0 5px;
         text-align: left;
-    }
-
-    select, input[type="date"], button {
-        width: 100%;
-        padding: 12px;
-        margin: 10px 0;
-        border-radius: 5px;
-        border: 1px solid #ccc;
         font-size: 16px;
     }
 
-    select {
-        background-color: #fff;
+    .form-container select, .form-container input[type="date"] {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+        text-align: left;
     }
 
-    input[type="date"] {
-        background-color: #fff;
-    }
-
-    button {
+    .form-container button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        border-radius: 5px;
         background-color: #BD8712;
         color: white;
         font-weight: bold;
         border: none;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        font-size: 16px;
     }
 
-    button:hover {
+    .form-container button:hover {
         background-color: #a57110;
     }
+
+    .form-container textarea:focus,
+    .form-container select:focus,
+    .form-container input:focus {
+        border-color: #BD8712; /* Màu sắc khi trường được chọn */
+    }
+
+    .form-container select option {
+    font-size: 15px;
+    background-color: #ffeed9;
+}
 
     .info-text {
         font-size: 14px;
         color: #666;
-        margin-top: 10px;
-    }
-
-    .form-container select, .form-container input[type="date"] {
-        text-align: left;
+        margin-top: 20px;
     }
 </style>
 
-<div class="form-container">
-    <h2 class="form-title">Đăng Ký Lịch Hẹn</h2>
-    <form method="post">
-        {% csrf_token %}
-        <label for="MaDV">Chọn Dịch Vụ:</label>
-        <select name="MaDV" id="MaDV" required>
-            {% for dich_vu in danh_sach_dich_vu %}
-            <option value="{{ dich_vu.MaDV }}">{{ dich_vu.ten }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="thoigiandangki">Chọn Ngày Đăng Ký:</label>
-        <input type="date" name="thoigiandangki" id="thoigiandangki" required>
-
-        <button type="submit">Đăng Ký</button>
-    </form>
-    <p class="info-text">Vui lòng chọn dịch vụ và nhấn "Đăng Ký" để đặt lịch hẹn.</p>
-</div>
 {% endblock %}

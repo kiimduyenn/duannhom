@@ -11,12 +11,18 @@
     {% endif %}
 </div>
 
-<h1 class="table-title">Danh sách Khiếu Nại Của Bạn</h1>
-
 <div class="table-container">
-
+       <div class="sidebar">
+         <a href="{% url 'profile' %}" style="color: black; text-decoration: none; font-size: 18px"><button class="tab-button">Thông tin cá nhân</button></a>
+         <a href="{% url 'lich_hen_khach_hang' %}" style="color: black; text-decoration: none; font-size: 18px"><button class="tab-button ">Lịch hẹn</button></a>
+         <a href="{% url 'yctv_cua_toi' %}" style="color: black; text-decoration: none; font-size: 18px"><button class="tab-button">Yêu cầu tư vấn</button></a>
+         <a href="{% url 'khieu_nai_cua_toi' %}" style="color: black; text-decoration: none; font-size: 18px"><button class="tab-button active">Khiếu nại</button></a>
+    </div>
+      <div style="height:100%;width:100%;">
+          <div class="table-title">Danh sách Khiếu Nại Của Bạn</div>
     {% if danh_sach_khieu_nai %}
     <table class="styled-table">
+
         <thead>
             <tr>
                 <th>Mã Khiếu Nại</th>
@@ -37,7 +43,7 @@
                 <td>{{ khieunai.NgayXayRa|date:"d/m/Y" }}</td>
                 <td>{{ khieunai.NgayTiepNhan|date:"d/m/Y" }}</td>
                 <td><strong>{{ khieunai.TrangThai }}</strong></td>
-                <td>{{ khieunai.NguoiPhuTrach|default:'Chưa có' }}</td>
+                <td>{{ khieunai.MaNV.hoten|default:'Chưa có' }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -45,39 +51,68 @@
     {% else %}
     <p class="no-data">Bạn chưa có khiếu nại nào.</p>
     {% endif %}
+      </div>
 </div>
-
-
 
 <style>
     body {
-        background-color: #f9f9f9;
+        background-color: #ffeed9;
         font-family: 'Arial', sans-serif;
 
     }
 
     .table-title {
-        font-size: 24px;
+        font-size: 32px;
         color: #BD8712;
-        text-align: center;
-        margin: 20px 0;
+        margin-bottom:20px;
+        font-weight:600;
+        text-align:center;
     }
 
     .table-container {
-        margin: 20px auto;
-        width: 80%;
-        max-width: 1000px;
+        width: 100%;
         overflow-x: auto;
         border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        background: #fff;
+        padding: 20px;
+        display: flex;
+        margin-top: 20px;
+        max-width: 1200px;
+        margin: 20px auto;
         padding: 20px;
     }
+     .sidebar {
+            width: 20%;
+            margin-right: 20px;
+            margin-top:55px;
+     }
 
-    .styled-table {
+    .tab-button {
+        display: block;
         width: 100%;
-        border-collapse: collapse;
+        padding: 10px 15px;
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
         text-align: left;
+        font-size: 18px;
+        color: #333;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .tab-button.active {
+        background-color: #BD8712;
+        color: white;
+    }
+    .styled-table {
+        height: 100%;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        text-align: left;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        border-radius: 15px;
+        overflow: hidden;
     }
 
     .styled-table thead {

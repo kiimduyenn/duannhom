@@ -7,6 +7,7 @@
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"/>
     <meta name="theme-color" content="#BD8712">
     <title>Viện thẩm mỹ DIVA</title>
+      <link rel="icon" href="https://w.ladicdn.com/5d070c039197745e067c5e3d/cropped-favicon-32x32-20230711022124-lwvgc.png"/>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/fontawesome-free-6.7.1/css/all.min.css' %}">
 </head>
@@ -21,11 +22,6 @@
                     <ul id="main-menu">
                         <li><a href="{% url 've_chung_toi' %}">Về chúng tôi</a></li>
                         <li><a href="{% url 'danh_sach_bai_viet' %}">Dịch vụ</a>
-                            <ul class="sub-menu">
-                                <li><a href="#">Chăm sóc da</a></li>
-                                <li><a href="#">Điều trị nám</a></li>
-                                <li><a href="#">Điêu khắc chân mày</a></li>
-                            </ul>
                         </li>
                         <li><a href="{% url 'yeu_cau_tu_van' %}">Đăng ký tư vấn</a></li>
                         <li><a href="{% url 'dang_ky_lich_hen' %}">Đặt lịch</a></li>
@@ -41,8 +37,6 @@
                                 </a>
                                 <ul class="sub-menu">
                                     <li><a href="{% url 'profile' %}">Quản lý tài khoản</a></li>
-                                    <li><a href="{% url 'lich_su_sd' %}">Lịch sử sử dụng</a></li>
-                                    <li><a href="{% url 'lich_hen_khach_hang' %}">Lịch hẹn của tôi</a></li>
                                     <li>
                                         <form method="POST" action="{% url 'dang_xuat' %}" class="logout-form">
                                             {% csrf_token %}
@@ -68,7 +62,6 @@
         </div>
 
         {% block content%}
-        <h1>Welcome to Bookr!</h1>
         {% endblock %}
         <footer class="footer">
             <div class="footer-container">
@@ -77,7 +70,7 @@
                     <p class="footer-description">Viện thẩm mỹ DIVA luôn nỗ lực không ngừng nhằm mang đến dịch vụ hoàn hảo nhất cho khách hàng.</p>
                     <img src="{% static 'img/banner.jpg' %}" alt="DIVA Banner" class="footer-banner" />
                 </div>
-            <div class="footer-section" >
+            <div class="footer-section contact-section" >
                 <h3>Thông tin liên hệ</h3>
                     <ul>
                         <li><i class="icon-contact fa-solid fa-phone" style="color: #BD8712;"></i><strong> Hotline:</strong> <a href="tel:19002222">1900 2222</a></li>
@@ -109,7 +102,7 @@
                 <li><a href="https://www.google.com/maps?q=222+Phan+Châu+Trinh,+P.+Nam+Dương,+Q.+Hải+Châu,+TP.+Đà+Nẵng" target="_blank">Xem bản đồ đường đi</a></li>
                 </ul>
             <br>
-            <a href="#" class="btn-appointment">Đặt lịch hẹn ngay</a>
+            <a href="/lich-hen/dang-ky/" class="btn-appointment">Đặt lịch hẹn ngay</a>
             </div>
             </div><br><br> <hr style="border-top: 2px solid #BD8712; margin: 0px 0;">
             <br>

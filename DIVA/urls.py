@@ -43,8 +43,6 @@ urlpatterns = ([
     path('khoa-taikhoan/', viewshuyen.lock_account, name='khoa_taikhoan'),
     path('dang-nhap/', CustomLoginView.as_view(template_name='auth/dang_nhap.html'), name='dang_nhap'),
     path('lich_su_sd/', viewshuyen.lich_su_sd, name='lich_su_sd'),
-    path('quan_ly_cv/<str:username>/', viewshuyen.quan_ly_cv, name='quan_ly_cv'),
-    path('quan_ly_cv/', viewshuyen.quan_ly_cv, name='quan_ly_cv'),
     path('lich_su_sd/<str:username>/', viewshuyen.lich_su_sd, name='lich_su_kh'),
     path('ad/ds-nhan-vien/', viewshuyen.dsnhanvien, name='ds_nhan_vien'),
     path('ad/thong-tin-nhan-vien/<str:username>/', viewshuyen.xemthongtinnhanvien, name='thong_tin_nhan_vien'),
@@ -54,7 +52,6 @@ urlpatterns = ([
 
     path('them-khieu-nai/', viewsnhi.them_khieu_nai, name='them_khieu_nai'),
     path('ad/xem-khieu-nai/', viewsnhi.xem_khieu_nai, name='xem_khieu_nai'),
-    path('khieu-nai/<str:pk>/cap-nhat/', viewsnhi.cap_nhat_khieu_nai, name='cap_nhat_khieu_nai'),
     path('khieu-nai/<str:pk>/xoa/', viewsnhi.xoa_khieu_nai, name='xoa_khieu_nai'),
     path('khieu-nai/chi-tiet/<str:pk>/', viewsnhi.chi_tiet_khieu_nai, name='chi_tiet_khieu_nai'),
     path('diem-tich-luy/', viewsnhi.diem_tich_luy, name='diem_tich_luy'),

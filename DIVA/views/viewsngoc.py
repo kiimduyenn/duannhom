@@ -75,9 +75,15 @@ def tao_bai_viet(request):
         form = BaiVietForm()
     return render(request, 'dich_vu/tao_bai_viet.html', {'form': form})
 
+
 def danh_sach_bai_viet(request):
-    bai_viet_list = BaiViet.objects.order_by('-ngay_tao')  # Sắp xếp bài viết theo ngày tạo giảm dần
-    return render(request, 'dich_vu/danh_sach_bai_viet.html', {'bai_viet_list': bai_viet_list})
+    query = request.GET.get('q', '')  # Lấy giá trị từ trường tìm kiếm 'q', mặc định là chuỗi rỗng
+    if query:
+        bai_viet_list = BaiViet.objects.filter(tieu_de__icontains=query).order_by('-ngay_tao')
+    else:
+        bai_viet_list = BaiViet.objects.order_by('-ngay_tao')
+
+    return render(request, 'dich_vu/danh_sach_bai_viet.html', {'bai_viet_list': bai_viet_list, 'query': query})
 
 
 def process_docx(file_path):

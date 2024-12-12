@@ -3,97 +3,126 @@
 {% block content %}
 <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #ffeed9;
-        margin: 0;
-        padding: 0;
+        background-color: #f3f4f6;
+        font-family: 'Arial', sans-serif;
     }
 
-    h1 {
-        text-align: center;
-        color: #c08c19;
-        margin-bottom: 30px;
-        font-size: 4rem;
+    .complaint-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 20px;
     }
 
-    .form-container {
-        max-width: 800px;
-        margin: 50px auto;
-        background-color: #fff;
-        padding: 30px;
+    .complaint-card {
+        background: #ffffff;
         border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        width: 100%;
+        max-width: 800px;
+        text-align: center;
     }
 
-    .form-container input,
-    .form-container select,
-    .form-container textarea,
-    .form-container button {
+    .complaint-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #BD8712;
+        margin-bottom: 20px;
+    }
+
+    .complaint-form .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .complaint-form label {
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .complaint-form select,
+    .complaint-form input,
+    .complaint-form textarea {
         width: 100%;
         padding: 12px;
-        margin: 10px 0;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 1.1rem;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        resize: vertical;
+        transition: border-color 0.3s ease;
     }
 
-    .form-container button {
-        background-color: #c08c19;
+    .complaint-form input:focus,
+    .complaint-form textarea:focus,
+    .complaint-form select:focus {
+        border-color: #BD8712;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
         color: white;
+        background-color: #BD8712;
         border: none;
+        border-radius: 8px;
         cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
     }
 
-    .form-container button:hover {
-        background-color: #2980b9;
+    .btn-submit:hover {
+        background-color: #a87f10;
     }
 
-    .form-container a {
+    .btn-back {
         display: inline-block;
         margin-top: 20px;
-        text-align: center;
         font-size: 1.2rem;
-        color: #c08c19;
+        color: #BD8712;
         text-decoration: none;
-        border: 1px solid #c08c19;
+        border: 1px solid #BD8712;
         padding: 10px 20px;
-        border-radius: 5px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
     }
 
-    .form-container a:hover {
-        background-color: #c08c19;
+    .btn-back:hover {
+        background-color: #BD8712;
         color: white;
-    }
-
-    /* In đậm các label */
-    label {
-        font-weight: bold;
     }
 </style>
 
-<h1>Cập nhật Dịch Vụ</h1>
+<div class="complaint-container">
+    <div class="complaint-card">
+        <h1 class="complaint-title">Cập nhật dịch vụ</h1>
+        <form method="post" action="{% url 'cap_nhat_dich_vu' dich_vu.MaDV %}" class="complaint-form">
+            {% csrf_token %}
 
-<div class="form-container">
-    <!-- Form chỉnh sửa dịch vụ -->
-    <form method="post" action="{% url 'cap_nhat_dich_vu' dich_vu.MaDV %}">
-    {% csrf_token %}
-        <label for="id_MaDV">Mã Dịch Vụ:</label>
-    <input type="text" name="MaDV" id="id_MaDV" value="{{ form.MaDV.value }}" required>
+            <div class="form-group">
+                <label for="id_ten">Tên Dịch Vụ:</label>
+                <input type="text" name="ten" id="id_ten" value="{{ dich_vu.ten }}" required>
+            </div>
 
-    <label for="id_ten">Tên Dịch Vụ:</label>
-    <input type="text" name="ten" id="id_ten" value="{{ dich_vu.ten }}" required>
+            <div class="form-group">
+                <label for="id_giatien">Giá Tiền:</label>
+                <input type="number" name="giatien" id="id_giatien" value="{{ dich_vu.giatien }}" required>
+            </div>
 
-    <label for="id_giatien">Giá Tiền:</label>
-    <input type="number" name="giatien" id="id_giatien" value="{{ dich_vu.giatien }}" required>
+            <div class="form-group">
+                <label for="id_mota">Mô Tả:</label>
+                <textarea name="mota" id="id_mota" rows="4" required>{{ dich_vu.mota }}</textarea>
+            </div>
 
-    <label for="id_mota">Mô Tả:</label>
-    <textarea name="mota" id="id_mota" rows="4" required>{{ dich_vu.mota }}</textarea>
+            <button type="submit" class="btn-submit">Lưu</button>
+        </form>
 
-    <!-- Nút Cập nhật -->
-    <button type="submit">Cập nhật</button>
-
-    <!-- Nút Quay lại -->
-    <a href="{% url 'danh_sach_dich_vu' %}" class="btn">Quay lại</a>
-</form>
+        <a href="{% url 'danh_sach_dich_vu' %}" class="btn-back">Quay lại</a>
+    </div>
 </div>
 {% endblock %}
