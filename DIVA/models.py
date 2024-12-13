@@ -202,8 +202,6 @@ class Profile(models.Model):
     vaitro = models.CharField(max_length=20, choices=VaiTro_CHOICES, default='Khách hàng')
     is_locked = models.BooleanField(null=True, blank=True,default=False)
     lock_reason = models.TextField(null=True, blank=True)
-    DiemTichLuy = models.ForeignKey(DiemTichLuy, on_delete=models.CASCADE,null=True,
-                                     blank=True)
     conversation = models.ForeignKey(HoiThoai, related_name="hoithoai", on_delete=models.CASCADE, null=True,
                                      blank=True, default=None)
 
