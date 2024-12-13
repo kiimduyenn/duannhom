@@ -131,7 +131,6 @@ class KhieuNai(models.Model):
 class DiemTichLuy(models.Model):
     MaUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='diem_tich_luy')
     DiemTichLuy = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    NgayTichDiem = models.DateField(default=timezone.now)
 
     def __str__(self):
         return f"User: {self.MaUser} - Điểm: {self.DiemTichLuy}"
