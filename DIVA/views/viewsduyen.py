@@ -22,7 +22,7 @@ def is_admin(user):
 def themyctv(request):
     if request.user.is_superuser or request.user.is_staff:
         layout = 'layout/admin.html'
-        h1='Thêm Yêu Cầu Tư Vấn'
+        h1='Thêm YCTV'
     else:
         layout = 'layout/customer.html'
         h1='Đăng Ký Nhận Tư Vấn'
