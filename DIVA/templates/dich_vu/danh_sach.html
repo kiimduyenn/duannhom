@@ -2,7 +2,7 @@
 
 {% block content %}
         {% if messages %}
-    <div class="messages-container">
+    <div>
         {% for message in messages %}
         <div class="message {{ message.tags }}">
             {{ message }}
@@ -13,18 +13,22 @@
 <div>
     <h1 class="table-title">Danh Sách Dịch Vụ</h1>
 
-    <div class="action-buttons">
-        <a href="{% url 'them_dich_vu' %}" class="btn">Thêm Dịch Vụ</a>
-    </div>
-
-    <div class="search-container">
-        <form method="get" action="" class="search-box">
-            <input type="search" name="q" placeholder="Nhập tên dịch vụ để tìm kiếm" class="search-bar" value="{{ request.GET.q }}">
-            <button type="submit" class="btn">Tìm</button>
-        </form>
-    </div>
-
     <div class="table-container">
+
+        <div class="search-container">
+            <form method="get" action="" class="search-box">
+                <input type="search" name="q" placeholder="Nhập tên dịch vụ để tìm kiếm"
+                       class="search-bar" value="{{ request.GET.q }}">
+                <button type="submit" class="btn">Tìm</button>
+            </form>
+        </div>
+
+        <div style="text-align: right; ">
+            <button class="action-add">
+                <a href="{% url 'them_dich_vu' %}" style="font-size: 16px;">Thêm Dịch Vụ</a>
+            </button>
+        </div>
+
         <table class="styled-table">
             <thead>
                 <tr>
@@ -51,20 +55,16 @@
                                 <input type="hidden" name="MaDV" value="{{ dichvu.MaDV }}">
                                 <button type="submit" class="btn action-link update-link">Sửa</button>
                             </form>
-                            {% if user.is_superuser %}
                             <form method="POST" action="{% url 'xoa_dich_vu' dichvu.MaDV %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="MaDV" value="{{ dichvu.MaDV }}">
                                 <button type="submit" class="btn action-link delete-link"
                                     onclick="return confirm('Bạn có chắc chắn muốn xóa dịch vụ này?');">Xóa</button>
                             </form>
-                            {%else%}
-                                --
-                            {%endif%}
                         </div>
                     </td>
                 </tr>
-                {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
     </div>
@@ -239,6 +239,7 @@
         cursor: pointer;
         float: right;
         border: none;
+
     }
 
     .action-add a {
