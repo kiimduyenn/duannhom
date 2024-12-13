@@ -12,10 +12,7 @@
     {% endif %}
 <div>
     <h1 class="table-title">Danh Sách Dịch Vụ</h1>
-
-    <div class="action-buttons">
-        <a href="{% url 'them_dich_vu' %}" class="btn">Thêm Dịch Vụ</a>
-    </div>
+    <div class="table-container">
 
     <div class="search-container">
         <form method="get" action="" class="search-box">
@@ -23,8 +20,12 @@
             <button type="submit" class="btn">Tìm</button>
         </form>
     </div>
+    <div style="text-align: right; ">
+            <button class="action-add">
+                <a href="{% url 'them_dich_vu' %}" style="font-size: 16px;">Thêm Dịch Vụ</a>
+            </button>
+        </div>
 
-    <div class="table-container">
         <table class="styled-table">
             <thead>
                 <tr>
@@ -239,6 +240,7 @@
         cursor: pointer;
         float: right;
         border: none;
+
     }
 
     .action-add a {

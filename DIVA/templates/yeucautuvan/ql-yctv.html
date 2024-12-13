@@ -249,6 +249,7 @@
                 </td>
                 <td>
                     <div class="action-btn">
+                        <input type="hidden" name="MaYCTV" value="{{ yc.MaYCTV }}">
                         <button type="submit" class="save">Lưu</button>
                         {% if user.is_superuser %}
                         <form method="POST" action="{% url 'delete_yctv' %}">

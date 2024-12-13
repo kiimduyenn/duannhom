@@ -11,6 +11,10 @@
             {% endfor %}
         </div>
         {% endif %}
+        <div class="profile-container">
+        <div class="profile-header">
+            <h1>Thông Tin Tài Khoản Cá Nhân</h1>
+        </div>
         <div class="profile-content">
             <div class="sidebar">
                 <a href="{% url 'lich_su_sd' %}" style="color: black; text-decoration: none; font-size: 18px">
@@ -26,10 +30,7 @@
                 <a href="{% url 'khieu_nai_cua_toi' %}" style="color: black; text-decoration: none; font-size: 18px"><button class="tab-button">Khiếu nại</button></a>
                 {% endif %}
             </div>
-            <div style="width:100%;">
-                <div class="profile-header">
-                    <span>Thông Tin Tài Khoản Cá Nhân</span>
-            </div>
+
             <div class="profile-details">
 
                 <div class="form-group">
@@ -64,9 +65,11 @@
                 <button class="save-button">
                     <a href="{% url 'sua_profile' %}" style="color: white; text-decoration: none;">Sửa thông tin</a>
                 </button>
+                {% if not user.is_staff %}
                 <button class="save-button">
                     <a href="{% url 'khoa_taikhoan' %}" style="color: white; text-decoration: none;">Khóa tài khoản</a>
                 </button>
+                {% endif %}
             </div>
             </div>
         </div>
@@ -78,27 +81,17 @@
         font-family: 'Arial', sans-serif;
         background-color: #ffeed9;
     }
-    h1 {
-        text-align: center;
-        color: #c08c19;
-        margin-bottom: 30px;
-        font-size: 4rem;
-        margin-top: 40px;
-    }
+
     .profile-container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
     }
-    .profile-header{
-     text-align: center;
-      margin-bottom:20px;
-    }
-    .profile-header span {
 
+    .profile-header h1 {
+        text-align: center;
         color: #BD8712;
-        font-size:32px;
-        font-weight:600;
+        font-size: 32px;
     }
 
     .profile-content {
@@ -109,20 +102,20 @@
     .sidebar {
         width: 20%;
         margin-right: 20px;
-        margin-top:55px;
     }
 
     .tab-button {
         display: block;
-        width: 100%;
+        width: 80%;
         padding: 10px 15px;
         background-color: #f5f5f5;
         border: 1px solid #ddd;
+        border-radius: 5px;
         text-align: left;
         font-size: 18px;
         color: #333;
         cursor: pointer;
-        margin-bottom: 10px;
+        margin: 0 15px 10px 80px;
     }
 
     .tab-button.active {
@@ -131,11 +124,12 @@
     }
 
     .profile-details {
-        width: 100%;
+        width: 50%;
         background-color: white;
         padding: 20px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
+        margin-left: 45px;
     }
 
     .form-group {
@@ -145,17 +139,19 @@
     .form-group label {
         display: block;
         font-weight: bold;
-        margin-bottom: 5px;
+        margin: 0 10px 5px;
+        font-size: 16px;
     }
 
     .form-group input {
-        width: calc(100% - 40px);
+        width: 95%;
         padding: 10px;
-        font-size: 14px;
+        font-size: 15px;
         border: 1px solid #ddd;
         border-radius: 5px;
         background-color: #F9F9F9;
         color: #333;
+        margin: 0 10px 5px;
     }
 
     .save-button {
@@ -163,12 +159,11 @@
         background-color: #BD8712;
         color: white;
         padding: 10px 20px;
-        font-size: 18px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        margin-top: 20px;
-        width: 100%;
+        margin: 0 auto 15px;
+        width: 150px;
         text-align: center;
     }
 
@@ -176,7 +171,8 @@
         background-color: #a5740f;
         color: white;
     }
-       .messages {
+
+    .messages {
         list-style: none;
         padding: 0;
     }
@@ -190,12 +186,10 @@
         box-shadow: 0 4px 10px rgb(0 0 0 / 38%);
         transition: all 0.3s ease-in-out;
         text-align:center;
-    }
-
-    .message.success {
         background-color: #bd8712;
         color: #fff;
     }
+
 </style>
 
 {% endblock %}

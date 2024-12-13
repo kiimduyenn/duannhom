@@ -73,6 +73,21 @@
         display: inline-block;
     }
 
+    .action-add {
+        display: inline-block;
+        background-color: #BD8712;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        text-align: center;
+        margin: 0px 0px 10px 0;
+        width: auto;
+        cursor: pointer;
+        float: right;
+        border: none;
+    }
+
     .update-link {
         color: white;
         background-color: #4CAF50;
@@ -119,7 +134,7 @@
         font-weight: 500;
         box-shadow: 0 4px 10px rgb(0 0 0 / 38%);
         transition: all 0.3s ease-in-out;
-        text-align:center;
+        text-align: center;
     }
 
     .message.success {
@@ -187,12 +202,9 @@
             <button type="submit">Tìm kiếm</button>
         </form>
     </div>
-
-
     <br>
-
     {% if no_results %}
-    <div style="text-align: center; color: black; font-size: 1.2em;">
+    <div style="text-align: center; color: black; font-size: 16px;">
         Không tìm thấy thông tin phù hợp với từ khóa "{{ search }}"
     </div>
     {% else %}

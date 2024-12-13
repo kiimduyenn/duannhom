@@ -68,7 +68,7 @@ def xemthongtinkhachhang(request, username):
 def sua_themthongtinkhachhang(request, username=None):
     if username:
         user = get_object_or_404(User, username=username, is_staff=False)
-        khach_hang = get_object_or_404(Profile, MaUser=user)
+        khach_hang = get_object_or_404(Profile, MaUser=user, vaitro='Khách hàng')
         form = KhachHangForm(instance=khach_hang)
         action = "Cập Nhật"
     else:
@@ -87,6 +87,7 @@ def sua_themthongtinkhachhang(request, username=None):
             return redirect('ds_khach_hang')
 
     return render(request, 'quanlykhachhang/themkhachhang.html', {'form': form, 'action': action})
+
 @user_passes_test(is_staff_or_admin)
 def xoakhachhang(request):
     if request.method == 'POST':
@@ -244,7 +245,7 @@ def sua_themthongtinnhanvien(request, username=None):
         action = "Cập Nhật"
     else:
         nhan_vien = None
-        form = KhachHangForm()
+        form = NhanVienForm()
         action = "Thêm"
 
     if request.method == 'POST':

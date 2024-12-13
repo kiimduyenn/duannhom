@@ -22,7 +22,7 @@ def is_admin(user):
 def themyctv(request):
     if request.user.is_superuser or request.user.is_staff:
         layout = 'layout/admin.html'
-        h1='Thêm Yêu Cầu Tư Vấn'
+        h1='Thêm YCTV'
     else:
         layout = 'layout/customer.html'
         h1='Đăng Ký Nhận Tư Vấn'
@@ -105,7 +105,7 @@ def update_yctv(request):
             messages.error(request, "Không tìm thấy yctv")
             return redirect('ql_yctv')
 
-@user_passes_test(is_staff_or_admin)
+@user_passes_test(is_admin)
 def delete_yctv(request):
     if request.method == "POST":
         MaYCTV = request.POST.get('MaYCTV')
