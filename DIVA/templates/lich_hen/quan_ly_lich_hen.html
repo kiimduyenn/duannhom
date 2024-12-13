@@ -62,8 +62,9 @@
     </div>
     <div style="text-align: right;">
         <button class="action-add">
-            <a href="{% url 'them_lich_hen' %}" style="color: white;
-             text-decoration: none; border: none;">Thêm Lịch Hẹn</a>
+            <a href="{% url 'them_lich_hen' %}"
+               style="color: white; text-decoration: none; border: none; font-size: 16px;">
+                Thêm Lịch Hẹn</a>
     </button>
     </div>
 
@@ -215,7 +216,7 @@
         background-color: #e53935;
     }
 
-    .messages {
+        .messages {
         list-style: none;
         padding: 0;
     }
@@ -226,14 +227,14 @@
         border-radius: 8px;
         font-size: 18px;
         font-weight: 500;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgb(0 0 0 / 38%);
         transition: all 0.3s ease-in-out;
-        text-align: center;
+        text-align:center;
     }
 
     .message.success {
-        background-color: #ffeed9;
-        color: #BD8712;
+        background-color: #bd8712;
+        color: #fff;
     }
 
     .search-box {
