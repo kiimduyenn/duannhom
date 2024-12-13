@@ -94,6 +94,7 @@ def huy_lich_hen(request, ma_lich_hen):
     return redirect('lich_hen_khach_hang')
 
 # Quản lý lịch hẹn
+# Quản lý lịch hẹn
 @user_passes_test(is_staff_or_admin)
 def quan_ly_lich_hen(request):
     if request.method == "POST":
@@ -107,26 +108,30 @@ def quan_ly_lich_hen(request):
             if action == "delete":
                 lich_hen.delete()
                 messages.success(request, f"Lịch hẹn {ma_lh} đã được xóa.")
-
             elif action == "update_status":
                 trang_thai_moi = request.POST.get('TrangThai')
                 if trang_thai_moi:
                     lich_hen.TrangThai = trang_thai_moi
                     lich_hen.save()
                     messages.success(request, f"Đã cập nhật trạng thái cho lịch hẹn {ma_lh}.")
-                    return redirect('quan_ly_lich_hen')
                 else:
                     messages.error(request, "Không có trạng thái mới được chọn.")
+            elif action == "assign_staff" and ma_nv:
+                nhan_vien = get_object_or_404(Profile, MaUser__id=ma_nv)
+                lich_hen.MaNV = nhan_vien.MaUser
+                lich_hen.save()
+                messages.success(request, f"Nhân viên đã được chỉ định cho lịch hẹn {ma_lh}.")
         except Exception as e:
             messages.error(request, f"Có lỗi xảy ra: {str(e)}.")
 
-    # Bộ lọc
+    # Lấy danh sách lịch hẹn theo quyền
     user = request.user
     if user.is_superuser:
         danh_sach_lich_hen = LichHen.objects.order_by('MaLH')
     else:
         danh_sach_lich_hen = LichHen.objects.filter(MaNV=user).order_by('MaLH')
 
+    # Áp dụng bộ lọc từ GET request
     search_query = request.GET.get('search', '').strip()
     dich_vu = request.GET.get('dich_vu', '').strip()
     trang_thai = request.GET.get('trang_thai', '').strip()
@@ -134,33 +139,37 @@ def quan_ly_lich_hen(request):
     to_date = request.GET.get('to_date', '').strip()
 
     if search_query:
-        danh_sach_lich_hen = danh_sach_lich_hen.filter(Q(MaLH__icontains=search_query) | Q(MaKH__username__icontains=search_query))
+        danh_sach_lich_hen = danh_sach_lich_hen.filter(
+            Q(MaLH__icontains=search_query) |
+            Q(MaKH__username__icontains=search_query) |
+            Q(MaKH__last_name__icontains=search_query) |
+            Q(MaKH__first_name__icontains=search_query)
+        )
     if dich_vu:
-        danh_sach_lich_hen = danh_sach_lich_hen.filter(MaDV__ten=dich_vu)
+        danh_sach_lich_hen = danh_sach_lich_hen.filter(MaDV__ten__icontains=dich_vu)
     if trang_thai:
         danh_sach_lich_hen = danh_sach_lich_hen.filter(TrangThai=trang_thai)
     if from_date:
-        from_date_parsed = parse_date(from_date)
-        if from_date_parsed:
-            danh_sach_lich_hen = danh_sach_lich_hen.filter(thoigiandangki__gte=from_date_parsed)
+        danh_sach_lich_hen = danh_sach_lich_hen.filter(thoigiandangki__gte=from_date)
     if to_date:
-        to_date_parsed = parse_date(to_date)
-        if to_date_parsed:
-            danh_sach_lich_hen = danh_sach_lich_hen.filter(thoigiandangki__lte=to_date_parsed)
+        danh_sach_lich_hen = danh_sach_lich_hen.filter(thoigiandangki__lte=to_date)
 
-    # Dữ liệu nhân viên và context
+    # Chuẩn bị context dữ liệu
     danh_sach_nhan_vien = Profile.objects.filter(vaitro='Nhân viên')
+    danh_sach_dich_vu = DichVu.objects.all()
+
     context = {
         'danh_sach_lich_hen': danh_sach_lich_hen,
         'danh_sach_nhan_vien': danh_sach_nhan_vien,
+        'danh_sach_dich_vu': danh_sach_dich_vu,
         'trang_thai_filter': trang_thai,
         'dich_vu_filter': dich_vu,
         'search_query': search_query,
         'from_date': from_date,
         'to_date': to_date,
     }
-    return render(request, 'lich_hen/quan_ly_lich_hen.html', context)
 
+    return render(request, 'lich_hen/quan_ly_lich_hen.html', context)
 
 # Thêm lịch hẹn mới
 @user_passes_test(is_staff_or_admin)

@@ -27,10 +27,12 @@
             <div class="filter-item">
                 <label for="dich_vu">Dịch vụ:</label>
                 <select name="dich_vu" id="dich_vu">
-                    <option value="">Tất cả</option>
-                    <option value="Chăm sóc da" {% if request.GET.dich_vu == 'Chăm sóc da' %} selected {% endif %}>Chăm sóc da</option>
-                    <option value="Điêu khắc lông mày" {% if request.GET.dich_vu == 'Điêu khắc lông mày' %} selected {% endif %}>Điêu khắc lông mày</option>
-                    <option value="Điều trị nám" {% if request.GET.dich_vu == 'Điều trị nám' %} selected {% endif %}>Điều trị nám</option>
+                     <option value="">Tất cả</option>
+                    {% for dv in danh_sach_dich_vu %}
+                        <option value="{{ dv.ten }}" {% if request.GET.dich_vu == dv.ten %} selected {% endif %}>
+                            {{ dv.ten }}
+                        </option>
+                    {% endfor %}
                 </select>
             </div>
 
