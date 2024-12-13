@@ -226,6 +226,7 @@
                 <td>{{ yc.TenKH }}</td>
                 <td>{{ yc.SDT }}</td>
                 <td>{{yc.GhiChu}}</td>
+                {% if user.is_superuser %}
                 <td>
                     <select name="nv_phu_trach_{{ yc.MaYCTV }}" onchange="updateYCTV('{{ yc.MaYCTV }}')">
                         <option value="">--Chọn NV--</option>
@@ -236,6 +237,9 @@
                         {% endfor %}
                     </select>
                 </td>
+                {%else%}
+                  <td>{{yc.MaNV}}</td>
+                {%endif%}
                 <td>
                     <select name="trang_thai_{{ yc.MaYCTV }}" onchange="updateYCTV('{{ yc.MaYCTV }}')">
                         <option value="Chưa xử lý" {% if yc.TrangThai == "Chưa xử lý" %}selected{% endif %}>Chưa xử lý</option>
