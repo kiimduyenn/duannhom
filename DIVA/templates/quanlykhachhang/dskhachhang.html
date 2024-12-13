@@ -73,6 +73,21 @@
         display: inline-block;
     }
 
+    .action-add {
+        display: inline-block;
+        background-color: #BD8712;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        text-align: center;
+        margin: 0px 0px 10px 0;
+        width: auto;
+        cursor: pointer;
+        float: right;
+        border: none;
+    }
+
     .update-link {
         color: white;
         background-color: #4CAF50;
@@ -119,7 +134,7 @@
         font-weight: 500;
         box-shadow: 0 4px 10px rgb(0 0 0 / 38%);
         transition: all 0.3s ease-in-out;
-        text-align:center;
+        text-align: center;
     }
 
     .message.success {
@@ -187,15 +202,14 @@
             <button type="submit">Tìm kiếm</button>
         </form>
     </div>
-
-
-    <br>
-
-    {% if no_results %}
-    <div style="text-align: center; color: black; font-size: 1.2em;">
-        Không tìm thấy thông tin phù hợp với từ khóa "{{ search }}"
+    <div style="text-align: right;">
+        <button class="action-add">
+            <a href="/ad/khach-hang" style="color: white; text-decoration: none; border: none; font-size:16px;">
+                Thêm khách hàng
+            </a>
+    </button>
     </div>
-    {% else %}
+
     <table class="styled-table">
         <thead>
             <tr>
@@ -216,18 +230,18 @@
                 <td>{{ kh.hoten }}</td>
                 <td>{{ kh.sodienthoai }}</td>
                 <td>{{ kh.diachi }}</td>
-                <td><a href="{% url 'thong_tin_khach_hang' kh.MaUser.username %}" style="color: #c08c19;">Xem chi tiết</a></td>
+                <td class="action-detail">
+                    <a class="action-link detail-link"
+                       href="{% url 'thong_tin_khach_hang' kh.MaUser.username %}">Xem chi tiết</a>
+                </td>
                 <td class="action-buttons">
                     <a class="action-link detail-link" href="{% url 'sua_khach_hang' kh.MaUser.username %}">Sửa</a>
-                    {% if user.is_superuser %}
                     <form method="POST" action="{% url 'xoa_khach_hang' %}" style="display:inline;">
                         {% csrf_token %}
                         <input type="hidden" name="MaUser" value="{{ kh.MaUser }}">
-                        <button type="submit" class="action-link delete-link" onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng này không?');">Xóa</button>
+                        <button type="submit" class="action-link delete-link"
+                                onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng này không?');">Xóa</button>
                     </form>
-                    {%else%}
-                        --
-                    {%endif%}
                 </td>
             </tr>
             {% empty %}
@@ -237,6 +251,5 @@
             {% endfor %}
         </tbody>
     </table>
-    {% endif %}
 </div>
 {% endblock %}

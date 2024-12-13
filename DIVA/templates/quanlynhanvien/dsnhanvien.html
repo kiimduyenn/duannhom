@@ -1,7 +1,7 @@
 {% extends 'layout/admin.html' %}
 {% block content %}
 <style>
-    body {
+   body {
         background-color: #ffeed9;
         font-family: 'Arial', sans-serif;
     }
@@ -63,6 +63,7 @@
         justify-content: space-between;
         align-items: center;
         white-space: nowrap;
+
     }
 
     .action-link {
@@ -71,6 +72,21 @@
         padding: 5px 10px;
         border-radius: 5px;
         display: inline-block;
+    }
+
+    .action-add {
+        display: inline-block;
+        background-color: #BD8712;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        text-align: center;
+        margin: 0px 0px 10px 0;
+        width: auto;
+        cursor: pointer;
+        float: right;
+        border: none;
     }
 
     .update-link {
@@ -117,14 +133,14 @@
         border-radius: 8px;
         font-size: 18px;
         font-weight: 500;
-        box-shadow: 0 4px 10px rgb(0 0 0 / 38%);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease-in-out;
-        text-align:center;
+        text-align: center;
     }
 
     .message.success {
-        background-color: #bd8712;
-        color: #fff;
+        background-color: #ffeed9;
+        color: #BD8712;
     }
 
     /* Hộp tìm kiếm và lọc */
@@ -187,12 +203,13 @@
         </form>
     </div>
 
-    <br>
-    {% if no_results %}
-    <div style="text-align: center; color: black; font-size: 1.2rem;">
-        Không tìm thấy thông tin phù hợp với từ khóa "{{ search }}"
-    </div>
-    {% else %}
+    <div style="text-align: right;">
+        <button class="action-add">
+            <a href="/ad/nhan-vien" style="color: white; text-decoration: none; border: none;font-size:16px;">
+                Thêm nhân viên</a>
+    </button>
+        </div>
+
     <table class="styled-table">
         <thead>
             <tr>
@@ -213,9 +230,13 @@
                 <td>{{ nv.hoten }}</td>
                 <td>{{ nv.sodienthoai }}</td>
                 <td>{{ nv.diachi }}</td>
-                <td><a href="{% url 'thong_tin_nhan_vien' nv.MaUser.username %}" style="color: #c08c19;">Xem chi tiết</a></td>
+
+                <td class="action-buttons">
+                    <a class="action-link detail-link"
+                       href="{% url 'thong_tin_nhan_vien' nv.MaUser.username %}">Xem chi tiết</a></td>
                 <td>
-                    <a class="action-link detail-link" href="{% url 'sua_nhan_vien' nv.MaUser.username %}">Sửa</a>
+                    <a class="action-link detail-link"
+                       href="{% url 'sua_nhan_vien' nv.MaUser.username %}">Sửa</a>
                     <form method="POST" action="{% url 'xoa_nhan_vien' %}" style="display:inline;">
                         {% csrf_token %}
                         <input type="hidden" name="MaUser" value="{{ nv.MaUser }}">
@@ -230,6 +251,5 @@
             {% endfor %}
         </tbody>
     </table>
-    {% endif %}
 </div>
 {% endblock %}

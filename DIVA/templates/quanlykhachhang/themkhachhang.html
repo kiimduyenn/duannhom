@@ -60,6 +60,7 @@
             font-weight: bold;
             margin: 10px 0 5px;
             text-align: left;
+            font-size: 16px;
         }
 
         .btn-custom {
@@ -67,9 +68,12 @@
             color: white;
             border: none;
             font-weight: bold;
+            font-size: 16px;
         }
+
         .btn-custom:hover {
             background-color: #45a049;
+            color: white;
         }
 
         .btn-secondary {
@@ -77,10 +81,13 @@
             color: white;
             border: none;
             font-weight: bold;
+            font-size: 16px;
         }
+
         .btn-secondary:hover {
             background-color: #e53935;
         }
+
     </style>
 </head>
 <body>
@@ -89,7 +96,7 @@
         <form method="post" novalidate>
             {% csrf_token %}
             <div class="mb-3">
-                <label for="id_MaUser"  class="form-label">{{ form.MaUser.label }}</label>
+                <label for="id_MaUser" class="form-label">{{ form.MaUser.label }}</label>
                 {{ form.MaUser }}
             </div>
             <div class="mb-3">
