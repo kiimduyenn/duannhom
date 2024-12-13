@@ -2,7 +2,6 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from websockets.version import commit
 from DIVA.models import YeuCauTuVan, TinNhan, HoiThoai
 from ..forms import YCTVForm, SuaYCTVForm, SearchForm, MessageForm
 from django.contrib.auth.decorators import permission_required
