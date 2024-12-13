@@ -81,7 +81,7 @@
     <h2>Tin nhắn</h2>
 
     <!-- Nút Start New Chat căn phải -->
-    {% if user.is_customer %}
+    {% if user.is_authenticated %}
     <div class="start-chat-btn">
         <a href="{% url 'start_chat' %}">Đoạn chat mới</a>
     </div>

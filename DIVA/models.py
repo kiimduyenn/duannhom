@@ -206,7 +206,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.hoten} - {self.vaitro}"
-
-
-    def is_customer(self):
-        return self.vaitro == 'Khách hàng'
