@@ -3,67 +3,75 @@
 {% block content %}
 <style>
     body {
-        background-color: #f3f4f6;
-        font-family: 'Arial', sans-serif;
+        font-family: Arial, sans-serif;
+        background-color: #ffeed9;
     }
 
-    .complaint-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 80vh;
-        padding: 20px;
-    }
-
-    .complaint-card {
-        background: #ffffff;
-        border-radius: 15px;
+    .form-container {
+        margin: 20px auto;
+        width: 100%;
+        max-width: 500px;
+        border-radius: 10px;
+        background-color: #fff;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         padding: 30px;
-        width: 100%;
-        max-width: 800px;
-        text-align: center;
     }
 
-    .complaint-title {
-        font-size: 24px;
+    h1 {
+        font-size: 28px;
         font-weight: bold;
         color: #BD8712;
+        text-align: center;
         margin-bottom: 20px;
     }
 
-    .complaint-form .form-group {
-        margin-bottom: 20px;
+
+    .form-container input,
+    .form-container textarea {
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .form-container input[type="file"] {
+        font-size: 1rem;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin: 10px 0 5px;
         text-align: left;
     }
 
-    .complaint-form label {
-        font-weight: bold;
-        font-size: 14px;
-        color: #333;
-        margin-bottom: 5px;
-        display: block;
+    .form-container div {
+        margin-bottom: 30px; /* Tăng khoảng cách giữa các trường */
     }
 
-    .complaint-form select,
-    .complaint-form input,
-    .complaint-form textarea {
+
+
+    .search-bar {
+        padding: 10px;
+        font-size: 1.2rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .form-container textarea,
+    .form-container select,
+    .form-container input {
         width: 100%;
         padding: 12px;
-        font-size: 14px;
         border: 1px solid #ccc;
         border-radius: 8px;
+        font-size: 15px;
         resize: vertical;
-        transition: border-color 0.3s ease;
     }
 
-    .complaint-form input:focus,
-    .complaint-form textarea:focus,
-    .complaint-form select:focus {
-        border-color: #BD8712;
-    }
-
-    .btn-submit {
+    button {
         width: 100%;
         padding: 12px;
         font-size: 16px;
@@ -76,63 +84,46 @@
         transition: background-color 0.3s ease;
     }
 
-    .btn-submit:hover {
+    button:hover {
         background-color: #a87f10;
-    }
-
-    .btn-back {
-        display: inline-block;
-        margin-top: 20px;
-        font-size: 1.2rem;
-        color: #BD8712;
-        text-decoration: none;
-        border: 1px solid #BD8712;
-        padding: 10px 20px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .btn-back:hover {
-        background-color: #BD8712;
-        color: white;
     }
 </style>
 
-<div class="complaint-container">
-    <div class="complaint-card">
-        <h1 class="complaint-title">Tạo Bài Viết Mới</h1>
 
-        <form method="post" enctype="multipart/form-data" class="complaint-form">
-            {% csrf_token %}
+<div class="form-container">
+    <h1>Tạo Bài Viết Mới</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-            <div class="form-group">
-                <label for="nguoi_tao">Người Tạo:</label>
-                <input type="text" name="nguoi_tao" id="nguoi_tao" required>
-            </div>
+        <div>
+            <label for="nguoi_tao">Người Tạo:</label>
+            <input type="text" name="nguoi_tao" id="nguoi_tao" required>
+        </div>
 
-            <div class="form-group">
-                <label for="tieu_de">Tiêu Đề:</label>
-                <input type="text" name="tieu_de" id="tieu_de" required>
-            </div>
+        <div>
+            <label for="tieu_de">Tiêu Đề:</label>
+            <input type="text" name="tieu_de" id="tieu_de" required>
+        </div>
 
-            <div class="form-group">
-                <label for="hinh_anh">Hình Ảnh:</label>
-                <input type="file" name="hinh_anh" id="hinh_anh" accept="image/*" required>
-            </div>
+        <div>
+            <label for="hinh_anh">Hình Ảnh:</label>
+            <input type="file" name="hinh_anh" id="hinh_anh" accept="image/*" required>
+        </div>
 
-            <div class="form-group">
-                <label for="noi_dung">Nội Dung:</label>
-                <input type="file" name="noi_dung" id="noi_dung" accept=".pdf,.docx,.txt" required>
-            </div>
+        <div>
+            <label for="noi_dung">Nội Dung:</label>
+            <input type="file" name="noi_dung" id="noi_dung" accept=".pdf,.docx,.txt" required>
+        </div>
 
-            <div class="form-group">
-                <label for="thoi_gian_dang">Thời Gian Đăng:</label>
-                <input type="datetime-local" name="thoi_gian_dang" id="thoi_gian_dang">
-            </div>
+        <div>
+            <label for="thoi_gian_dang">Thời Gian Đăng:</label>
+            <input type="datetime-local" name="thoi_gian_dang" id="thoi_gian_dang">
+        </div>
 
-            <button type="submit" class="btn-submit">Đăng Bài Viết</button>
-
-        </form>
-    </div>
+        <div class="action-btn">
+            <button type="submit">Đăng Bài Viết</button>
+        </div>
+    </form>
 </div>
+
 {% endblock %}

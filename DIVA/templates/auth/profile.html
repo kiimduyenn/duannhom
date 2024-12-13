@@ -52,13 +52,15 @@
                     <label>Vai Trò:</label>
                     <input type="text" value="{{ profile.vaitro }}" readonly>
                 </div>
+                {% if not user.is_superuser and not user.is_staff %}
                 <div class="form-group">
                     <label>Điểm tích lũy:</label>
-                    <input type="text" value="{{ profile.DiemTichLuy.DiemTichLuy }}" readonly>
+                  <input type="text" value="{{ diem_tich_luy.DiemTichLuy|default:'Chưa có điểm' }}" readonly>
                 </div>
                 <button class="save-button">
                     <a href="{% url 'conversations' %}" style="color: white; text-decoration: none;">Lịch sử chat</a>
                 </button>
+                {% endif %}
                 <button class="save-button">
                     <a href="{% url 'sua_profile' %}" style="color: white; text-decoration: none;">Sửa thông tin</a>
                 </button>
@@ -174,14 +176,25 @@
         background-color: #a5740f;
         color: white;
     }
-    .messages .message {
-        background-color: #A2CA71;
-        color: white;
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 5px;
+       .messages {
+        list-style: none;
+        padding: 0;
+    }
+
+    .message {
+        padding: 15px;
+        margin: 5px;
+        border-radius: 8px;
         font-size: 18px;
-        text-align: center;
+        font-weight: 500;
+        box-shadow: 0 4px 10px rgb(0 0 0 / 38%);
+        transition: all 0.3s ease-in-out;
+        text-align:center;
+    }
+
+    .message.success {
+        background-color: #bd8712;
+        color: #fff;
     }
 </style>
 

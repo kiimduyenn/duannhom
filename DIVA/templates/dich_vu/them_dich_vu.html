@@ -3,7 +3,7 @@
 {% block content %}
 <style>
     body {
-        background-color: #f3f4f6;
+         background-color: #ffeed9;
         font-family: 'Arial', sans-serif;
     }
 
@@ -39,8 +39,8 @@
 
     .complaint-form label {
         font-weight: bold;
-        font-size: 14px;
-        color: #333;
+        font-size: 16px;
+        color: #000;
         margin-bottom: 5px;
         display: block;
     }
@@ -54,22 +54,6 @@
         font-size: 14px;
     }
 
-    .btn-submit {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        color: white;
-        background-color: #BD8712;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-submit:hover {
-        background-color: #a87f10;
-    }
 
     .complaint-form textarea,
     .complaint-form select,
@@ -78,7 +62,7 @@
         padding: 12px;
         border: 1px solid #ccc;
         border-radius: 8px;
-        font-size: 14px;
+        font-size: 15px;
         resize: vertical;
         transition: border-color 0.3s ease;
     }
@@ -88,21 +72,49 @@
     .complaint-form input:focus {
         border-color: #BD8712;
     }
-    .btn-back {
-    display: inline-block;
-    margin-top: 20px;
-    font-size: 1.2rem;
-    color: #c08c19;
-    text-decoration: none;
-    border: 1px solid #c08c19;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: all 0.3s ease;
+
+    .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        white-space: nowrap;
+
     }
 
-    .btn-back:hover {
-    background-color: #c08c19;
+    .btn-delete {
+        background-color: #f44336;
+        color: white;
+        font-weight: bold;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 90px;
+        text-decoration: none;
+    }
+
+    .btn-delete:hover {
+        background-color: #e53935;
+    }
+
+.btn-save {
+    background-color: #4CAF50;
     color: white;
+    border: none;
+    font-weight: bold;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 60px;
+}
+
+.btn-save:hover {
+    background-color: #45a049;
+}
+    .form-group select {
+        font-size: 15px;
+        background-color: #ffeed9;
     }
 </style>
 
@@ -126,10 +138,11 @@
                 {{ form.mota }}
             </div>
 
-            <button type="submit" class="btn-submit">Lưu</button>
+            <div class="action-buttons">
+                <a href="{% url 'danh_sach_dich_vu' %}" class="btn-delete">Quay lại</a>
+                <button type="submit" class="btn-save">Lưu</button>
+            </div>
         </form>
-
-        <a href="{% url 'danh_sach_dich_vu' %}" class="btn-back">Quay lại</a>
     </div>
 </div>
 {% endblock %}

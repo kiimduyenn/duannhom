@@ -19,7 +19,7 @@
          <a href="{% url 'khieu_nai_cua_toi' %}" style="color: black; text-decoration: none; font-size: 18px"><button class="tab-button active">Khiếu nại</button></a>
     </div>
       <div style="height:100%;width:100%;">
-          <div class="table-title">Danh sách Khiếu Nại Của Bạn</div>
+          <div class="table-title">Danh Sách Khiếu Nại Của Bạn</div>
     {% if danh_sach_khieu_nai %}
     <table class="styled-table">
 
@@ -43,7 +43,7 @@
                 <td>{{ khieunai.NgayXayRa|date:"d/m/Y" }}</td>
                 <td>{{ khieunai.NgayTiepNhan|date:"d/m/Y" }}</td>
                 <td><strong>{{ khieunai.TrangThai }}</strong></td>
-                <td>{{ khieunai.MaNV.hoten|default:'Chưa có' }}</td>
+                <td>{{ khieunai.nguoi_phu_trach|default:'Chưa có' }}</td>
             </tr>
             {% endfor %}
         </tbody>

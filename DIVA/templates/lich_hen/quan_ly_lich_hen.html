@@ -11,7 +11,7 @@
     {% endif %}
 </div>
 
-<h1 class="table-title">Quản lý lịch hẹn</h1>
+<h1 class="table-title">Quản Lý Lịch Hẹn</h1>
 
 <!-- Form Tìm Kiếm Mã Lịch Hẹn -->
 <div class="table-container">
@@ -60,6 +60,13 @@
             </div>
         </form>
     </div>
+    <div style="text-align: right;">
+        <button class="action-add">
+            <a href="{% url 'them_lich_hen' %}" style="color: white;
+             text-decoration: none; border: none;">Thêm Lịch Hẹn</a>
+    </button>
+    </div>
+
 
     <table class="styled-table">
         <thead>
@@ -114,9 +121,6 @@
         </tbody>
     </table>
 
-    <div class="add-button-container" style="text-align: center; margin-bottom: 20px;">
-        <a href="{% url 'them_lich_hen' %}" class="action-link add-link">Thêm Lịch Hẹn</a>
-    </div>
 </div>
 
 <style>
@@ -345,6 +349,22 @@
     font-size: 15px;
     background-color: #ffeed9;
     }
+
+        .action-add {
+        display: inline-block;
+        background-color: #BD8712;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        text-align: center;
+        margin: 0px 0px 10px 0;
+        width: auto;
+        cursor: pointer;
+        float: right;
+        border: none;
+    }
+
 </style>
 
 {% endblock %}

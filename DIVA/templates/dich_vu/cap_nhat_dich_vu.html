@@ -1,128 +1,129 @@
 {% extends 'layout/admin.html' %}
 
 {% block content %}
+
 <style>
     body {
-        background-color: #f3f4f6;
+        background-color: #ffeed9;
         font-family: 'Arial', sans-serif;
     }
 
-    .complaint-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 80vh;
-        padding: 20px;
-    }
-
-    .complaint-card {
-        background: #ffffff;
-        border-radius: 15px;
+    .form-container {
+        margin: 20px auto;
+        width: 100%;
+        max-width: 500px;
+        border-radius: 10px;
+        background-color: #fff;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         padding: 30px;
-        width: 100%;
-        max-width: 800px;
-        text-align: center;
     }
 
-    .complaint-title {
-        font-size: 24px;
+    .form-container h1 {
+        font-size: 28px;
         font-weight: bold;
         color: #BD8712;
+        text-align: center;
         margin-bottom: 20px;
     }
 
-    .complaint-form .form-group {
-        margin-bottom: 20px;
-        text-align: left;
+    .form-container select option {
+        font-size: 15px;
+        background-color: #ffeed9;
     }
 
-    .complaint-form label {
-        font-weight: bold;
-        font-size: 14px;
-        color: #333;
-        margin-bottom: 5px;
-        display: block;
-    }
-
-    .complaint-form select,
-    .complaint-form input,
-    .complaint-form textarea {
+    .form-container textarea,
+    .form-container select,
+    .form-container input {
         width: 100%;
         padding: 12px;
-        font-size: 14px;
         border: 1px solid #ccc;
         border-radius: 8px;
+        font-size: 15px;
         resize: vertical;
-        transition: border-color 0.3s ease;
     }
 
-    .complaint-form input:focus,
-    .complaint-form textarea:focus,
-    .complaint-form select:focus {
+    .form-container textarea:focus,
+    .form-container select:focus,
+    .form-container input:focus {
         border-color: #BD8712;
     }
 
-    .btn-submit {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        color: white;
-        background-color: #BD8712;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
+    label {
+        display: block;
         font-weight: bold;
-        transition: background-color 0.3s ease;
+        margin: 10px 0 5px;
+        text-align: left;
     }
 
-    .btn-submit:hover {
-        background-color: #a87f10;
+    .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        white-space: nowrap;
+
     }
 
-    .btn-back {
-        display: inline-block;
-        margin-top: 20px;
-        font-size: 1.2rem;
-        color: #BD8712;
-        text-decoration: none;
-        border: 1px solid #BD8712;
-        padding: 10px 20px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .btn-back:hover {
-        background-color: #BD8712;
+    .btn-delete {
+        background-color: #f44336;
         color: white;
+        font-weight: bold;
+        padding: 10px 20px;
+        font-size: 18px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 110px;
+        margin-top: 20px;
+        text-decoration: none;
     }
+
+    .btn-delete:hover {
+        background-color: #e53935;
+    }
+
+    .btn-save {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 20%;
+    margin-top: 20px;
+    }
+
+     .btn-save:hover {
+        background-color: #45a049;
+    }
+
 </style>
 
-<div class="complaint-container">
-    <div class="complaint-card">
-        <h1 class="complaint-title">Cập nhật dịch vụ</h1>
-        <form method="post" action="{% url 'cap_nhat_dich_vu' dich_vu.MaDV %}" class="complaint-form">
-            {% csrf_token %}
+<div class="form-container">
+    <h1>Cập nhật dịch vụ</h1>
+    <form method="post" action="{% url 'cap_nhat_dich_vu' dich_vu.MaDV %}">
+        {% csrf_token %}
 
-            <div class="form-group">
-                <label for="id_ten">Tên Dịch Vụ:</label>
-                <input type="text" name="ten" id="id_ten" value="{{ dich_vu.ten }}" required>
-            </div>
+        <div class="mb-3">
+            <label for="id_ten" class="form-label">Tên Dịch Vụ:</label>
+            <input type="text" name="ten" id="id_ten" value="{{ dich_vu.ten }}" required>
+        </div>
 
-            <div class="form-group">
-                <label for="id_giatien">Giá Tiền:</label>
-                <input type="number" name="giatien" id="id_giatien" value="{{ dich_vu.giatien }}" required>
-            </div>
+        <div class="mb-3">
+            <label for="id_giatien" class="form-label">Giá Tiền:</label>
+            <input type="number" name="giatien" id="id_giatien" value="{{ dich_vu.giatien }}" required>
+        </div>
 
-            <div class="form-group">
-                <label for="id_mota">Mô Tả:</label>
-                <textarea name="mota" id="id_mota" rows="4" required>{{ dich_vu.mota }}</textarea>
-            </div>
+        <div class="mb-3">
+            <label for="id_mota" class="form-label">Mô Tả:</label>
+            <textarea name="mota" id="id_mota" rows="4" required>{{ dich_vu.mota }}</textarea>
+        </div>
 
-            <button type="submit" class="btn-submit">Lưu</button>
-        </form>
-
-        <a href="{% url 'danh_sach_dich_vu' %}" class="btn-back">Quay lại</a>
-    </div>
+        <div class="action-buttons">
+            <a href="{% url 'danh_sach_dich_vu' %}" class="btn-delete">Quay lại</a>
+            <button type="submit" class="btn-save">Lưu</button>
+        </div>
+    </form>
 </div>
+
 {% endblock %}

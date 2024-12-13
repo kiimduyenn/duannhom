@@ -1,6 +1,6 @@
 from django.contrib import admin
 from DIVA.models import (DichVu, Profile, LichHen, KhieuNai , YeuCauTuVan, DichVuDaDung, YeuCau_DichVu, LichHen_DichVu, TinNhan, HoiThoai,
-                         TinNhan)
+                         TinNhan, BaiViet)
 
 
 # Register your models here.
@@ -21,4 +21,4 @@ admin.site.register(YeuCau_DichVu)
 admin.site.register(LichHen_DichVu)
 admin.site.register(TinNhan)
 admin.site.register(HoiThoai)
-
+admin.site.register(BaiViet)

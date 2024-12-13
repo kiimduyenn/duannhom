@@ -17,13 +17,13 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         user = self.request.user
-
         if user.is_superuser or user.is_staff:
             return reverse_lazy('trang_chu_ad')
-        else:
-            return reverse_lazy('profile')
+        profile = getattr(user, 'profile', None)
+        if profile:
+            if profile.sodienthoai != "0000000000" or profile.diachi != "Chưa cập nhật":
+                return reverse_lazy('trang_chu_kh')
         return reverse_lazy('profile')
-
 def is_staff_or_admin(user):
     return user.is_staff or user.is_superuser
 def is_admin(user):
@@ -55,8 +55,8 @@ def xemthongtinkhachhang(request, username):
     try:
         user = get_object_or_404(User, username=username)
         profile = Profile.objects.get(MaUser=user)
-
-        return render(request, 'quanlykhachhang/thongtinkhachhang.html', {'user': user, 'profile': profile})
+        diem_tich_luy = DiemTichLuy.objects.filter(MaUser=user).first()
+        return render(request, 'quanlykhachhang/thongtinkhachhang.html', {'user': user, 'profile': profile,'diem_tich_luy':diem_tich_luy})
     except User.DoesNotExist:
         messages.error(request, "User không tồn tại")
         return HttpResponse("User không tồn tại", status=404)
@@ -84,16 +84,16 @@ def sua_themthongtinkhachhang(request, username=None):
                 messages.success(request, f'Thêm thông tin khách hàng thành công')
             else:
                 messages.success(request, f'{action} thông tin khách hàng thành công')
-            return redirect('ds_khach_hang')  # Điều hướng về danh sách khách hàng
+            return redirect('ds_khach_hang')
 
     return render(request, 'quanlykhachhang/themkhachhang.html', {'form': form, 'action': action})
 @user_passes_test(is_staff_or_admin)
 def xoakhachhang(request):
     if request.method == 'POST':
-        username = request.POST.get('MaUser')  # Lấy giá trị từ form
+        username = request.POST.get('MaUser')
         try:
             user = User.objects.get(username=username)
-            profile = get_object_or_404(Profile, MaUser=user)  # Hoặc thay MaUser bằng trường khác nếu cần
+            profile = get_object_or_404(Profile, MaUser=user)
             profile.delete()
             messages.success(request, f"Thông tin khách hàng {profile.hoten} đã được xóa thành công!")
         except ValueError:
@@ -102,22 +102,29 @@ def xoakhachhang(request):
 
 @login_required
 def xem_profile(request):
-    if request.user.is_superuser or request.user.is_staff:
-        layout = 'layout/admin.html'
+    layout = 'layout/admin.html' if request.user.is_superuser or request.user.is_staff else 'layout/customer.html'
+
+    quan_ly_cv = None
+    lich_su = None
+    if request.user.is_staff:
         quan_ly_cv = LichHen.objects.filter(MaKH=request.user).order_by('-thoigiandangki')
     else:
-        layout = 'layout/customer.html'
-        lich_su = LichHen.objects.filter(MaKH=request.user).order_by('-thoigiandangki')
+        xem_yctv = YeuCauTuVan.objects.filter(SDT=request.user.profile.sodienthoai)
+        xem_kn = KhieuNai.objects.filter(MaKH=request.user.profile.MaUser)
+
     profile = request.user.profile
+    diem_tich_luy = DiemTichLuy.objects.filter(MaUser=request.user).first()
+
     context = {
         'profile': profile,
+        'diem_tich_luy': diem_tich_luy,
         'layout': layout,
-        'is_staff': request.user.is_staff,  # Phân biệt nhân viên
-        'is_superuser': request.user.is_superuser,  # Phân biệt admin
-        'quan_ly_cv': quan_ly_cv if request.user.is_staff else None,
-        'lich_su': lich_su if not request.user.is_staff else None,
+        'is_staff': request.user.is_staff,
+        'is_superuser': request.user.is_superuser,
+        'quan_ly_cv': quan_ly_cv,
     }
     return render(request, 'auth/profile.html', context)
+
 
 @login_required
 def sua_profile(request):
@@ -132,7 +139,7 @@ def sua_profile(request):
         if form.is_valid():
             form.save()  # Lưu thông tin mới
             messages.success(request, 'Cập nhật thông tin cá nhân thành công.')
-            return redirect('profile')  # Quay lại trang profile
+            return redirect('profile')
         else:
             messages.error(request, 'Có lỗi xảy ra. Vui lòng kiểm tra lại thông tin.')
     else:
@@ -174,16 +181,14 @@ def lock_account(request):
 @login_required
 def lich_su_sd(request, username=None):
     if username:
-        # Admin xem lịch sử của khách hàng cụ thể
         if request.user.is_superuser or request.user.is_staff:
             user = get_object_or_404(User, username=username)
             layout = 'layout/admin.html'
             lich_su = LichHen.objects.filter(MaKH=user).order_by('-thoigiandangki')
         else:
             messages.error(request, "Bạn không có quyền truy cập vào lịch sử này.")
-            return redirect('trang_chu_kh')  # Điều hướng về trang khách hàng
+            return redirect('trang_chu_kh')
     else:
-        # Người dùng xem lịch sử của chính mình
         layout = 'layout/customer.html' if not (request.user.is_superuser or request.user.is_staff) else 'layout/admin.html'
         lich_su = LichHen.objects.filter(MaKH=request.user).order_by('-thoigiandangki')
 
@@ -197,20 +202,17 @@ def homepage(request):
 
 @user_passes_test(is_staff_or_admin)
 def dsnhanvien(request):
-    query = request.GET.get('search', '')  # Lấy giá trị tìm kiếm từ thanh tìm kiếm
+    query = request.GET.get('search', '')
 
-    # Lấy danh sách Profile với VaiTro là "Nhân viên" và không bị khóa
     profiles = Profile.objects.filter(vaitro='Nhân viên', is_locked=False)
 
     if query:
-        # Thêm logic tìm kiếm nếu có từ khóa
         profiles = profiles.filter(
             Q(hoten__icontains=query) |
             Q(sodienthoai__icontains=query) |
             Q(diachi__icontains=query)
         )
 
-    # Kiểm tra nếu không có kết quả tìm kiếm
     no_results = profiles.count() == 0
 
     return render(request, 'quanlynhanvien/dsnhanvien.html', {
@@ -222,31 +224,25 @@ def dsnhanvien(request):
 @user_passes_test(is_admin)
 def xemthongtinnhanvien(request, username):
     try:
-        # Lấy thông tin người dùng và profile của họ
         user = get_object_or_404(User, username=username)
         profile = Profile.objects.get(MaUser=user)
 
-        # Trả về thông tin khách hàng cho template
         return render(request, 'quanlynhanvien/thongtinnhanvien.html', {'user': user, 'profile': profile})
     except User.DoesNotExist:
-        # Nếu không tìm thấy người dùng
         messages.error(request, "User không tồn tại")
         return HttpResponse("User không tồn tại", status=404)
     except Profile.DoesNotExist:
-        # Nếu không tìm thấy profile
         messages.error(request, "Profile không tồn tại")
         return HttpResponse("Profile không tồn tại", status=404)
 
 @user_passes_test(is_admin)
 def sua_themthongtinnhanvien(request, username=None):
-    # Nếu id được truyền, lấy thông tin khách hàng hiện có (sửa)
     if username:
         user = get_object_or_404(User, username=username, is_staff=True)
         nhan_vien = get_object_or_404(Profile, MaUser=user)
         form = NhanVienForm(instance=nhan_vien)
         action = "Cập Nhật"
     else:
-        # Nếu không có id, tạo mới (thêm)
         nhan_vien = None
         form = KhachHangForm()
         action = "Thêm"
@@ -259,13 +255,13 @@ def sua_themthongtinnhanvien(request, username=None):
                 messages.success(request, f'Thêm thông tin nhân viên thành công')
             else:
                 messages.success(request, f'{action} thông tin nhân viên thành công')
-            return redirect('ds_nhan_vien')  # Điều hướng về danh sách khách hàng
+            return redirect('ds_nhan_vien')
 
     return render(request, 'quanlynhanvien/themnhanvien.html', {'form': form, 'action': action})
 @user_passes_test(is_admin)
 def xoanhanvien(request):
     if request.method == 'POST':
-        username = request.POST.get('MaUser')  # Lấy giá trị từ form
+        username = request.POST.get('MaUser')
         try:
             user = User.objects.get(username=username)
             profile = get_object_or_404(Profile, MaUser=user)  # Hoặc thay MaUser bằng trường khác nếu cần

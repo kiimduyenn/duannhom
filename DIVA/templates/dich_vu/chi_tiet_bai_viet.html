@@ -1,11 +1,11 @@
 {% extends 'layout/customer.html' %}
-
 {% block content %}
 <body>
     <div class="content-container">
     <h1>{{ bai_viet.tieu_de }}</h1>
     <p><strong>Người tạo:</strong> {{ bai_viet.nguoi_tao }}</p>
-    <p><strong>Ngày tạo:</strong> {{ bai_viet.ngay_tao }}</p>
+    <p><strong>Ngày tạo:</strong> {{ bai_viet.ngay_tao|date:"d/m/Y"  }}</p>
+        <br>
 
     <div class="bai-viet-img-container">
         <img src="{{ bai_viet.hinh_anh.url }}" alt="{{ bai_viet.tieu_de }}" class="bai-viet-img">
@@ -13,7 +13,7 @@
 
     <div class="file-content">
         {% if file_content %}
-            <div class="docx-content">
+            <div class="docx-content" >
                 {{ file_content|safe }}
             </div>
         {% else %}
@@ -38,16 +38,16 @@
 
 h1 {
     text-align: center;
-    color: #c08c19;
-    font-size: 3.5rem; /* Tăng cỡ chữ tiêu đề */
-    margin-bottom: 20px;
+    color: #BD8712;
+    font-size: 32px;
+    margin: 10px 0px 35px 0px;
 }
 
 .info-container {
     display: flex;
     justify-content: space-between; /* Đưa Người tạo và Ngày tạo nằm cùng một hàng */
     font-size: 16px; /* Tăng cỡ chữ lên 16px */
-    color: #c08c19; /* Màu sắc giống tiêu đề */
+    color: #BD8712; /* Màu sắc giống tiêu đề */
     margin-bottom: 20px;
 }
 
@@ -75,26 +75,28 @@ h1 {
 }
 
 .bai-viet-img {
-    width: 100%;
+    width: 90%;
     height: auto;
     object-fit: cover;
     border-radius: 5px;
-    max-width: 100%; /* Giới hạn chiều rộng hình ảnh bằng với khung */
-    max-height: 500px;
+    max-width: 100%;
+    max-height: 1000px;
+    margin: 0 auto;
+    display: block;
 }
 
 .file-content {
     font-family: 'Arial', sans-serif; /* Dùng font Arial cho nội dung file */
     font-size: 16px; /* Tăng cỡ chữ lên 16px */
     background-color: transparent; /* Thay đổi nền trắng thành trong suốt */
-    padding: 15px;
+    padding: 0 15px 0;
     border-radius: 5px;
     white-space: pre-wrap;
     word-wrap: break-word;
 }
 
 h3 {
-    color: #c08c19;
+    color: #BD8712;
     font-size: 2rem; /* Tăng cỡ chữ cho tiêu đề nội dung bài viết */
     margin-bottom: 10px;
 }
@@ -118,7 +120,7 @@ pre {
     font-family: 'Arial', sans-serif;
     font-size: 16px;
     line-height: 1.8;
-    margin: 10px 0;
+    margin: 0px 0;
     text-align: justify; /* Căn đều hai bên */
 }
 
@@ -128,7 +130,11 @@ pre {
     font-weight: bold;
     margin: 20px 0;
     text-align: center;
-    color: #c08c19;
+    color: #BD8712;
+}
+
+.docx-content h2 {
+    font-size: 26px !important;
 }
 
 /* Hình ảnh */
