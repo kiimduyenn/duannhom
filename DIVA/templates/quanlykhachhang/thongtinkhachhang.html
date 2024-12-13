@@ -1,6 +1,7 @@
 {% extends 'layout/admin.html' %}
 {% block content %}
 
+
 <body>
     <div class="profile-container">
         <div class="profile-header">
@@ -10,6 +11,9 @@
         <div class="profile-content">
             <div class="sidebar">
                 <button class="tab-button active">Thông tin cá nhân</button>
+                <button class="tab-button">
+                    <a href="{% url 'lich_su_kh' profile.MaUser.username %}" style="color: black; text-decoration: none; font-size: 18px">Lịch sử sử dụng</a>
+                </button>
             </div>
 
             <div class="profile-details">
@@ -29,6 +33,7 @@
                     <label>Địa Chỉ:</label>
                     <input type="text" value="{{ profile.diachi }}" readonly>
                 </div>
+                <button class="save-button"><a href="/khach-hang/{{profile.MaUser}}" style="color: white; text-decoration: none;">Sửa thông tin</a></button>
             </div>
         </div>
     </div>
@@ -39,13 +44,7 @@
         font-family: 'Arial', sans-serif;
         background-color: #ffeed9;
     }
-    h1 {
-        text-align: center;
-        color: #c08c19;
-        margin-bottom: 30px;
-        font-size: 4rem;
-        margin-top: 40px;
-    }
+
     .profile-container {
         max-width: 1200px;
         margin: 0 auto;
@@ -55,7 +54,7 @@
     .profile-header h1 {
         text-align: center;
         color: #BD8712;
-        font-size: 3rem;
+        font-size: 32px;
     }
 
     .profile-content {
@@ -70,15 +69,17 @@
 
     .tab-button {
         display: block;
-        width: 100%;
+        width: 80%;
         padding: 10px 15px;
         background-color: #f5f5f5;
         border: 1px solid #ddd;
+        border-radius: 5px;
         text-align: left;
         font-size: 18px;
         color: #333;
         cursor: pointer;
-        margin-bottom: 10px;
+        margin: 0 15px 10px 80px;
+
     }
 
     .tab-button.active {
@@ -87,11 +88,12 @@
     }
 
     .profile-details {
-        width: 80%;
+        width: 50%;
         background-color: white;
         padding: 20px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
+        margin-left: 45px;
     }
 
     .form-group {
@@ -101,17 +103,18 @@
     .form-group label {
         display: block;
         font-weight: bold;
-        margin-bottom: 5px;
+        margin: 0 10px 5px;
     }
 
     .form-group input {
-        width: calc(100% - 40px);
+        width: 95%;
         padding: 10px;
-        font-size: 14px;
+        font-size: 15px;
         border: 1px solid #ddd;
         border-radius: 5px;
         background-color: #F9F9F9;
         color: #333;
+        margin: 0 10px 5px;
     }
 
     .edit-icon {
@@ -126,7 +129,7 @@
     .save-button {
         display: block;
         background-color: #BD8712;
-        color: white; /* Đổi màu chữ thành trắng */
+        color: white;
         padding: 10px 20px;
         font-size: 18px;
         border: none;
