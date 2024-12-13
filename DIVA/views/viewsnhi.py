@@ -105,7 +105,7 @@ def chi_tiet_khieu_nai(request, pk):
 
     return render(request, 'khieunai/chi_tiet_khieu_nai.html', context)
 
-
+@user_passes_test(is_staff_or_admin)
 def diem_tich_luy(request):
     customers = Profile.objects.filter(vaitro='Khách hàng')
 
