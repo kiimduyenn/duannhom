@@ -120,23 +120,25 @@ def quan_ly_lich_hen(request):
         except Exception as e:
             messages.error(request, f"Có lỗi xảy ra: {str(e)}.")
 
+    # Bộ lọc
     user = request.user
     if user.is_superuser:
         danh_sach_lich_hen = LichHen.objects.order_by('MaLH')
     else:
         danh_sach_lich_hen = LichHen.objects.filter(MaNV=user).order_by('MaLH')
-    search_query = request.GET.get('search', '')
-    dich_vu = request.GET.get('dich_vu')
-    trang_thai = request.GET.get('trang_thai')
-    from_date = request.GET.get('from_date')
-    to_date = request.GET.get('to_date')
+
+    search_query = request.GET.get('search', '').strip()
+    dich_vu = request.GET.get('dich_vu', '').strip()
+    trang_thai = request.GET.get('trang_thai', '').strip()
+    from_date = request.GET.get('from_date', '').strip()
+    to_date = request.GET.get('to_date', '').strip()
+
+    if search_query:
+        danh_sach_lich_hen = danh_sach_lich_hen.filter(Q(MaLH__icontains=search_query) | Q(MaKH__username__icontains=search_query))
     if dich_vu:
-        danh_sach_lich_hen = danh_sach_lich_hen.filter(MaDV=dich_vu)
+        danh_sach_lich_hen = danh_sach_lich_hen.filter(MaDV__ten=dich_vu)
     if trang_thai:
         danh_sach_lich_hen = danh_sach_lich_hen.filter(TrangThai=trang_thai)
-    if search_query:
-        danh_sach_lich_hen = danh_sach_lich_hen.objects.filter(MaYCTV__icontains=search_query)
-
     if from_date:
         from_date_parsed = parse_date(from_date)
         if from_date_parsed:
@@ -146,9 +148,19 @@ def quan_ly_lich_hen(request):
         if to_date_parsed:
             danh_sach_lich_hen = danh_sach_lich_hen.filter(thoigiandangki__lte=to_date_parsed)
 
+    # Dữ liệu nhân viên và context
     danh_sach_nhan_vien = Profile.objects.filter(vaitro='Nhân viên')
-    context = {'danh_sach_lich_hen': danh_sach_lich_hen, 'danh_sach_nhan_vien': danh_sach_nhan_vien,'trang_thai_filter': trang_thai}
+    context = {
+        'danh_sach_lich_hen': danh_sach_lich_hen,
+        'danh_sach_nhan_vien': danh_sach_nhan_vien,
+        'trang_thai_filter': trang_thai,
+        'dich_vu_filter': dich_vu,
+        'search_query': search_query,
+        'from_date': from_date,
+        'to_date': to_date,
+    }
     return render(request, 'lich_hen/quan_ly_lich_hen.html', context)
+
 
 # Thêm lịch hẹn mới
 @user_passes_test(is_staff_or_admin)
