@@ -33,7 +33,9 @@
                     <label>Địa Chỉ:</label>
                     <input type="text" value="{{ profile.diachi }}" readonly>
                 </div>
-                <button class="save-button"><a href="/khach-hang/{{profile.MaUser}}" style="color: white; text-decoration: none;">Sửa thông tin</a></button>
+                <button class="save-button">
+                    <a href="/khach-hang/{{profile.MaUser}}"
+                       style="color: white; text-decoration: none; font-size: 16px;">Sửa thông tin</a></button>
             </div>
         </div>
     </div>
@@ -104,6 +106,7 @@
         display: block;
         font-weight: bold;
         margin: 0 10px 5px;
+        font-size: 16px;
     }
 
     .form-group input {
@@ -135,8 +138,8 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        margin-top: 20px;
-        width: 100%;
+        margin: 0 auto;
+        width: 140px;
         text-align: center;
     }
 

@@ -81,9 +81,9 @@ class BaiVietForm(forms.ModelForm):
 class KhachHangForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['MaUser','hoten', 'ngaysinh', 'sodienthoai', 'diachi', 'DiemTichLuy', 'conversation']
+        fields = ['MaUser','hoten', 'ngaysinh', 'sodienthoai', 'diachi']
         widgets = {
-            'MaUser': forms.Select(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'MaUser': forms.Select(attrs={'class': 'form-control'}),
             'hoten': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập họ tên'}),
             'ngaysinh': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'sodienthoai': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập số điện thoại'}),
@@ -97,6 +97,9 @@ class KhachHangForm(forms.ModelForm):
             'sodienthoai': 'Số điện thoại',
             'diachi': 'Địa chỉ',
         }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['MaUser'].queryset = User.objects.filter(is_staff=False, profile__vaitro='Khách hàng')
 
 class NhanVienForm(forms.ModelForm):
         class Meta:
@@ -116,6 +119,10 @@ class NhanVienForm(forms.ModelForm):
                 'sodienthoai': 'Số điện thoại',
                 'diachi': 'Địa chỉ',
             }
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['MaUser'].queryset = User.objects.filter(is_staff=True)
 
 class CustomAuthenticationForm(AuthenticationForm):
         def confirm_login_allowed(self, user):
