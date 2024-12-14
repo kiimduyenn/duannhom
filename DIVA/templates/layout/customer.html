@@ -31,11 +31,9 @@
                     <!-- Thẻ ul riêng cho phần login trong header -->
                     <ul id="message-icon" style="margin-left: 10px;">
                         <li>
-                            {% if user.is_staff %}
                             <a href="{% url 'conversations' %}">
                                 <i class="fa-solid fa-message"></i>
                             </a>
-                            {% endif %}
                         </li>
                     </ul>
                     <ul id="login-menu" style="margin-left:35px;">
