@@ -32,7 +32,7 @@ def themyctv(request):
         form = YCTVForm(request.POST, instance=yctv)
         if form.is_valid():
             yctv_moi = form.save(commit=False)
-            staff_users = User.objects.filter(is_staff=True).annotate(yctv_count=Count('NV_YCTV')
+            staff_users = User.objects.filter(is_staff=True, is_superuser=False).annotate(yctv_count=Count('NV_YCTV')
             ).order_by('yctv_count')
 
             if staff_users.exists():
@@ -128,7 +128,7 @@ def start_chat(request):
     if not customer.is_authenticated:
         return redirect("login")
 
-    employees = User.objects.filter(is_staff=True)
+    employees = User.objects.filter(is_staff=True, is_superuser=False)
     employees_chat = employees.annotate(chat_count=Count('employee_conversations', filter=Q(employee_conversations__is_active=True))
     ).order_by('chat_count')
     if not employees_chat.exists():

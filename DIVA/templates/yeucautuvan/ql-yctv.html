@@ -130,12 +130,9 @@
         margin: 0;
     }
 
-    .messages {
+.messages .alert {
         list-style: none;
         padding: 0;
-    }
-
-    .message {
         padding: 15px;
         margin: 5px;
         border-radius: 8px;
@@ -144,9 +141,6 @@
         box-shadow: 0 4px 10px rgb(0 0 0 / 38%);
         transition: all 0.3s ease-in-out;
         text-align:center;
-    }
-
-    .message.success {
         background-color: #bd8712;
         color: #fff;
     }
@@ -192,8 +186,8 @@
                 <select name="trang_thai" id="trang_thai">
                     <option value="">Tất cả</option>
                     <option value="Chưa xử lý" {% if request.GET.trang_thai == 'Chưa xử lý' %} selected {% endif %}>Chưa xử lý</option>
-                    <option value="Đang xử lý" {% if request.GET.trang_thai == 'Đang xử lý' %} selected {% endif %}>Đang xử lý</option>
-                    <option value="Hoàn thành" {% if request.GET.trang_thai == 'Hoàn thành' %} selected {% endif %}>Hoàn thành</option>
+                    <option value="Đã tư vấn" {% if request.GET.trang_thai == 'Đã tư vấn' %} selected {% endif %}>Đã tư vấn</option>
+                    <option value="Tư vấn lại" {% if request.GET.trang_thai == 'Tư vấn lại' %} selected {% endif %}>Tư vấn lại</option>
                 </select>
             </div>
 
@@ -243,8 +237,8 @@
                 <td>
                     <select name="trang_thai_{{ yc.MaYCTV }}" onchange="updateYCTV('{{ yc.MaYCTV }}')">
                         <option value="Chưa xử lý" {% if yc.TrangThai == "Chưa xử lý" %}selected{% endif %}>Chưa xử lý</option>
-                        <option value="Đang xử lý" {% if yc.TrangThai == "Đang xử lý" %}selected{% endif %}>Đang xử lý</option>
-                        <option value="Hoàn thành" {% if yc.TrangThai == "Hoàn thành" %}selected{% endif %}>Hoàn thành</option>
+                        <option value="Đã tư vấn" {% if yc.TrangThai == "Đã tư vấn" %}selected{% endif %}>Đã tư vấn</option>
+                        <option value="Tư vấn lại" {% if yc.TrangThai == "Tư vấn lại" %}selected{% endif %}>Tư vấn lại</option>
                     </select>
                 </td>
                 <td>

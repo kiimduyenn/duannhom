@@ -82,9 +82,11 @@
 
     <!-- Nút Start New Chat căn phải -->
     {% if user.is_authenticated %}
+    {% if user.profile.vaitro == "Khách hàng" %}
     <div class="start-chat-btn">
         <a href="{% url 'start_chat' %}">Đoạn chat mới</a>
     </div>
+    {% endif %}
     {% endif %}
 
     <!-- Container hiển thị các đoạn hội thoại -->

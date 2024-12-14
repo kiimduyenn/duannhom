@@ -61,7 +61,7 @@ class LichHen(models.Model):
 class YeuCauTuVan(models.Model):
     TrangThai_CHOICES = [
         ('Chưa xử lý', 'Chưa xử lý'),
-        ('Đang xử lý', 'Đang xử lý'),
+        ('Đã tư vấn', 'Đã tư vấn'),
         ('Tư vấn lại', 'Tư vấn lại'),
     ]
     MaYCTV = models.CharField(max_length=10, primary_key=True, editable=False)

@@ -61,30 +61,40 @@
     <div class="service">
         <div class="title">Dịch vụ nổi bật</div>
         <div class="list-service">
-            <div class="item">
+             {% for bai_viet in bai_viet_list %}
+            <a style="text-decoration:none" href="{% url 'chi_tiet_bai_viet' bai_viet.id %}" class="item">
                 <div class="image">
-                    <img src="https://vienthammydiva.vn/wp-content/uploads/2024/08/phun-moi.jpg"/>
+                    <img src="{{ bai_viet.hinh_anh.url }}"/>
                 </div>
                 <div class="name">
-                    Dịch vụ phun môi
+                    {{ bai_viet.tieu_de }}
                 </div>
-            </div>
-            <div class="item">
-                <div class="image">
-                    <img src="https://vienthammydiva.vn/wp-content/uploads/2024/08/phun-may.webp"/>
-                </div>
-                <div class="name">
-                    Dịch vụ phun môi
-                </div>
-            </div>
-            <div class="item">
-                <div class="image">
-                    <img src="https://vienthammydiva.vn/wp-content/uploads/2024/10/cham-soc-da-comodex-12.jpg"/>
-                </div>
-                <div class="name">
-                    Chăm sóc da kim cương
-                </div>
-            </div>
+            </a>
+             {% endfor %}
+<!--            <div class="item">-->
+<!--                <div class="image">-->
+<!--                    <img src="https://vienthammydiva.vn/wp-content/uploads/2024/10/cham-soc-da-comodex-12.jpg"/>-->
+<!--                </div>-->
+<!--                <div class="name">-->
+<!--                    Chăm Sóc Da-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="item">-->
+<!--                <div class="image">-->
+<!--                    <img src="https://vienthammydiva.vn/wp-content/uploads/2024/08/phun-may.webp"/>-->
+<!--                </div>-->
+<!--                <div class="name">-->
+<!--                    Điêu Khắc Chân Mày-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="item">-->
+<!--                <div class="image">-->
+<!--                    <img src="https://vienthammydiva.vn/wp-content/uploads/2024/04/Dieu-tri-nam-6.jpg"/>-->
+<!--                </div>-->
+<!--                <div class="name">-->
+<!--                    Điều Trị Nám Hiệu Quả-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </div>
 

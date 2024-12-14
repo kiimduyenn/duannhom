@@ -47,7 +47,7 @@ def them_khieu_nai(request):
         if form.is_valid():
             khieu_nai = form.save(commit=False)
             khieu_nai.MaKH = request.user
-            staff = User.objects.filter(is_staff=True).annotate(kn_count=Count('NV_KN')
+            staff = User.objects.filter(is_staff=True, is_superuser=False).annotate(kn_count=Count('NV_KN')
                                                                 ).order_by('kn_count')
             if staff.exists():
                 selected_nv = staff.first()
