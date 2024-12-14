@@ -7,7 +7,7 @@
         <h1 class="appointment-title">{{ h1 }}</h1>
         <form method="post" class="appointment-form">
             {% csrf_token %}
-            {% if not user.is_superuser and not user.is_staff %}
+            {% if user.is_authenticated %}
             <div class="form-group">
                 <label for="TenKH">{{ form.TenKH.label }}</label>
                 <input type="text" name="TenKH" value="{{ user.username }}" readonly>

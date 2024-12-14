@@ -200,4 +200,3 @@ def them_lich_hen(request):
         'danh_sach_khach_hang': danh_sach_khach_hang,
         'danh_sach_dich_vu': danh_sach_dich_vu
     })
-
