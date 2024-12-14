@@ -19,7 +19,7 @@
                     <a href="{% url 'trang_chu_kh' %}" id="logo">
                         <img src="{% static 'img/logo.png' %}" alt="Viện thẩm mỹ Diva">
                     </a>
-                    <ul id="main-menu">
+                    <ul id="main-menu" style="margin-left: -10px;">
                         <li><a href="{% url 've_chung_toi' %}">Về chúng tôi</a></li>
                         <li><a href="{% url 'danh_sach_bai_viet' %}">Dịch vụ</a>
                         </li>
@@ -29,7 +29,16 @@
                     </ul>
 
                     <!-- Thẻ ul riêng cho phần login trong header -->
-                    <ul id="login-menu">
+                    <ul id="message-icon" style="margin-left: 10px;">
+                        <li>
+                            {% if user.is_staff %}
+                            <a href="{% url 'conversations' %}">
+                                <i class="fa-solid fa-message"></i>
+                            </a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                    <ul id="login-menu" style="margin-left:35px;">
                         {% if request.user.is_authenticated %}
                             <li class="login-btn-container">
                                 <a href="#" class="login-btn login-ud">
@@ -115,8 +124,8 @@
             </div><br><br> <hr style="border-top: 2px solid #BD8712; margin-left: -65px;">
             <br>
             <div class="footer-bottom" style="text-align: center; margin: 0px 40px 0 -20px;">
-                <p >Mọi thông tin trên website Vienthammydiva.vn chỉ mang tính chất tham khảo và gợi ý, không nên tự ý áp dụng.</p>
-                <p >Viện thẩm mỹ DIVA từ chối chịu trách nhiệm trong trường hợp khách hàng tự tiện thực hiện các phương pháp làm đẹp mà không tuân theo hướng dẫn và chỉ định của bác sĩ, chuyên gia.</p>
+                <p>Mọi thông tin trên website Vienthammydiva.vn chỉ mang tính chất tham khảo và gợi ý, không nên tự ý áp dụng.</p>
+                <p>Viện thẩm mỹ DIVA từ chối chịu trách nhiệm trong trường hợp khách hàng tự tiện thực hiện các phương pháp làm đẹp mà không tuân theo hướng dẫn và chỉ định của bác sĩ, chuyên gia.</p>
                 <p style="margin-top: 5px;"><strong>Viện thẩm mỹ DIVA</strong></p>
             </div>
         </footer>
